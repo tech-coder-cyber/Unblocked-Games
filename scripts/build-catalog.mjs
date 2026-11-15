@@ -47,7 +47,7 @@ const games = files
       .split('-')
       .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
       .join(' ');
-    const title = decodeHtml(h1Match?.[1] || titleMatch?.[1]) || fallbackTitle;
+    const title = decodeHtml(h1Match?.at(1) || titleMatch?.at(1)) || fallbackTitle;
 
     // Extract original cover image URL
     const iconImgMatch = html.match(/<div class="icon">[\s\S]*?<img[^>]+src=["']([^"']+)["']/i);
@@ -55,8 +55,8 @@ const games = files
     const localJpg = path.resolve(`public/images/${id}.jpg`);
     const localPng = path.resolve(`public/images/${id}.png`);
     const thumbnail =
-      iconImgMatch?.[1] ||
-      anyImgMatch?.[1] ||
+      iconImgMatch?.at(1) ||
+      anyImgMatch?.at(1) ||
       (fs.existsSync(localJpg)
         ? `./images/${id}.jpg`
         : fs.existsSync(localPng)
@@ -65,18 +65,18 @@ const games = files
 
     // Extract original category, description, tip, and note
     const kickerMatch = html.match(/<div class="title-kicker">([\s\S]*?)<\/div>/i);
-    const category = decodeHtml(kickerMatch?.[1]?.split('·')?.[0]) || 'Arcade';
+    const category = decodeHtml(kickerMatch?.at(1)?.split('·')?.at(0)) || 'Arcade';
 
     const descMatch = html.match(/<p class="desc">([\s\S]*?)<\/p>/i);
     const description =
-      decodeHtml(descMatch?.[1]) || `Play ${title} directly in your browser.`;
+      decodeHtml(descMatch?.at(1)) || `Play ${title} directly in your browser.`;
 
     const miniParagraphs = [...html.matchAll(/<div class="card-mini">[\s\S]*?<p>([\s\S]*?)<\/p>/gi)];
     const tip =
-      decodeHtml(miniParagraphs[0]?.[1]) ||
+      decodeHtml(miniParagraphs.at(0)?.at(1)) ||
       'Click inside the game once it opens to focus keyboard and mouse input.';
     const note =
-      decodeHtml(miniParagraphs[1]?.[1]) ||
+      decodeHtml(miniParagraphs.at(1)?.at(1)) ||
       'First load can take a few moments on lower-end devices.';
 
     const launchPath = `./games/${file}`;
@@ -101,8 +101,11 @@ const games = files
       },
       iframeHtml: `<iframe src="${launchPath}" title="${title}" allowfullscreen></iframe>`,
       thumbnail,
+      image: thumbnail,
+      cover: thumbnail,
+      icon: thumbnail,
     };
   });
 
 fs.writeFileSync(outFile, JSON.stringify({ games }, null, 2), 'utf8');
-console.log(`Generated ${games.length} games with original cover images and fixed launcher paths.`);
+console.log(`Generated ${games.length} games cleanly.`);

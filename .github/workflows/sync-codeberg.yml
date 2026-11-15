@@ -29,6 +29,8 @@ jobs:
         run: |
           npm install --legacy-peer-deps
           npm run build -- --base=/study-portal/
+          cp -rn data dist/ 2>/dev/null || true
+          cp -rn games dist/ 2>/dev/null || true
 
       - name: Deploy dist to Codeberg pages branch
         env:

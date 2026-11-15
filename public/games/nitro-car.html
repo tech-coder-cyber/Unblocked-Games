@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Nitro Car</title>
+    <link rel="stylesheet" href="/games/launcher.css" />
+  </head>
+  <body>
+    <div id="gameContainer">
+      <div class="bg-layer" aria-hidden="true">
+        <img
+          class="bg-img"
+          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR03nJ8LOaHAjdlvfbVllMW9A9zWkQ-fgMXXy7zWGs5lA&s=10"
+          referrerpolicy="no-referrer"
+          alt=""
+        />
+      </div>
+
+      <div class="wrap">
+        <section class="panel" aria-label="Nitro Car launcher">
+          <div class="top">
+            <div class="icon">
+              <img
+                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR03nJ8LOaHAjdlvfbVllMW9A9zWkQ-fgMXXy7zWGs5lA&s=10"
+                referrerpolicy="no-referrer"
+                alt="Nitro Car cover"
+              />
+            </div>
+            <div class="title-block">
+              <div class="title-kicker">Racing · Multiplayer · Arcade</div>
+              <h1>Nitro Car</h1>
+              <p class="desc">
+                Select a launch option below to start playing directly inside this frame or expand to fullscreen.
+              </p>
+            </div>
+          </div>
+
+          <div class="actions-grid">
+            <button id="playPrimaryInline" class="btn btn-primary" type="button">▶ Play Here</button>
+            <button id="playPrimaryFullscreen" class="btn btn-secondary" type="button">Fullscreen</button>
+            <button id="playAltInline" class="btn btn-secondary" type="button">Play Here (Alt)</button>
+            <button id="playAltFullscreen" class="btn btn-secondary" type="button">Fullscreen (Alt)</button>
+          </div>
+
+          <div class="info-row">
+            <div class="card-mini">
+              <div class="card-hd"><span class="chip">TIP</span> Quick controls</div>
+              <p>Click inside the track once it opens to focus driving controls. Steer with W A S D or Arrow keys and boost with Space.</p>
+            </div>
+            <div class="card-mini">
+              <div class="card-hd"><span class="chip">NOTE</span> Load time</div>
+              <p>If the primary source is blocked or slow, switch to Play Here (Alt) to load the backup mirror.</p>
+            </div>
+          </div>
+
+          <div id="statusNote" class="status-line">Preparing game mirrors...</div>
+        </section>
+      </div>
+    </div>
+
+    <script src="/games/launcher.js"></script>
+    <script>
+      window.initGameLauncher({
+        title: 'Nitro Car',
+        pageTitle: 'classroom.google.com',
+        faviconUrl: 'https://ssl.gstatic.com/classroom/favicon.png',
+        allow: 'autoplay; fullscreen; gamepad; clipboard-write; encrypted-media',
+        googleScriptUrl:
+          'https://script.google.com/macros/s/AKfycbwulxMF2OzvFm_FbSq6ldQjqoQa6QetBz9nplk80vwVZReDxMqLGNdr-EqI9PULdWLn/exec',
+        gameXmlUrl:
+          'data:application/xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiID8+DQo8TW9kdWxlPg0KPE1vZHVsZVByZWZzIHRpdGxlPSIiIC8+DQo8Q29udGVudCB0eXBlPSJodG1sIj48IVtDREFUQVsNCg0KPCFET0NUWVBFIGh0bWw+DQo8aHRtbCBsYW5nPSJlbiI+DQo8aGVhZD4NCjxtZXRhIGNoYXJzZXQ9InV0Zi04Ij4NCjxtZXRhIG5hbWU9InZpZXdwb3J0IiBjb250ZW50PSJ3aWR0aD1kZXZpY2Utd2lkdGgsaW5pdGlhbC1zY2FsZT0xLG1heGltdW0tc2NhbGU9MSx1c2VyLXNjYWxhYmxlPW5vLHZpZXdwb3J0LWZpdD1jb3ZlciI+DQo8c3R5bGU+DQpodG1sLGJvZHl7bWFyZ2luOjA7d2lkdGg6MTAwJTtoZWlnaHQ6MTAwJTtvdmVyZmxvdzpoaWRkZW47YmFja2dyb3VuZDojMGExNzMwO2NvbG9yOiNmM2Y3ZmY7Zm9udDoxNnB4IHN5c3RlbS11aSxzYW5zLXNlcmlmfQ0KaWZyYW1le2Rpc3BsYXk6YmxvY2s7Ym9yZGVyOjA7d2lkdGg6MTAwJTtoZWlnaHQ6MTAwJX0NCnB7cG9zaXRpb246YWJzb2x1dGU7aW5zZXQ6YXV0byAwIDQ1JTt0ZXh0LWFsaWduOmNlbnRlcjttYXJnaW46MH0NCmF7Y29sb3I6aW5oZXJpdH0NCjwvc3R5bGU+DQo8L2hlYWQ+DQo8Ym9keT4NCjxpZnJhbWUgaWQ9Im5pdHJvLWNhci1nYW1lIiB0aXRsZT0ibml0cm8uY2FyIiBhbGxvdz0iYXV0b3BsYXk7IGZ1bGxzY3JlZW47IGdhbWVwYWQ7IGNsaXBib2FyZC13cml0ZSI+PC9pZnJhbWU+DQo8c2NyaXB0Pg0KKGFzeW5jIGZ1bmN0aW9uICgpIHsNCiAgdmFyIG1pcnJvciA9ICJodHRwczovL2Nkbi5qc2RlbGl2ci5uZXQvZ2gvbml0cm9jYXJnaXQvZmlsZXNAIjsNCiAgdmFyIGZyYW1lID0gZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQoIm5pdHJvLWNhci1nYW1lIik7DQogIHRyeSB7DQogICAgdmFyIGxhdGVzdCA9IGF3YWl0IGZldGNoKG1pcnJvciArICJtYWluL2xhdGVzdC5qc29uIiwgeyBjYWNoZTogIm5vLXN0b3JlIiB9KTsNCiAgICBpZiAoIWxhdGVzdC5vaykgdGhyb3cgbmV3IEVycm9yKCJsYXRlc3QuanNvbjogSFRUUCAiICsgbGF0ZXN0LnN0YXR1cyk7DQogICAgdmFyIGNvbW1pdCA9IChhd2FpdCBsYXRlc3QuanNvbigpKS5jb21taXQ7DQogICAgaWYgKCEvXlswLTlhLWZdezQwfSQvLnRlc3QoY29tbWl0KSkgdGhyb3cgbmV3IEVycm9yKCJsYXRlc3QuanNvbjogbm8gY29tbWl0Iik7DQogICAgdmFyIGJhc2UgPSBtaXJyb3IgKyBjb21taXQgKyAiLyI7DQogICAgdmFyIHBhZ2UgPSBhd2FpdCBmZXRjaChiYXNlICsgImluZGV4Lmh0bWwiKTsNCiAgICBpZiAoIXBhZ2Uub2spIHRocm93IG5ldyBFcnJvcigiaW5kZXguaHRtbDogSFRUUCAiICsgcGFnZS5zdGF0dXMpOw0KICAgIHZhciBodG1sID0gKGF3YWl0IHBhZ2UudGV4dCgpKS5yZXBsYWNlKC88aGVhZD4vaSwgZnVuY3Rpb24gKGhlYWQpIHsNCiAgICAgIHJldHVybiBoZWFkICsgJzxiYXNlIGhyZWY9IicgKyBiYXNlICsgJyI+JzsNCiAgICB9KTsNCiAgICBmcmFtZS5zcmNkb2MgPSBodG1sOw0KICAgIGZyYW1lLmZvY3VzKCk7DQogIH0gY2F0Y2ggKGVycm9yKSB7DQogICAgY29uc29sZS5lcnJvcigibml0cm8uY2FyIGRpZCBub3QgbG9hZCIsIGVycm9yKTsNCiAgICB2YXIgbm90ZSA9IGRvY3VtZW50LmNyZWF0ZUVsZW1lbnQoInAiKTsNCiAgICBub3RlLmlubmVySFRNTCA9ICduaXRyby5jYXIgY291bGQgbm90IGxvYWQuIFJlbG9hZCB0aGUgcGFnZSwgb3IgcGxheSBhdCA8YSBocmVmPSJodHRwczovL25pdHJvLmNhci8iIHRhcmdldD0iX2JsYW5rIiByZWw9Im5vb3BlbmVyIj5uaXRyby5jYXI8L2E+Lic7DQogICAgZG9jdW1lbnQuYm9keS5yZXBsYWNlQ2hpbGQobm90ZSwgZnJhbWUpOw0KICB9DQp9KSgpOw0KPC9zY3JpcHQ+DQo8c2NyaXB0IHNyYz0iaHR0cHM6Ly9jZG4uanNkZWxpdnIubmV0L2doL3N0Mzkvc2RrQG1haW4vYXBpLmpzIj48L3NjcmlwdD4NCjwvYm9keT4NCjwvaHRtbD4NCg0KXV0+PC9Db250ZW50Pg0KPC9Nb2R1bGU+DQo=',
+      });
+    </script>
+  </body>
+</html>

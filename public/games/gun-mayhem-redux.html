@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gun Mayhem Redux</title>
+    <link rel="stylesheet" href="/games/launcher.css" />
+  </head>
+  <body>
+    <div id="gameContainer">
+      <div class="bg-layer" aria-hidden="true">
+        <img
+          class="bg-img"
+          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSsHjRwgLBMhDqcYbc2FYaxjp8KcnqBabOmh4yfbRYk_AlkqZoRDxPgSpY6&s=10"
+          referrerpolicy="no-referrer"
+          alt=""
+        />
+      </div>
+
+      <div class="wrap">
+        <section class="panel" aria-label="Gun Mayhem Redux launcher">
+          <div class="top">
+            <div class="icon">
+              <img
+                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSsHjRwgLBMhDqcYbc2FYaxjp8KcnqBabOmh4yfbRYk_AlkqZoRDxPgSpY6&s=10"
+                referrerpolicy="no-referrer"
+                alt="Gun Mayhem Redux cover"
+              />
+            </div>
+            <div class="title-block">
+              <div class="title-kicker">Action · 1-4 Players · Arena Shooter</div>
+              <h1>Gun Mayhem Redux</h1>
+              <p class="desc">
+                Select a launch option below to jump into fast-paced platform knockouts with revamped weapons directly inside this frame or expand to fullscreen.
+              </p>
+            </div>
+          </div>
+
+          <div class="actions-grid">
+            <button id="playPrimaryInline" class="btn btn-primary" type="button">▶ Play Here</button>
+            <button id="playPrimaryFullscreen" class="btn btn-secondary" type="button">Fullscreen</button>
+          </div>
+
+          <div class="info-row">
+            <div class="card-mini">
+              <div class="card-hd"><span class="chip">TIP</span> Quick controls</div>
+              <p>Use Arrow Keys to jump and dodge, Z to fire primary weapons, and X to drop explosives while grabbing weapon crates.</p>
+            </div>
+            <div class="card-mini">
+              <div class="card-hd"><span class="chip">NOTE</span> Ruffle Flash</div>
+              <p>Loads the standalone Ruffle SWF bundle directly inside the stage. Click inside once loaded to focus keyboard input.</p>
+            </div>
+          </div>
+
+          <div id="statusNote" class="status-line">Preparing game bundle...</div>
+        </section>
+      </div>
+    </div>
+
+    <script src="/games/launcher.js"></script>
+    <script>
+      window.initGameLauncher({
+        title: 'Gun Mayhem Redux',
+        pageTitle: 'classroom.google.com',
+        faviconUrl: 'https://ssl.gstatic.com/classroom/favicon.png',
+        allow: 'fullscreen; autoplay; encrypted-media; gamepad',
+        gameXmlUrl: 'https://cdn.jsdelivr.net/gh/papamamia/70099@main/vv/gun_mayhem_redux.xml',
+      });
+    </script>
+  </body>
+</html>

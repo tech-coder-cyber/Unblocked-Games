@@ -2,6 +2,34 @@ const THEME_KEY = 'recess_theme';
 const FAVORITES_KEY = 'recess_favorites';
 const RECENT_KEY = 'recess_recent';
 const STATS_KEY = 'recess_game_stats';
+const CLOAK_KEY = 'recess_tab_cloak';
+
+export const TAB_CLOAK_PRESETS = [
+  {
+    id: 'default',
+    label: 'Recess Arcade (Default)',
+    title: 'Recess Arcade — Unblocked Browser Games',
+    icon: '',
+  },
+  {
+    id: 'classroom',
+    label: 'Google Classroom',
+    title: 'Home - Classroom',
+    icon: 'https://ssl.gstatic.com/classroom/favicon.png',
+  },
+  {
+    id: 'docs',
+    label: 'Google Docs',
+    title: 'Untitled document - Google Docs',
+    icon: 'https://ssl.gstatic.com/docs/documents/images/kix-favicon7.ico',
+  },
+  {
+    id: 'drive',
+    label: 'Google Drive',
+    title: 'My Drive - Google Drive',
+    icon: 'https://ssl.gstatic.com/images/branding/product/1x/drive_2020q4_32dp.png',
+  },
+];
 
 export function getInitialTheme() {
   try {
@@ -22,6 +50,41 @@ export function applyTheme(theme) {
     localStorage.setItem(THEME_KEY, theme);
   } catch {
     // Ignore storage write errors
+  }
+}
+
+export function getInitialCloak() {
+  try {
+    const saved = localStorage.getItem(CLOAK_KEY);
+    if (TAB_CLOAK_PRESETS.some((p) => p.id === saved)) {
+      return saved;
+    }
+  } catch {
+    // Ignore storage errors
+  }
+  return 'default';
+}
+
+export function applyTabCloak(presetId) {
+  const preset = TAB_CLOAK_PRESETS.find((p) => p.id === presetId) || TAB_CLOAK_PRESETS[0];
+  document.title = preset.title;
+
+  let linkEl = document.querySelector("link[rel~='icon']");
+  if (preset.icon) {
+    if (!linkEl) {
+      linkEl = document.createElement('link');
+      linkEl.rel = 'icon';
+      document.head.appendChild(linkEl);
+    }
+    linkEl.href = preset.icon;
+  } else if (linkEl) {
+    linkEl.remove();
+  }
+
+  try {
+    localStorage.setItem(CLOAK_KEY, preset.id);
+  } catch {
+    // Ignore storage errors
   }
 }
 
@@ -185,7 +248,67 @@ export function clearAllSiteData() {
   } catch {
     // Ignore storage clear errors
   }
+  applyTabCloak('default');
   const fallbackTheme = 'dark';
   document.documentElement.classList.add('dark');
   return fallbackTheme;
 }
+
+const CREATOR_PROFILE_KEY = 'recess_creator_profile';
+const STUDIO_LIKES_KEY = 'recess_studio_likes';
+
+function generateCreatorId() {
+  if (typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function') {
+    return `creator-${crypto.randomUUID()}`;
+  }
+  return `creator-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 10)}`;
+}
+
+export function getCreatorProfile() {
+  try {
+    const raw = localStorage.getItem(CREATOR_PROFILE_KEY);
+    const parsed = raw ? JSON.parse(raw) : null;
+    if (parsed && typeof parsed.id === 'string' && parsed.id.trim()) {
+      return {
+        id: parsed.id,
+        name: typeof parsed.name === 'string' && parsed.name.trim() ? parsed.name.trim() : 'ArcadeBuilder',
+      };
+    }
+  } catch {
+    // Ignore storage access errors
+  }
+
+  const created = {
+    id: generateCreatorId(),
+    name: 'ArcadeBuilder',
+  };
+  saveCreatorProfile(created);
+  return created;
+}
+
+export function saveCreatorProfile(profile) {
+  try {
+    localStorage.setItem(CREATOR_PROFILE_KEY, JSON.stringify(profile));
+  } catch {
+    // Ignore storage write errors
+  }
+}
+
+export function getLikedStudioIds() {
+  try {
+    const raw = localStorage.getItem(STUDIO_LIKES_KEY);
+    const parsed = raw ? JSON.parse(raw) : [];
+    return Array.isArray(parsed) ? parsed : [];
+  } catch {
+    return [];
+  }
+}
+
+export function saveLikedStudioIds(ids) {
+  try {
+    localStorage.setItem(STUDIO_LIKES_KEY, JSON.stringify(ids));
+  } catch {
+    // Ignore storage write errors
+  }
+}
+

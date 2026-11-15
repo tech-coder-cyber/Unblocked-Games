@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pixel Gun</title>
+    <link rel="stylesheet" href="/games/launcher.css" />
+  </head>
+  <body>
+    <div id="gameContainer">
+      <div class="bg-layer" aria-hidden="true">
+        <img
+          class="bg-img"
+          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT6T-iVzYQrvJk-pO2X165xNUxxphj6Y5FOxMiwOT6qAZAv7ZexamVpwC8&s=10"
+          referrerpolicy="no-referrer"
+          alt=""
+        />
+      </div>
+
+      <div class="wrap">
+        <section class="panel" aria-label="Pixel Gun launcher">
+          <div class="top">
+            <div class="icon">
+              <img
+                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT6T-iVzYQrvJk-pO2X165xNUxxphj6Y5FOxMiwOT6qAZAv7ZexamVpwC8&s=10"
+                referrerpolicy="no-referrer"
+                alt="Pixel Gun cover"
+              />
+            </div>
+            <div class="title-block">
+              <div class="title-kicker">Action · Multiplayer · Block FPS</div>
+              <h1>Pixel Gun</h1>
+              <p class="desc">
+                Select a launch option below to start the standalone block shooter directly inside this frame or expand to fullscreen.
+              </p>
+            </div>
+          </div>
+
+          <div class="actions-grid">
+            <button id="playPrimaryInline" class="btn btn-primary" type="button">▶ Play Here</button>
+            <button id="playPrimaryFullscreen" class="btn btn-secondary" type="button">Fullscreen</button>
+          </div>
+
+          <div class="info-row">
+            <div class="card-mini">
+              <div class="card-hd"><span class="chip">TIP</span> Quick controls</div>
+              <p>Click inside the arena to lock the cursor. Move with WASD, jump with Space, aim with the mouse, and fire or switch pixel weapons.</p>
+            </div>
+            <div class="card-mini">
+              <div class="card-hd"><span class="chip">NOTE</span> Load time</div>
+              <p>Downloads segmented Unity WebGL assets directly inside the stage; give it a moment on initial boot.</p>
+            </div>
+          </div>
+
+          <div id="statusNote" class="status-line">Preparing game bundle...</div>
+        </section>
+      </div>
+    </div>
+
+    <script src="/games/launcher.js"></script>
+    <script>
+      window.initGameLauncher({
+        title: 'Pixel Gun',
+        pageTitle: 'classroom.google.com',
+        faviconUrl: 'https://ssl.gstatic.com/classroom/favicon.png',
+        allow: 'fullscreen; autoplay; encrypted-media; pointer-lock; gamepad',
+        gameXmlUrl: 'https://cdn.jsdelivr.net/gh/fnafben/1234188746455876655@main/1.xml',
+      });
+    </script>
+  </body>
+</html>

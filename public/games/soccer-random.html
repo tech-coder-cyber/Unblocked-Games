@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Soccer Random</title>
+    <link rel="stylesheet" href="/games/launcher.css" />
+  </head>
+  <body>
+    <div id="gameContainer">
+      <div class="bg-layer" aria-hidden="true">
+        <img
+          class="bg-img"
+          src="https://play-lh.googleusercontent.com/vKbiFxhSu9_S17z5cK1BaVTiEFGV1X4sSzNphcE3JG3OIn-7_MxxRt6ijnlnMqJZ41vIlywX4HyHFUOzPlgchA=w526-h296-rw"
+          referrerpolicy="no-referrer"
+          alt=""
+        />
+      </div>
+
+      <div class="wrap">
+        <section class="panel" aria-label="Soccer Random launcher">
+          <div class="top">
+            <div class="icon">
+              <img
+                src="https://play-lh.googleusercontent.com/vKbiFxhSu9_S17z5cK1BaVTiEFGV1X4sSzNphcE3JG3OIn-7_MxxRt6ijnlnMqJZ41vIlywX4HyHFUOzPlgchA=w526-h296-rw"
+                referrerpolicy="no-referrer"
+                alt="Soccer Random cover"
+              />
+            </div>
+            <div class="title-block">
+              <div class="title-kicker">Sports · 1-2 Players · Physics Arcade</div>
+              <h1>Soccer Random</h1>
+              <p class="desc">
+                Select a launch option below to start playing directly inside this frame or expand to fullscreen.
+              </p>
+            </div>
+          </div>
+
+          <div class="actions-grid">
+            <button id="playPrimaryInline" class="btn btn-primary" type="button">▶ Play Here</button>
+            <button id="playPrimaryFullscreen" class="btn btn-secondary" type="button">Fullscreen</button>
+            <button id="playAltInline" class="btn btn-secondary" type="button">Play Here (Alt)</button>
+            <button id="playAltFullscreen" class="btn btn-secondary" type="button">Fullscreen (Alt)</button>
+          </div>
+
+          <div class="info-row">
+            <div class="card-mini">
+              <div class="card-hd"><span class="chip">TIP</span> Quick controls</div>
+              <p>Click inside the game once it opens to focus keyboard controls. Player 1 uses W and Player 2 uses Up Arrow.</p>
+            </div>
+            <div class="card-mini">
+              <div class="card-hd"><span class="chip">NOTE</span> Load time</div>
+              <p>If the primary source is blocked or slow, switch to Play Here (Alt) to load the backup mirror.</p>
+            </div>
+          </div>
+
+          <div id="statusNote" class="status-line">Preparing game mirrors...</div>
+        </section>
+      </div>
+    </div>
+
+    <script src="/games/launcher.js"></script>
+    <script>
+      window.initGameLauncher({
+        title: 'Soccer Random',
+        pageTitle: 'classroom.google.com',
+        faviconUrl: 'https://ssl.gstatic.com/classroom/favicon.png',
+        googleScriptUrl:
+          'https://script.google.com/macros/s/AKfycbwr79gF5RqgUkBr0YEX16ayQF4aqdcHxaLRubcOggFvXqp-PiG7tw0uyvr3vlUEpDnC/exec',
+        gameXmlUrl:
+          'https://471058263-725410472258601738.preview.editmysite.com/uploads/b/139890129-510930859892590631/files/sr.xml',
+      });
+    </script>
+  </body>
+</html>

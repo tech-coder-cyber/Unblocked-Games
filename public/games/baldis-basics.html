@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Baldi's Basics</title>
+    <link rel="stylesheet" href="/games/launcher.css" />
+  </head>
+  <body>
+    <div id="gameContainer">
+      <div class="bg-layer" aria-hidden="true">
+        <img
+          class="bg-img"
+          src="https://upload.wikimedia.org/wikipedia/en/1/13/Baldis_Basics_in_Education_and_Learining_cover_art.webp?utm_source=en.wikipedia.org&utm_campaign=index&utm_content=original"
+          referrerpolicy="no-referrer"
+          alt=""
+        />
+      </div>
+
+      <div class="wrap">
+        <section class="panel" aria-label="Baldi's Basics launcher">
+          <div class="top">
+            <div class="icon">
+              <img
+                src="https://upload.wikimedia.org/wikipedia/en/1/13/Baldis_Basics_in_Education_and_Learining_cover_art.webp?utm_source=en.wikipedia.org&utm_campaign=index&utm_content=original"
+                referrerpolicy="no-referrer"
+                alt="Baldi's Basics cover"
+              />
+            </div>
+            <div class="title-block">
+              <div class="title-kicker">Horror · 1 Player · Survival</div>
+              <h1>Baldi's Basics</h1>
+              <p class="desc">
+                Select a launch option below to start playing directly inside this frame or expand to fullscreen.
+              </p>
+            </div>
+          </div>
+
+          <div class="actions-grid">
+            <button id="playPrimaryInline" class="btn btn-primary" type="button">▶ Play Here</button>
+            <button id="playPrimaryFullscreen" class="btn btn-secondary" type="button">Fullscreen</button>
+            <button id="playAltInline" class="btn btn-secondary" type="button">Play Here (Alt)</button>
+            <button id="playAltFullscreen" class="btn btn-secondary" type="button">Fullscreen (Alt)</button>
+          </div>
+
+          <div class="info-row">
+            <div class="card-mini">
+              <div class="card-hd"><span class="chip">TIP</span> Quick controls</div>
+              <p>Collect all seven notebooks and find every exit! Move with WASD, sprint with Shift, look back with Space, and use items with Right Click.</p>
+            </div>
+            <div class="card-mini">
+              <div class="card-hd"><span class="chip">NOTE</span> Load time</div>
+              <p>Initial Unity WebGL load can take a few moments. Click inside the hallway to lock mouse look.</p>
+            </div>
+          </div>
+
+          <div id="statusNote" class="status-line">Preparing game mirrors...</div>
+        </section>
+      </div>
+    </div>
+
+    <script src="/games/launcher.js"></script>
+    <script>
+      window.initGameLauncher({
+        title: "Baldi's Basics",
+        pageTitle: 'classroom.google.com',
+        faviconUrl: 'https://ssl.gstatic.com/classroom/favicon.png',
+        allow: 'fullscreen; autoplay; encrypted-media; pointer-lock; gamepad',
+        googleScriptUrl:
+          'data:text/html;base64,PCFET0NUWVBFIGh0bWw+DQo8aHRtbD4NCjxoZWFkPg0KPGxpbmsgcmVsPSJzdHlsZXNoZWV0IiBocmVmPSJodHRwczovL3Jhd2Nkbi5naXRoYWNrLmNvbS91c2VybmFtZWd0aC9kaWFtb25kbWluZS9jZTNmMDE0ZDc0NjhkMjZlNTc4YTIzZGU3NzczZGRlYjRmNDBiMjRmL2dzL2dzZmlsZXMvYmFzaWNzL1RlbXBsYXRlRGF0YS9zdHlsZS5jc3MiPg0KPC9oZWFkPg0KPGJvZHk+DQo8c2NyaXB0IHNyYz0iaHR0cHM6Ly9yYXdjZG4uZ2l0aGFjay5jb20vdXNlcm5hbWVndGgvZGlhbW9uZG1pbmUvY2UzZjAxNGQ3NDY4ZDI2ZTU3OGEyM2RlNzc3M2RkZWI0ZjQwYjI0Zi9ncy9nc2ZpbGVzL2Jhc2ljcy9UZW1wbGF0ZURhdGEvVW5pdHlQcm9ncmVzcy5qcyI+PC9zY3JpcHQ+DQogICAgPHNjcmlwdCBzcmM9Imh0dHBzOi8vcmF3Y2RuLmdpdGhhY2suY29tL3VzZXJuYW1lZ3RoL2RpYW1vbmRtaW5lL2NlM2YwMTRkNzQ2OGQyNmU1NzhhMjNkZTc3NzNkZGViNGY0MGIyNGYvZ3MvZ3NmaWxlcy9iYXNpY3MvYmFsZGkuanMiPjwvc2NyaXB0Pg0KICAgIDxzY3JpcHQ+DQogICAgICB2YXIgZ2FtZUluc3RhbmNlID0gVW5pdHlMb2FkZXIuaW5zdGFudGlhdGUoImdhbWVDb250YWluZXIiLCAiaHR0cHM6Ly9yYXdjZG4uZ2l0aGFjay5jb20vdXNlcm5hbWVndGgvZGlhbW9uZG1pbmUvY2UzZjAxNGQ3NDY4ZDI2ZTU3OGEyM2RlNzc3M2RkZWI0ZjQwYjI0Zi9ncy9nc2ZpbGVzL2Jhc2ljcy9iYWxkaS5qc29uIiwge29uUHJvZ3Jlc3M6IFVuaXR5UHJvZ3Jlc3MsTW9kdWxlOntvblJ1bnRpbWVJbml0aWFsaXplZDogZnVuY3Rpb24oKSB7VW5pdHlQcm9ncmVzcyhnYW1lSW5zdGFuY2UsICJjb21wbGV0ZSIpfX19KTsNCiAgICA8L3NjcmlwdD4NCgk8c2NyaXB0IHNyYz0iaHR0cHM6Ly9jZG4uanNkZWxpdnIubmV0L2doL3N0Mzkvc2RrQG1haW4vYXBpLmpzIj48L3NjcmlwdD4NCiAgICA8ZGl2IGNsYXNzPSJ3ZWJnbC1jb250ZW50Ij4NCiAgICAgICAgPGRpdiBpZD0iZ2FtZUNvbnRhaW5lciIgc3R5bGU9IndpZHRoOiAxMDB2dzsgaGVpZ2h0OiAxMDB2aCI+PC9kaXY+DQogICAgICAgIDwvZGl2Pg0KPC9ib2R5Pg0KPC9odG1sPg==',
+        gameXmlUrl:
+          'data:@file/xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiID8+DQo8TW9kdWxlPg0KPE1vZHVsZVByZWZzIHRpdGxlPSJCYWxkaSdzIEJhc2ljcyIgLz4NCjxDb250ZW50IHR5cGU9Imh0bWwiPjwhW0NEQVRBWw0KDQo8bGluayByZWw9InN0eWxlc2hlZXQiIGhyZWY9Imh0dHBzOi8vcmF3Y2RuLmdpdGhhY2suY29tL3VzZXJuYW1lZ3RoL2RpYW1vbmRtaW5lL2NlM2YwMTRkNzQ2OGQyNmU1NzhhMjNkZTc3NzNkZGViNGY0MGIyNGYvZ3MvZ3NmaWxlcy9iYXNpY3MvVGVtcGxhdGVEYXRhL3N0eWxlLmNzcyI+DQo8c2NyaXB0IHNyYz0iaHR0cHM6Ly9yYXdjZG4uZ2l0aGFjay5jb20vdXNlcm5hbWVndGgvZGlhbW9uZG1pbmUvY2UzZjAxNGQ3NDY4ZDI2ZTU3OGEyM2RlNzc3M2RkZWI0ZjQwYjI0Zi9ncy9nc2ZpbGVzL2Jhc2ljcy9UZW1wbGF0ZURhdGEvVW5pdHlQcm9ncmVzcy5qcyI+PC9zY3JpcHQ+DQogICAgPHNjcmlwdCBzcmM9Imh0dHBzOi8vcmF3Y2RuLmdpdGhhY2suY29tL3VzZXJuYW1lZ3RoL2RpYW1vbmRtaW5lL2NlM2YwMTRkNzQ2OGQyNmU1NzhhMjNkZTc3NzNkZGViNGY0MGIyNGYvZ3MvZ3NmaWxlcy9iYXNpY3MvYmFsZGkuanMiPjwvc2NyaXB0Pg0KCTxzY3JpcHQgdHlwZT0idGV4dC9qYXZhc2NyaXB0Ij53aW5kb3cuU0RLX09QVElPTlM9e2dhbWVJZDoicjJ0enB5OWNncm4ydTR4Z3pjOXowemJ0dnhtMTZtYnkiLG9uRXZlbnQ6ZnVuY3Rpb24oYSl7c3dpdGNoKGEubmFtZSl7Y2FzZSJTREtfR0FNRV9QQVVTRSI6YnJlYWs7Y2FzZSJTREtfR0FNRV9TVEFSVCI6YnJlYWs7Y2FzZSJTREtfUkVBRFkiOmJyZWFrfX19OyhmdW5jdGlvbihhLGIsYyl7dmFyIGQ9YS5nZXRFbGVtZW50c0J5VGFnTmFtZShiKVswXTthLmdldEVsZW1lbnRCeUlkKGMpfHwoYT1hLmNyZWF0ZUVsZW1lbnQoYiksYS5pZD1jLGEuc3JjPSJodHRwczovL2Nkbi5qc2RlbGl2ci5uZXQvZ2gvc3QzOS9zZGtAbWFpbi9zZGtqcy5qcyIsZC5wYXJlbnROb2RlLmluc2VydEJlZm9yZShhLGQpKX0pKGRvY3VtZW50LCJzY3JpcHQiLCJnYW1lbW9uZXRpemUtc2RrIik7PC9zY3JpcHQ+PHNjcmlwdCB0eXBlPSJ0ZXh0L2phdmFzY3JpcHQiPmxldCBpc0FkU2hvd249ZmFsc2U7ZnVuY3Rpb24gb25DbGljayhlKXtpZighaXNBZFNob3duJiZ0eXBlb2Ygc2RrIT09J3VuZGVmaW5lZCcmJnR5cGVvZiBzZGsuc2hvd0Jhbm5lcj09PSdmdW5jdGlvbicpe3Nkay5zaG93QmFubmVyKCk7aXNBZFNob3duPXRydWV9d2luZG93LnJlbW92ZUV2ZW50TGlzdGVuZXIoImNsaWNrIixvbkNsaWNrKX13aW5kb3cuYWRkRXZlbnRMaXN0ZW5lcigiY2xpY2siLG9uQ2xpY2spOzwvc2NyaXB0Pg0KICAgIDxzY3JpcHQ+DQogICAgICB2YXIgZ2FtZUluc3RhbmNlID0gVW5pdHlMb2FkZXIuaW5zdGFudGlhdGUoImdhbWVDb250YWluZXIiLCAiaHR0cHM6Ly9yYXdjZG4uZ2l0aGFjay5jb20vdXNlcm5hbWVndGgvZGlhbW9uZG1pbmUvY2UzZjAxNGQ3NDY4ZDI2ZTU3OGEyM2RlNzc3M2RkZWI0ZjQwYjI0Zi9ncy9nc2ZpbGVzL2Jhc2ljcy9iYWxkaS5qc29uIiwge29uUHJvZ3Jlc3M6IFVuaXR5UHJvZ3Jlc3MsTW9kdWxlOntvblJ1bnRpbWVJbml0aWFsaXplZDogZnVuY3Rpb24oKSB7VW5pdHlQcm9ncmVzcyhnYW1lSW5zdGFuY2UsICJjb21wbGV0ZSIpfX19KTsNCiAgICA8L3NjcmlwdD4NCgk8c2NyaXB0IHNyYz0iaHR0cHM6Ly9jZG4uanNkZWxpdnIubmV0L2doL3N0Mzkvc2RrQG1haW4vYXBpLmpzIj48L3NjcmlwdD4NCiAgICA8ZGl2IGNsYXNzPSJ3ZWJnbC1jb250ZW50Ij4NCiAgICAgICAgPGRpdiBpZD0iZ2FtZUNvbnRhaW5lciIgc3R5bGU9IndpZHRoOiAxMDB2dzsgaGVpZ2h0OiAxMDB2aCI+PC9kaXY+DQogICAgICAgIDwvZGl2Pg0KDQpdXT48L0NvbnRlbnQ+DQo8L01vZHVsZT4NCg==',
+      });
+    </script>
+  </body>
+</html>

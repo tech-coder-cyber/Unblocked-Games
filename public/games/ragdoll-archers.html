@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ragdoll Archers</title>
+    <link rel="stylesheet" href="/games/launcher.css" />
+  </head>
+  <body>
+    <div id="gameContainer">
+      <div class="bg-layer" aria-hidden="true">
+        <img
+          class="bg-img"
+          src="https://imgs.crazygames.com/ragdoll-archers_1x1/20250926080758/ragdoll-archers_1x1-cover?format=auto&quality=100&metadata=none&width=1200"
+          referrerpolicy="no-referrer"
+          alt=""
+        />
+      </div>
+
+      <div class="wrap">
+        <section class="panel" aria-label="Ragdoll Archers launcher">
+          <div class="top">
+            <div class="icon">
+              <img
+                src="https://imgs.crazygames.com/ragdoll-archers_1x1/20250926080758/ragdoll-archers_1x1-cover?format=auto&quality=100&metadata=none&width=1200"
+                referrerpolicy="no-referrer"
+                alt="Ragdoll Archers cover"
+              />
+            </div>
+            <div class="title-block">
+              <div class="title-kicker">Action · 1-2 Players · Physics Archery</div>
+              <h1>Ragdoll Archers</h1>
+              <p class="desc">
+                Select a launch option below to loose physics-driven arrows, upgrade special quivers, and battle solo or in PvP right inside this frame.
+              </p>
+            </div>
+          </div>
+
+          <div class="actions-grid">
+            <button id="playPrimaryInline" class="btn btn-primary" type="button">▶ Play Here</button>
+            <button id="playPrimaryFullscreen" class="btn btn-secondary" type="button">Fullscreen</button>
+          </div>
+
+          <div class="info-row">
+            <div class="card-mini">
+              <div class="card-hd"><span class="chip">TIP</span> Quick controls</div>
+              <p>Hold Left Click and drag to aim your bow angle and power, or use W A S D / Arrow Keys in 2-player duels. Shoot apples mid-air to heal.</p>
+            </div>
+            <div class="card-mini">
+              <div class="card-hd"><span class="chip">NOTE</span> Load time</div>
+              <p>First Unity WebGL load can take a few moments. Use Fullscreen for the cleanest aiming precision.</p>
+            </div>
+          </div>
+
+          <div id="statusNote" class="status-line">Preparing game bundle...</div>
+        </section>
+      </div>
+    </div>
+
+    <script src="/games/launcher.js"></script>
+    <script>
+      window.initGameLauncher({
+        title: 'Ragdoll Archers',
+        pageTitle: 'classroom.google.com',
+        faviconUrl: 'https://ssl.gstatic.com/classroom/favicon.png',
+        allow: 'fullscreen; autoplay; encrypted-media; gamepad',
+        gameXmlUrl: 'https://cdn.jsdelivr.net/gh/ertemr33/qaza@main/1.xml',
+      });
+    </script>
+  </body>
+</html>

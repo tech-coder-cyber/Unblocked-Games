@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Time Shooter 2</title>
+    <link rel="stylesheet" href="/games/launcher.css" />
+  </head>
+  <body>
+    <div id="gameContainer">
+      <div class="bg-layer" aria-hidden="true">
+        <img
+          class="bg-img"
+          src="https://imgs.crazygames.com/time-shooter-2_16x9/20241113040556/time-shooter-2_16x9-cover?metadata=none&quality=100&width=1200&height=630&fit=crop"
+          referrerpolicy="no-referrer"
+          alt=""
+        />
+      </div>
+
+      <div class="wrap">
+        <section class="panel" aria-label="Time Shooter 2 launcher">
+          <div class="top">
+            <div class="icon">
+              <img
+                src="https://imgs.crazygames.com/time-shooter-2_16x9/20241113040556/time-shooter-2_16x9-cover?metadata=none&quality=100&width=1200&height=630&fit=crop"
+                referrerpolicy="no-referrer"
+                alt="Time Shooter 2 cover"
+              />
+            </div>
+            <div class="title-block">
+              <div class="title-kicker">Action · 1 Player · Time-Stop FPS</div>
+              <h1>Time Shooter 2</h1>
+              <p class="desc">
+                Select a launch option below to jump into slow-motion tactical combat directly inside this frame or expand to fullscreen.
+              </p>
+            </div>
+          </div>
+
+          <div class="actions-grid">
+            <button id="playPrimaryInline" class="btn btn-primary" type="button">▶ Play Here</button>
+            <button id="playPrimaryFullscreen" class="btn btn-secondary" type="button">Fullscreen</button>
+          </div>
+
+          <div class="info-row">
+            <div class="card-mini">
+              <div class="card-hd"><span class="chip">TIP</span> Quick controls</div>
+              <p>Time only advances when you move! Move with WASD, Left Click to shoot or pick up weapons, and Right Click to throw gear or shatter shields.</p>
+            </div>
+            <div class="card-mini">
+              <div class="card-hd"><span class="chip">NOTE</span> Load time</div>
+              <p>Downloads the standalone Unity WebGL bundle directly inside the stage. Click inside the arena to lock mouse look.</p>
+            </div>
+          </div>
+
+          <div id="statusNote" class="status-line">Preparing game bundle...</div>
+        </section>
+      </div>
+    </div>
+
+    <script src="/games/launcher.js"></script>
+    <script>
+      window.initGameLauncher({
+        title: 'Time Shooter 2',
+        pageTitle: 'classroom.google.com',
+        faviconUrl: 'https://ssl.gstatic.com/classroom/favicon.png',
+        allow: 'fullscreen; autoplay; encrypted-media; pointer-lock; gamepad',
+        gameXmlUrl:
+          'data:@file/xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiID8+DQo8TW9kdWxlPg0KPE1vZHVsZVByZWZzIHRpdGxlPSIiIC8+DQo8Q29udGVudCB0eXBlPSJodG1sIj48IVtDREFUQVsNCg0KPCFET0NUWVBFIGh0bWw+DQo8aHRtbCBsYW5nPSJlbi11cyI+DQogIDxoZWFkPg0KICAgIDxtZXRhIGNoYXJzZXQ9InV0Zi04Ij4NCiAgICA8bWV0YSBodHRwLWVxdWl2PSJDb250ZW50LVR5cGUiIGNvbnRlbnQ9InRleHQvaHRtbDsgY2hhcnNldD11dGYtOCI+DQogICAgPG1ldGEgbmFtZT0idmlld3BvcnQiIGNvbnRlbnQ9IndpZHRoPWRldmljZS13aWR0aCwgaW5pdGlhbC1zY2FsZT0xLjAsIHVzZXItc2NhbGFibGU9bm8iPg0KICAgIDxsaW5rIHJlbD0ic3R5bGVzaGVldCIgaHJlZj0iaHR0cHM6Ly9jZG4uanNkZWxpdnIubmV0L2doL21pc3RpcmsvZ29vZ2xlYXBpc0A0OTlmZjQ1MTYwNWY1YTA4NTMxOGI1ZDYyNTJiNGUxZDkzZjQ1NmQxL2dyYWZlYXMvdjEvc3R5bGUuY3NzIj4NCiAgPC9oZWFkPg0KICA8Ym9keSBjbGFzcz0iZGFyayI+DQogICAgPGRpdiBpZD0idW5pdHktY29udGFpbmVyIiBjbGFzcz0idW5pdHktZGVza3RvcCI+DQogICAgICA8Y2FudmFzIGlkPSJ1bml0eS1jYW52YXMiPjwvY2FudmFzPg0KICAgIDwvZGl2Pg0KICAgIDxkaXYgaWQ9ImxvYWRpbmctY292ZXIiIHN0eWxlPSJkaXNwbGF5Om5vbmU7Ij4NCiAgICAgIDxkaXYgaWQ9InVuaXR5LWxvYWRpbmctYmFyIj4NCiAgICAgICAgPGRpdiBpZD0idW5pdHktbG9nbyI+PGltZyBzcmM9Imh0dHBzOi8vY2RuLmpzZGVsaXZyLm5ldC9naC9taXN0aXJrL2dvb2dsZWFwaXNANDk5ZmY0NTE2MDVmNWEwODUzMThiNWQ2MjUyYjRlMWQ5M2Y0NTZkMS9ncmFmZWFzL3YxL2xvZ28ucG5nIj48L2Rpdj4NCiAgICAgICAgPGRpdiBpZD0idW5pdHktcHJvZ3Jlc3MtYmFyLWVtcHR5IiBzdHlsZT0iZGlzcGxheTogbm9uZTsiPg0KICAgICAgICAgIDxkaXYgaWQ9InVuaXR5LXByb2dyZXNzLWJhci1mdWxsIj48L2Rpdj4NCiAgICAgICAgPC9kaXY+DQogICAgICAgIDxkaXYgY2xhc3M9InNwaW5uZXIiPjwvZGl2Pg0KICAgICAgPC9kaXY+DQogICAgPC9kaXY+DQogICAgPGRpdiBpZD0idW5pdHktZnVsbHNjcmVlbi1idXR0b24iIHN0eWxlPSJkaXNwbGF5OiBub25lOyI+PC9kaXY+DQogICAgPHNjcmlwdD4NCiAgICAgIGNvbnN0IGhpZGVGdWxsU2NyZWVuQnV0dG9uID0gIjEiOw0KICAgICAgY29uc3QgYnVpbGRVcmwgPSAiaHR0cHM6Ly9jZG4uanNkZWxpdnIubmV0L2doL21pc3RpcmsvZ29vZ2xlYXBpc0A0OTlmZjQ1MTYwNWY1YTA4NTMxOGI1ZDYyNTJiNGUxZDkzZjQ1NmQxL2dyYWZlYXMvdjEiOw0KICAgICAgY29uc3QgbG9hZGVyVXJsID0gYnVpbGRVcmwgKyAiL3RzMi5sb2FkZXIuanMiOw0KICAgICAgY29uc3QgY29uZmlnID0gew0KICAgICAgICBkYXRhVXJsOiBidWlsZFVybCArICIvdHMyLmRhdGEiLA0KICAgICAgICBmcmFtZXdvcmtVcmw6IGJ1aWxkVXJsICsgIi90czIuZnJhbWV3b3JrLmpzIiwNCiAgICAgICAgY29kZVVybDogYnVpbGRVcmwgKyAiL3RzMi53YXNtIiwNCiAgICAgICAgc3RyZWFtaW5nQXNzZXRzVXJsOiAiaHR0cHM6Ly9jZG4uanNkZWxpdnIubmV0L2doL21pc3RpcmsvZ29vZ2xlYXBpc0A0OTlmZjQ1MTYwNWY1YTA4NTMxOGI1ZDYyNTJiNGUxZDkzZjQ1NmQxL1N0cmVhbWluZ0Fzc2V0cyIsDQogICAgICB9Ow0KDQogICAgICBjb25zdCBjb250YWluZXIgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKCIjdW5pdHktY29udGFpbmVyIik7DQogICAgICBjb25zdCBjYW52YXMgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKCIjdW5pdHktY2FudmFzIik7DQogICAgICBjb25zdCBsb2FkaW5nQ292ZXIgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKCIjbG9hZGluZy1jb3ZlciIpOw0KICAgICAgY29uc3QgcHJvZ3Jlc3NCYXJFbXB0eSA9IGRvY3VtZW50LnF1ZXJ5U2VsZWN0b3IoIiN1bml0eS1wcm9ncmVzcy1iYXItZW1wdHkiKTsNCiAgICAgIGNvbnN0IHByb2dyZXNzQmFyRnVsbCA9IGRvY3VtZW50LnF1ZXJ5U2VsZWN0b3IoIiN1bml0eS1wcm9ncmVzcy1iYXItZnVsbCIpOw0KICAgICAgY29uc3QgZnVsbHNjcmVlbkJ1dHRvbiA9IGRvY3VtZW50LnF1ZXJ5U2VsZWN0b3IoIiN1bml0eS1mdWxsc2NyZWVuLWJ1dHRvbiIpOw0KICAgICAgY29uc3Qgc3Bpbm5lciA9IGRvY3VtZW50LnF1ZXJ5U2VsZWN0b3IoJy5zcGlubmVyJyk7DQoNCiAgICAgIGNvbnN0IGNhbkZ1bGxzY3JlZW4gPSAoZnVuY3Rpb24oKSB7DQogICAgICAgIGZvciAoY29uc3Qga2V5IG9mIFsNCiAgICAgICAgICAgICdleGl0RnVsbHNjcmVlbicsDQogICAgICAgICAgICAnd2Via2l0RXhpdEZ1bGxzY3JlZW4nLA0KICAgICAgICAgICAgJ3dlYmtpdENhbmNlbEZ1bGxTY3JlZW4nLA0KICAgICAgICAgICAgJ21vekNhbmNlbEZ1bGxTY3JlZW4nLA0KICAgICAgICAgICAgJ21zRXhpdEZ1bGxzY3JlZW4nLA0KICAgICAgICAgIF0pIHsNCiAgICAgICAgICBpZiAoa2V5IGluIGRvY3VtZW50KSB7DQogICAgICAgICAgICByZXR1cm4gdHJ1ZTsNCiAgICAgICAgICB9DQogICAgICAgIH0NCiAgICAgICAgcmV0dXJuIGZhbHNlOw0KICAgICAgfSgpKTsNCg0KICAgICAgaWYgKC9pUGhvbmV8aVBhZHxpUG9kfEFuZHJvaWQvaS50ZXN0KG5hdmlnYXRvci51c2VyQWdlbnQpKSB7DQogICAgICAgIGNvbnRhaW5lci5jbGFzc05hbWUgPSAidW5pdHktbW9iaWxlIjsNCiAgICAgICAgY29uZmlnLmRldmljZVBpeGVsUmF0aW8gPSAxOw0KICAgICAgfQ0KICAgICAgY2FudmFzLnN0eWxlLmJhY2tncm91bmQgPSAidXJsKCciICsgYnVpbGRVcmwgKyAiL3RzMi5qcGcnKSBjZW50ZXIgLyBjb3ZlciI7DQogICAgICBsb2FkaW5nQ292ZXIuc3R5bGUuZGlzcGxheSA9ICIiOw0KDQogICAgICBjb25zdCBzY3JpcHQgPSBkb2N1bWVudC5jcmVhdGVFbGVtZW50KCJzY3JpcHQiKTsNCiAgICAgIHNjcmlwdC5zcmMgPSBsb2FkZXJVcmw7DQogICAgICBzY3JpcHQub25sb2FkID0gKCkgPT4gew0KICAgICAgICBjcmVhdGVVbml0eUluc3RhbmNlKGNhbnZhcywgY29uZmlnLCAocHJvZ3Jlc3MpID0+IHsNCiAgICAgICAgICBzcGlubmVyLnN0eWxlLmRpc3BsYXkgPSAibm9uZSI7DQogICAgICAgICAgcHJvZ3Jlc3NCYXJFbXB0eS5zdHlsZS5kaXNwbGF5ID0gIiI7DQogICAgICAgICAgcHJvZ3Jlc3NCYXJGdWxsLnN0eWxlLndpZHRoID0gYCR7MTAwICogcHJvZ3Jlc3N9JWA7DQogICAgICAgIH0pLnRoZW4oKHVuaXR5SW5zdGFuY2UpID0+IHsNCiAgICAgICAgICBsb2FkaW5nQ292ZXIuc3R5bGUuZGlzcGxheSA9ICJub25lIjsNCiAgICAgICAgICBpZiAoY2FuRnVsbHNjcmVlbikgew0KICAgICAgICAgICAgaWYgKCFoaWRlRnVsbFNjcmVlbkJ1dHRvbikgew0KICAgICAgICAgICAgICBmdWxsc2NyZWVuQnV0dG9uLnN0eWxlLmRpc3BsYXkgPSAiIjsNCiAgICAgICAgICAgIH0NCiAgICAgICAgICAgIGZ1bGxzY3JlZW5CdXR0b24ub25jbGljayA9ICgpID0+IHsNCiAgICAgICAgICAgICAgdW5pdHlJbnN0YW5jZS5TZXRGdWxsc2NyZWVuKDEpOw0KICAgICAgICAgICAgfTsNCiAgICAgICAgICB9DQogICAgICAgIH0pLmNhdGNoKChtZXNzYWdlKSA9PiB7DQogICAgICAgICAgYWxlcnQobWVzc2FnZSk7DQogICAgICAgIH0pOw0KICAgICAgfTsNCiAgICAgIGRvY3VtZW50LmJvZHkuYXBwZW5kQ2hpbGQoc2NyaXB0KTsNCiAgICA8L3NjcmlwdD4NCgk8c2NyaXB0IHNyYz0iaHR0cHM6Ly9jZG4uanNkZWxpdnIubmV0L2doL3N0Mzkvc2RrQG1haW4vYXBpLmpzIj48L3NjcmlwdD4NCiAgPC9ib2R5Pg0KPC9odG1sPg0KDQoNCl1dPjwvQ29udGVudD4NCjwvTW9kdWxlPg0K',
+      });
+    </script>
+  </body>
+</html>

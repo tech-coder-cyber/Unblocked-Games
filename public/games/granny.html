@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Granny</title>
+    <link rel="stylesheet" href="/games/launcher.css" />
+  </head>
+  <body>
+    <div id="gameContainer">
+      <div class="bg-layer" aria-hidden="true">
+        <img
+          class="bg-img"
+          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcST-OFaIuf0v2NJGoMLX5upQ9f3IM60yserrUaSA62L8A&s"
+          referrerpolicy="no-referrer"
+          alt=""
+        />
+      </div>
+
+      <div class="wrap">
+        <section class="panel" aria-label="Granny launcher">
+          <div class="top">
+            <div class="icon">
+              <img
+                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcST-OFaIuf0v2NJGoMLX5upQ9f3IM60yserrUaSA62L8A&s"
+                referrerpolicy="no-referrer"
+                alt="Granny cover"
+              />
+            </div>
+            <div class="title-block">
+              <div class="title-kicker">Horror · 1 Player · Survival</div>
+              <h1>Granny</h1>
+              <p class="desc">
+                Select a launch option below to start sneaking through Granny's locked house directly inside this frame or expand to fullscreen.
+              </p>
+            </div>
+          </div>
+
+          <div class="actions-grid">
+            <button id="playPrimaryInline" class="btn btn-primary" type="button">▶ Play Here</button>
+            <button id="playPrimaryFullscreen" class="btn btn-secondary" type="button">Fullscreen</button>
+          </div>
+
+          <div class="info-row">
+            <div class="card-mini">
+              <div class="card-hd"><span class="chip">TIP</span> Quick controls</div>
+              <p>Move quietly with WASD, crouch with C, interact with E, and drop held items with Space. Stay silent—Granny hears everything.</p>
+            </div>
+            <div class="card-mini">
+              <div class="card-hd"><span class="chip">NOTE</span> Load time</div>
+              <p>Initial Unity WebGL asset merge can take a few moments on first load. Click inside the stage once loaded to lock cursor movement.</p>
+            </div>
+          </div>
+
+          <div id="statusNote" class="status-line">Preparing game bundle...</div>
+        </section>
+      </div>
+    </div>
+
+    <script src="/games/launcher.js"></script>
+    <script>
+      window.initGameLauncher({
+        title: 'Granny',
+        pageTitle: 'classroom.google.com',
+        faviconUrl: 'https://ssl.gstatic.com/classroom/favicon.png',
+        allow: 'fullscreen; autoplay; encrypted-media; pointer-lock; gamepad',
+        gameXmlUrl: 'https://cdn.jsdelivr.net/gh/ftbaldana/qwez@32b0c0f/1.xml',
+      });
+    </script>
+  </body>
+</html>

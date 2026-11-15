@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Volley Random</title>
+    <link rel="stylesheet" href="/games/launcher.css" />
+  </head>
+  <body>
+    <div id="gameContainer">
+      <div class="bg-layer" aria-hidden="true">
+        <img
+          class="bg-img"
+          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT10H-EkYFZYMoHkCcmBPLBaT692DCqM5fpssq9-xWNRj3DKf9_m9o8WMI&s=10"
+          referrerpolicy="no-referrer"
+          alt=""
+        />
+      </div>
+
+      <div class="wrap">
+        <section class="panel" aria-label="Volley Random launcher">
+          <div class="top">
+            <div class="icon">
+              <img
+                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT10H-EkYFZYMoHkCcmBPLBaT692DCqM5fpssq9-xWNRj3DKf9_m9o8WMI&s=10"
+                referrerpolicy="no-referrer"
+                alt="Volley Random cover"
+              />
+            </div>
+            <div class="title-block">
+              <div class="title-kicker">Sports · 1-2 Players · Physics Arcade</div>
+              <h1>Volley Random</h1>
+              <p class="desc">
+                Select a launch option below to start playing directly inside this frame or expand to fullscreen.
+              </p>
+            </div>
+          </div>
+
+          <div class="actions-grid">
+            <button id="playPrimaryInline" class="btn btn-primary" type="button">▶ Play Here</button>
+            <button id="playPrimaryFullscreen" class="btn btn-secondary" type="button">Fullscreen</button>
+            <button id="playAltInline" class="btn btn-secondary" type="button">Play Here (Alt)</button>
+            <button id="playAltFullscreen" class="btn btn-secondary" type="button">Fullscreen (Alt)</button>
+          </div>
+
+          <div class="info-row">
+            <div class="card-mini">
+              <div class="card-hd"><span class="chip">TIP</span> Quick controls</div>
+              <p>Click inside the court once it opens to focus keyboard controls. Player 1 uses W and Player 2 uses Up Arrow.</p>
+            </div>
+            <div class="card-mini">
+              <div class="card-hd"><span class="chip">NOTE</span> Load time</div>
+              <p>If the primary source is blocked or slow, switch to Play Here (Alt) to load the backup mirror.</p>
+            </div>
+          </div>
+
+          <div id="statusNote" class="status-line">Preparing game mirrors...</div>
+        </section>
+      </div>
+    </div>
+
+    <script src="/games/launcher.js"></script>
+    <script>
+      window.initGameLauncher({
+        title: 'Volley Random',
+        pageTitle: 'classroom.google.com',
+        faviconUrl: 'https://ssl.gstatic.com/classroom/favicon.png',
+        googleScriptUrl:
+          'https://script.google.com/macros/s/AKfycbySnSeOuxeNgXf_mRnxhgTNrI0GTf75ACkCgLZgNKFiH18b_MUvbqsW1x0wlUljppDQ/exec',
+        gameXmlUrl:
+          'https://274105583-163826330694719375.preview.editmysite.com/uploads/b/139890129-613310438668365288/files/vr.xml',
+      });
+    </script>
+  </body>
+</html>

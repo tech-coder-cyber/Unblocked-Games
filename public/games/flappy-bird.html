@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Flappy Bird</title>
+    <link rel="stylesheet" href="/games/launcher.css" />
+  </head>
+  <body>
+    <div id="gameContainer">
+      <div class="bg-layer" aria-hidden="true">
+        <img
+          class="bg-img"
+          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR7X_1KfxxFZb2ri4il45SUSGZ94w0tfWVahBjnWd8BYyXH2SOFd2eYJSM&s=10"
+          referrerpolicy="no-referrer"
+          alt=""
+        />
+      </div>
+
+      <div class="wrap">
+        <section class="panel" aria-label="Flappy Bird launcher">
+          <div class="top">
+            <div class="icon">
+              <img
+                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR7X_1KfxxFZb2ri4il45SUSGZ94w0tfWVahBjnWd8BYyXH2SOFd2eYJSM&s=10"
+                referrerpolicy="no-referrer"
+                alt="Flappy Bird cover"
+              />
+            </div>
+            <div class="title-block">
+              <div class="title-kicker">Arcade · 1 Player · One-Tap Classic</div>
+              <h1>Flappy Bird</h1>
+              <p class="desc">
+                Select a launch option below to start playing directly inside this frame, expand to fullscreen, or open in a new tab.
+              </p>
+            </div>
+          </div>
+
+          <div class="actions-grid actions-grid--3">
+            <button id="playPrimaryInline" class="btn btn-primary" type="button">▶ Play Here</button>
+            <button id="playPrimaryFullscreen" class="btn btn-secondary" type="button">Fullscreen</button>
+            <a
+              id="openNewTabLink"
+              class="btn btn-secondary"
+              href="https://scratch.mit.edu/projects/embed/17964117/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Open in New Tab
+            </a>
+          </div>
+
+          <div class="info-row">
+            <div class="card-mini">
+              <div class="card-hd"><span class="chip">TIP</span> Quick controls</div>
+              <p>Click the Green Flag inside the frame to start, then tap Space, Up Arrow, or click anywhere to flap between pipes.</p>
+            </div>
+            <div class="card-mini">
+              <div class="card-hd"><span class="chip">NOTE</span> Load time</div>
+              <p>The Scratch stage loads cleanly in a few seconds. Click once inside the stage if keyboard controls stop responding.</p>
+            </div>
+          </div>
+
+          <div id="statusNote" class="status-line">Source ready. Click Play Here to begin.</div>
+        </section>
+      </div>
+    </div>
+
+    <script src="/games/launcher.js"></script>
+    <script>
+      window.initGameLauncher({
+        title: 'Flappy Bird',
+        pageTitle: 'classroom.google.com',
+        faviconUrl: 'https://ssl.gstatic.com/classroom/favicon.png',
+        allow: 'fullscreen; autoplay; encrypted-media',
+        googleScriptUrl: 'https://scratch.mit.edu/projects/embed/17964117/',
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Plants vs. Zombies</title>
+    <link rel="stylesheet" href="/games/launcher.css" />
+  </head>
+  <body>
+    <div id="gameContainer">
+      <div class="bg-layer" aria-hidden="true">
+        <img
+          class="bg-img"
+          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQUbOAGkRAvn2JPRvLZcl006Z6mffBRHNpt3TpDDtQsowfA1AOxQ6kqRtXx&s=10"
+          referrerpolicy="no-referrer"
+          alt=""
+        />
+      </div>
+
+      <div class="wrap">
+        <section class="panel" aria-label="Plants vs. Zombies launcher">
+          <div class="top">
+            <div class="icon">
+              <img
+                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQUbOAGkRAvn2JPRvLZcl006Z6mffBRHNpt3TpDDtQsowfA1AOxQ6kqRtXx&s=10"
+                referrerpolicy="no-referrer"
+                alt="Plants vs. Zombies cover"
+              />
+            </div>
+            <div class="title-block">
+              <div class="title-kicker">Strategy · 1 Player · Tower Defense</div>
+              <h1>Plants vs. Zombies</h1>
+              <p class="desc">
+                Select a launch option below to defend your lawn right inside this frame or expand to fullscreen.
+              </p>
+            </div>
+          </div>
+
+          <div class="actions-grid">
+            <button id="playPrimaryInline" class="btn btn-primary" type="button">▶ Play Here</button>
+            <button id="playPrimaryFullscreen" class="btn btn-secondary" type="button">Fullscreen</button>
+          </div>
+
+          <div class="info-row">
+            <div class="card-mini">
+              <div class="card-hd"><span class="chip">TIP</span> Quick controls</div>
+              <p>Collect falling sunlight and use Left Click to plant Sunflowers, Peashooters, Wall-nuts, and Cherry Bombs across five backyard lanes.</p>
+            </div>
+            <div class="card-mini">
+              <div class="card-hd"><span class="chip">NOTE</span> Emulation</div>
+              <p>Runs via Ruffle Flash emulation right inside your browser stage with zero downloads required.</p>
+            </div>
+          </div>
+
+          <div id="statusNote" class="status-line">Preparing Plants vs. Zombies bundle...</div>
+        </section>
+      </div>
+    </div>
+
+    <script src="/games/launcher.js"></script>
+    <script>
+      window.initGameLauncher({
+        title: 'Plants vs. Zombies',
+        pageTitle: 'classroom.google.com',
+        faviconUrl: 'https://ssl.gstatic.com/classroom/favicon.png',
+        allow: 'fullscreen; autoplay; encrypted-media; gamepad',
+        gameXmlUrl: 'https://cdn.jsdelivr.net/gh/ftbaldana/za7zas7@main/z.xml',
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Granny 3</title>
+    <link rel="stylesheet" href="/games/launcher.css" />
+  </head>
+  <body>
+    <div id="gameContainer">
+      <div class="bg-layer" aria-hidden="true">
+        <img
+          class="bg-img"
+          src="https://play-lh.googleusercontent.com/FTsaARkE4CofFloYKDvfVuM11RRnOWITPFHVfGl2Ted1Xa-1VjrW2oWknGqXwc0LVlh0zXDDO6-zNSpBqES-"
+          referrerpolicy="no-referrer"
+          alt=""
+        />
+      </div>
+
+      <div class="wrap">
+        <section class="panel" aria-label="Granny 3 launcher">
+          <div class="top">
+            <div class="icon">
+              <img
+                src="https://play-lh.googleusercontent.com/FTsaARkE4CofFloYKDvfVuM11RRnOWITPFHVfGl2Ted1Xa-1VjrW2oWknGqXwc0LVlh0zXDDO6-zNSpBqES-"
+                referrerpolicy="no-referrer"
+                alt="Granny 3 cover"
+              />
+            </div>
+            <div class="title-block">
+              <div class="title-kicker">Horror · 1 Player · Survival</div>
+              <h1>Granny 3</h1>
+              <p class="desc">
+                Select a launch option below to survive Granny, Grandpa, and Slendrina inside their locked mansion or expand to fullscreen.
+              </p>
+            </div>
+          </div>
+
+          <div class="actions-grid">
+            <button id="playPrimaryInline" class="btn btn-primary" type="button">▶ Play Here</button>
+            <button id="playPrimaryFullscreen" class="btn btn-secondary" type="button">Fullscreen</button>
+          </div>
+
+          <div class="info-row">
+            <div class="card-mini">
+              <div class="card-hd"><span class="chip">TIP</span> Quick controls</div>
+              <p>Move with WASD, crouch with C, use items and keys with E, and avoid looking directly at Slendrina while finding the front gate exit.</p>
+            </div>
+            <div class="card-mini">
+              <div class="card-hd"><span class="chip">NOTE</span> Load time</div>
+              <p>Large multi-part Unity WebGL bundle—initial download can take 10–20 seconds depending on your connection.</p>
+            </div>
+          </div>
+
+          <div id="statusNote" class="status-line">Preparing game bundle...</div>
+        </section>
+      </div>
+    </div>
+
+    <script src="/games/launcher.js"></script>
+    <script>
+      window.initGameLauncher({
+        title: 'Granny 3',
+        pageTitle: 'classroom.google.com',
+        faviconUrl: 'https://ssl.gstatic.com/classroom/favicon.png',
+        allow: 'fullscreen; autoplay; encrypted-media; pointer-lock; gamepad',
+        gameXmlUrl:
+          'https://cdn.jsdelivr.net/gh/styles-css-files/00v00v00v500v00v00@afcc2bdda65305ea91c2dc9ffcaace762eccdcb0/css.xml',
+      });
+    </script>
+  </body>
+</html>

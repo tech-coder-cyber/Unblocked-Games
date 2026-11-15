@@ -152,10 +152,21 @@ export default function GameGrid({
             })}
           </div>
 
-          <p className="text-xs text-slate-500 dark:text-slate-400 tabular-nums">
-            Showing {games.length} {games.length === 1 ? 'game' : 'games'} · Sorted by{' '}
-            {sortBy === 'popularity' ? 'Popularity' : 'A-Z'}
-          </p>
+          <div className="flex items-center gap-3">
+            {(activeCategory !== 'All' || searchQuery.trim() || activeView !== 'catalog') && (
+              <button
+                type="button"
+                onClick={onResetFilters}
+                className="text-xs font-semibold text-cyan-600 dark:text-cyan-400 hover:underline cursor-pointer"
+              >
+                Reset filters
+              </button>
+            )}
+            <p className="text-xs text-slate-500 dark:text-slate-400 tabular-nums">
+              Showing {games.length} {games.length === 1 ? 'game' : 'games'} · Sorted by{' '}
+              {sortBy === 'popularity' ? 'Popularity' : 'A-Z'}
+            </p>
+          </div>
         </div>
       </div>
 

@@ -24,6 +24,9 @@ async function run() {
   if (fs.existsSync(path.join(rootDir, 'vite.config.js'))) {
     jsFiles.push(path.join(rootDir, 'vite.config.js'));
   }
+  if (fs.existsSync(path.join(rootDir, 'server.js'))) {
+    jsFiles.push(path.join(rootDir, 'server.js'));
+  }
 
   let hasErrors = false;
   for (const file of jsFiles) {

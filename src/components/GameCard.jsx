@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Play, Star, Gamepad2, ThumbsUp, ThumbsDown } from 'lucide-react';
 
 export default function GameCard({
@@ -11,8 +11,12 @@ export default function GameCard({
 }) {
   const [imgError, setImgError] = useState(false);
 
+  useEffect(() => {
+    setImgError(false);
+  }, [game.thumbnail]);
+
   return (
-    <article className="flex flex-col bg-white dark:bg-slate-900/85 dark:backdrop-blur-md border border-slate-200 dark:border-cyan-500/20 hover:border-slate-300 dark:hover:border-cyan-400/45 rounded-2xl overflow-hidden transition-all duration-150 hover:-translate-y-0.5">
+    <article className="group flex flex-col bg-white dark:bg-slate-900/85 dark:backdrop-blur-md border border-slate-200 dark:border-cyan-500/20 hover:border-slate-300 dark:hover:border-cyan-400/50 hover:shadow-lg dark:hover:shadow-cyan-950/35 rounded-2xl overflow-hidden transition-all duration-200 hover:-translate-y-0.5">
       <button
         type="button"
         onClick={() => onPlay(game)}
@@ -20,26 +24,57 @@ export default function GameCard({
         className="relative aspect-video w-full overflow-hidden bg-slate-100 dark:bg-slate-950 cursor-pointer block focus-visible:outline-2 focus-visible:outline-inset focus-visible:outline-cyan-500"
       >
         {!imgError && game.thumbnail ? (
-          <img
-            src={game.thumbnail}
-            alt={game.title}
-            loading="lazy"
-            referrerPolicy="no-referrer"
-            onError={() => setImgError(true)}
-            className="w-full h-full object-cover"
-          />
+          game.imageFit === 'contain' ? (
+            <>
+              <img
+                src={game.thumbnail}
+                alt=""
+                aria-hidden="true"
+                referrerPolicy="no-referrer"
+                className="absolute inset-0 w-full h-full object-cover opacity-55 blur-md scale-110 transition-transform duration-300 group-hover:scale-115"
+              />
+              <div className="absolute inset-0 bg-slate-950/25" aria-hidden="true" />
+              <img
+                src={game.thumbnail}
+                alt={game.title}
+                loading="lazy"
+                referrerPolicy="no-referrer"
+                onError={() => setImgError(true)}
+                className="relative z-10 w-full h-full object-contain p-1.5 transition-transform duration-300 group-hover:scale-[1.03]"
+              />
+            </>
+          ) : (
+            <img
+              src={game.thumbnail}
+              alt={game.title}
+              loading="lazy"
+              referrerPolicy="no-referrer"
+              onError={() => setImgError(true)}
+              className="w-full h-full object-cover object-center transition-transform duration-300 group-hover:scale-[1.04]"
+            />
+          )
         ) : (
           <div className="w-full h-full flex flex-col items-center justify-center bg-gradient-to-br from-slate-200 to-slate-300 dark:from-slate-800 dark:to-slate-950 text-slate-600 dark:text-slate-300 p-4">
             <Gamepad2 className="w-9 h-9 mb-2 opacity-75" aria-hidden="true" />
             <span className="font-display text-sm font-semibold">{game.title}</span>
           </div>
         )}
+        <div
+          aria-hidden="true"
+          className="absolute inset-x-0 bottom-0 h-12 bg-gradient-to-t from-slate-950/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-20 pointer-events-none"
+        />
       </button>
 
       <div className="flex flex-col flex-1 p-5 gap-3">
         <div>
           <h3 className="font-display text-lg font-semibold text-slate-900 dark:text-slate-50 leading-snug">
-            {game.title}
+            {game.titleStyle === 'glitch-red' ? (
+              <span className="glitch-title-red" aria-label={game.title}>
+                {game.displayTitle || game.title}
+              </span>
+            ) : (
+              game.title
+            )}
           </h3>
           <div className="mt-1 flex items-center gap-1.5 text-xs text-slate-500 dark:text-slate-400">
             <span>{game.category}</span>

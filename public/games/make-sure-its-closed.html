@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Make Sure It's Closed</title>
+    <link rel="stylesheet" href="/games/launcher.css" />
+  </head>
+  <body>
+    <div id="gameContainer">
+      <div class="bg-layer" aria-hidden="true">
+        <img
+          class="bg-img"
+          src="https://horrorgames.io/data/image/game/make-sure-its-closed-horror1.png"
+          referrerpolicy="no-referrer"
+          alt=""
+        />
+      </div>
+
+      <div class="wrap">
+        <section class="panel" aria-label="Make Sure It's Closed launcher">
+          <div class="top">
+            <div class="icon">
+              <img
+                src="https://horrorgames.io/data/image/game/make-sure-its-closed-horror1.png"
+                referrerpolicy="no-referrer"
+                alt="Make Sure It's Closed cover"
+              />
+            </div>
+            <div class="title-block">
+              <div class="title-kicker">Horror · 1 Player · Survival</div>
+              <h1 class="glitch-title-red" aria-label="Make Sure It's Closed" data-text="M̷̆á̴k̷̾e̵͛ ̵͝S̸̀u̷͒r̵̿ẻ̸ ̸̔Ĩ̷t̸͆'̴̒s̵͌ ̷̄C̷̈l̸̏ȏ̴s̴̀e̷͒d̸͑">
+                M̷̆á̴k̷̾e̵͛ ̵͝S̸̀u̷͒r̵̿ẻ̸ ̸̔Ĩ̷t̸͆'̴̒s̵͌ ̷̄C̷̈l̸̏ȏ̴s̴̀e̷͒d̸͑
+              </h1>
+              <p class="desc">
+                Select a launch option below to step into this eerie psychological horror house right inside this frame, expand to fullscreen, or open in a dedicated tab.
+              </p>
+            </div>
+          </div>
+
+          <div class="actions-grid actions-grid--3">
+            <button id="playPrimaryInline" class="btn btn-primary" type="button">▶ Play Here</button>
+            <button id="playPrimaryFullscreen" class="btn btn-secondary" type="button">Fullscreen</button>
+            <a
+              id="openNewTabLink"
+              class="btn btn-secondary"
+              href="/games/make-sure-its-closed-embed.html"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Open in New Tab
+            </a>
+          </div>
+
+          <div class="info-row">
+            <div class="card-mini">
+              <div class="card-hd"><span class="chip">TIP</span> Quick controls</div>
+              <p>Click inside the game to lock cursor movement. Move with WASD, interact with E or Left Click, and never forget to shut every door behind you.</p>
+            </div>
+            <div class="card-mini">
+              <div class="card-hd"><span class="chip">NOTE</span> Load time</div>
+              <p>Initial Unity WebGL download can take a few moments on first boot. Use Fullscreen for clean mouse pointer lock.</p>
+            </div>
+          </div>
+
+          <div id="statusNote" class="status-line">Source ready. Click Play Here to begin.</div>
+        </section>
+      </div>
+    </div>
+
+    <script src="/games/launcher.js"></script>
+    <script>
+      window.initGameLauncher({
+        title: "Make Sure It's Closed",
+        pageTitle: 'classroom.google.com',
+        faviconUrl: 'https://ssl.gstatic.com/classroom/favicon.png',
+        allow: 'fullscreen; autoplay; encrypted-media; pointer-lock; gamepad',
+        googleScriptUrl: '/games/make-sure-its-closed-embed.html',
+      });
+    </script>
+  </body>
+</html>

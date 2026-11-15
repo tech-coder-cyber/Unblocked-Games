@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Five Nights at Freddy's 2</title>
+    <link rel="stylesheet" href="/games/launcher.css" />
+  </head>
+  <body>
+    <div id="gameContainer">
+      <div class="bg-layer" aria-hidden="true">
+        <img
+          class="bg-img"
+          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRNCpAiVY_KtkMyyP-dA2Ovbgr8gtxss6eUhs_3s83f9Q&s=10"
+          referrerpolicy="no-referrer"
+          alt=""
+        />
+      </div>
+
+      <div class="wrap">
+        <section class="panel" aria-label="Five Nights at Freddy's 2 launcher">
+          <div class="top">
+            <div class="icon">
+              <img
+                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRNCpAiVY_KtkMyyP-dA2Ovbgr8gtxss6eUhs_3s83f9Q&s=10"
+                referrerpolicy="no-referrer"
+                alt="Five Nights at Freddy's 2 cover"
+              />
+            </div>
+            <div class="title-block">
+              <div class="title-kicker">Horror · 1 Player · Survival</div>
+              <h1>Five Nights at Freddy's 2</h1>
+              <p class="desc">
+                Select a launch option below to play directly inside this frame, expand to fullscreen, or open in a dedicated tab.
+              </p>
+            </div>
+          </div>
+
+          <div class="actions-grid actions-grid--3">
+            <button id="playPrimaryInline" class="btn btn-primary" type="button">▶ Play Here</button>
+            <button id="playPrimaryFullscreen" class="btn btn-secondary" type="button">Fullscreen</button>
+            <a
+              id="openNewTabLink"
+              class="btn btn-secondary"
+              href="https://storage.googleapis.com/freezenova/all/2024/more2/five-nights-at-freddys-2/index-gg.html"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Open in New Tab
+            </a>
+          </div>
+
+          <div class="info-row">
+            <div class="card-mini">
+              <div class="card-hd"><span class="chip">TIP</span> Quick controls</div>
+              <p>Keep the Prize Corner music box wound up, flash hallway lights, and wear the Freddy mask quickly when needed.</p>
+            </div>
+            <div class="card-mini">
+              <div class="card-hd"><span class="chip">NOTE</span> Load time</div>
+              <p>Click inside the office once loaded to capture mouse and keyboard input.</p>
+            </div>
+          </div>
+
+          <div id="statusNote" class="status-line">Source ready. Click Play Here to begin.</div>
+        </section>
+      </div>
+    </div>
+
+    <script src="/games/launcher.js"></script>
+    <script>
+      window.initGameLauncher({
+        title: "Five Nights at Freddy's 2",
+        pageTitle: 'classroom.google.com',
+        faviconUrl: 'https://ssl.gstatic.com/classroom/favicon.png',
+        allow: 'autoplay; fullscreen; gamepad; encrypted-media',
+        sandbox:
+          'allow-scripts allow-popups allow-forms allow-same-origin allow-popups-to-escape-sandbox allow-downloads allow-storage-access-by-user-activation',
+        googleScriptUrl:
+          'https://storage.googleapis.com/freezenova/all/2024/more2/five-nights-at-freddys-2/index-gg.html',
+      });
+    </script>
+  </body>
+</html>

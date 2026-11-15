@@ -1,8 +1,12 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Play, Gamepad2, ThumbsUp, ThumbsDown } from 'lucide-react';
 
 export default function HeroSpotlight({ featuredGame, stats, onPlayGame, onBrowseAll }) {
   const [imgError, setImgError] = useState(false);
+
+  useEffect(() => {
+    setImgError(false);
+  }, [featuredGame?.thumbnail]);
 
   if (!featuredGame) return null;
 
@@ -88,13 +92,32 @@ export default function HeroSpotlight({ featuredGame, stats, onPlayGame, onBrows
               className="relative aspect-video w-full h-full rounded-2xl overflow-hidden border border-slate-200 dark:border-cyan-500/25 bg-slate-900 group cursor-pointer shadow-lg dark:shadow-cyan-950/30 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-500"
             >
               {!imgError && featuredGame.thumbnail ? (
-                <img
-                  src={featuredGame.thumbnail}
-                  alt={featuredGame.title}
-                  referrerPolicy="no-referrer"
-                  onError={() => setImgError(true)}
-                  className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-[1.02]"
-                />
+                featuredGame.imageFit === 'contain' ? (
+                  <>
+                    <img
+                      src={featuredGame.thumbnail}
+                      alt=""
+                      aria-hidden="true"
+                      referrerPolicy="no-referrer"
+                      className="absolute inset-0 w-full h-full object-cover opacity-50 blur-md scale-110"
+                    />
+                    <img
+                      src={featuredGame.thumbnail}
+                      alt={featuredGame.title}
+                      referrerPolicy="no-referrer"
+                      onError={() => setImgError(true)}
+                      className="relative z-10 w-full h-full object-contain p-3 transition-transform duration-300 group-hover:scale-[1.02]"
+                    />
+                  </>
+                ) : (
+                  <img
+                    src={featuredGame.thumbnail}
+                    alt={featuredGame.title}
+                    referrerPolicy="no-referrer"
+                    onError={() => setImgError(true)}
+                    className="w-full h-full object-cover object-center transition-transform duration-300 group-hover:scale-[1.02]"
+                  />
+                )
               ) : (
                 <div className="w-full h-full flex flex-col items-center justify-center bg-slate-800 text-slate-300 p-8">
                   <Gamepad2 className="w-12 h-12 mb-3 text-slate-400" aria-hidden="true" />

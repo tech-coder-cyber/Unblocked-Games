@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CS</title>
+    <link rel="stylesheet" href="/games/launcher.css" />
+  </head>
+  <body>
+    <div id="gameContainer">
+      <div class="bg-layer" aria-hidden="true">
+        <img
+          class="bg-img"
+          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRZ7tejX0jNdtv2dcqO_eRvN3eUOaBvsZwxN8EvLhHQ7A&s=10"
+          referrerpolicy="no-referrer"
+          alt=""
+        />
+      </div>
+
+      <div class="wrap">
+        <section class="panel" aria-label="CS launcher">
+          <div class="top">
+            <div class="icon">
+              <img
+                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRZ7tejX0jNdtv2dcqO_eRvN3eUOaBvsZwxN8EvLhHQ7A&s=10"
+                referrerpolicy="no-referrer"
+                alt="CS cover"
+              />
+            </div>
+            <div class="title-block">
+              <div class="title-kicker">Action · Multiplayer · Tactical FPS</div>
+              <h1>CS</h1>
+              <p class="desc">
+                Select a launch option below to jump into classic Counter-Strike 1.6 tactical matches directly inside this frame or expand to fullscreen.
+              </p>
+            </div>
+          </div>
+
+          <div class="actions-grid">
+            <button id="playPrimaryInline" class="btn btn-primary" type="button">▶ Play Here</button>
+            <button id="playPrimaryFullscreen" class="btn btn-secondary" type="button">Fullscreen</button>
+          </div>
+
+          <div class="info-row">
+            <div class="card-mini">
+              <div class="card-hd"><span class="chip">TIP</span> Quick controls</div>
+              <p>Click inside the game once loaded to capture mouse look. Move with WASD, crouch with Ctrl, jump with Space, reload with R, and swap gear with 1–5 or Q.</p>
+            </div>
+            <div class="card-mini">
+              <div class="card-hd"><span class="chip">NOTE</span> Load time</div>
+              <p>Initial map and Xash3D engine download can take a few moments on first boot. Use Fullscreen for clean pointer lock.</p>
+            </div>
+          </div>
+
+          <div id="statusNote" class="status-line">Preparing game bundle...</div>
+        </section>
+      </div>
+    </div>
+
+    <script src="/games/launcher.js"></script>
+    <script>
+      window.initGameLauncher({
+        title: 'CS',
+        pageTitle: 'classroom.google.com',
+        faviconUrl: 'https://ssl.gstatic.com/classroom/favicon.png',
+        allow: 'fullscreen; autoplay; encrypted-media; pointer-lock; gamepad',
+        gameXmlUrl: 'https://cdn.jsdelivr.net/gh/teamschoolcomu/2@1939a791b6a3435778308ddcdc1fa88abb2532f8/1.xml',
+      });
+    </script>
+  </body>
+</html>

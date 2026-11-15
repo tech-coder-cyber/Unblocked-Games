@@ -1,14 +1,21 @@
 import { useEffect, useMemo, useState } from 'react';
+import { AnimatePresence, motion } from 'motion/react';
 import Header from './components/Header.jsx';
+import HomeLanding from './components/HomeLanding.jsx';
 import HeroSpotlight from './components/HeroSpotlight.jsx';
 import GameGrid from './components/GameGrid.jsx';
 import GamePlayer from './components/GamePlayer.jsx';
+import AiGameStudioView from './components/AiGameStudioView.jsx';
+import WebProxyView from './components/WebProxyView.jsx';
+import MiscToolsView from './components/MiscToolsView.jsx';
 import SettingsModal from './components/SettingsModal.jsx';
 import {
+  applyTabCloak,
   applyTheme,
   clearAllSiteData,
   getFavorites,
   getGameStatsMap,
+  getInitialCloak,
   getInitialTheme,
   getRecentGames,
   getSingleGameStats,
@@ -24,10 +31,12 @@ export default function App() {
   const [loadError, setLoadError] = useState('');
 
   const [theme, setTheme] = useState(() => getInitialTheme());
+  const [tabCloak, setTabCloak] = useState(() => getInitialCloak());
   const [favorites, setFavorites] = useState(() => getFavorites());
   const [recentList, setRecentList] = useState(() => getRecentGames());
   const [statsMap, setStatsMap] = useState(() => getGameStatsMap());
 
+  const [currentScreen, setCurrentScreen] = useState('home'); // 'home' | 'catalog' | 'proxy' | 'misc-tools'
   const [activeGameId, setActiveGameId] = useState(null);
   const [activeView, setActiveView] = useState('catalog'); // 'catalog' | 'favorites' | 'recent'
   const [activeCategory, setActiveCategory] = useState('All');
@@ -39,6 +48,10 @@ export default function App() {
   useEffect(() => {
     applyTheme(theme);
   }, [theme]);
+
+  useEffect(() => {
+    applyTabCloak(tabCloak);
+  }, [tabCloak]);
 
   useEffect(() => {
     let cancelled = false;
@@ -84,6 +97,11 @@ export default function App() {
   }, [games]);
 
   const recentIds = useMemo(() => recentList.map((r) => r.id), [recentList]);
+
+  const totalPlays = useMemo(
+    () => Object.values(statsMap || {}).reduce((sum, entry) => sum + (entry?.plays || 0), 0),
+    [statsMap]
+  );
 
   const filteredGames = useMemo(() => {
     let list = [...games];
@@ -132,6 +150,7 @@ export default function App() {
   );
 
   const handlePlayGame = (game) => {
+    setCurrentScreen('catalog');
     setActiveGameId(game.id);
     setRecentList(recordRecentGame(game.id));
     setStatsMap(incrementGamePlays(game.id));
@@ -152,22 +171,53 @@ export default function App() {
     });
   };
 
-  const handleSelectHome = () => {
+  const handleSelectLanding = () => {
     setActiveGameId(null);
+    setCurrentScreen('home');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const handleSelectAllGames = () => {
+    setActiveGameId(null);
+    setCurrentScreen('catalog');
     setActiveView('catalog');
     setActiveCategory('All');
     setSearchQuery('');
-  };
-
-  const handleSelectCategory = (category) => {
-    setActiveGameId(null);
-    setActiveView('catalog');
-    setActiveCategory(category);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const handleSelectView = (view) => {
     setActiveGameId(null);
+    setCurrentScreen('catalog');
     setActiveView(view);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const handleSelectAiStudio = () => {
+    setActiveGameId(null);
+    setCurrentScreen('ai-studio');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const handleSelectProxy = () => {
+    setActiveGameId(null);
+    setCurrentScreen('proxy');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const handleSelectMiscTools = () => {
+    setActiveGameId(null);
+    setCurrentScreen('misc-tools');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const handleHeaderSearchChange = (value) => {
+    setSearchQuery(value);
+    if (value.trim()) {
+      setActiveGameId(null);
+      setCurrentScreen('catalog');
+      setActiveView('catalog');
+    }
   };
 
   const handleResetFilters = () => {
@@ -180,6 +230,7 @@ export default function App() {
   const handleClearSiteData = () => {
     const resetTheme = clearAllSiteData();
     setTheme(resetTheme);
+    setTabCloak('default');
     setFavorites([]);
     setRecentList([]);
     setStatsMap({});
@@ -191,85 +242,142 @@ export default function App() {
     if (el) el.scrollIntoView({ behavior: 'smooth' });
   };
 
+  const viewTransitionKey = loading
+    ? 'loading'
+    : loadError
+      ? 'error'
+      : activeGame
+        ? `player-${activeGame.id}`
+        : currentScreen;
+
   return (
     <div
       id="top"
-      className="min-h-screen flex flex-col bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 transition-colors duration-150"
+      className="min-h-screen flex flex-col bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 transition-colors duration-200"
     >
       <Header
+        currentScreen={currentScreen}
+        activeGameId={activeGameId}
         activeView={activeView}
-        activeCategory={activeCategory}
-        onSelectHome={handleSelectHome}
-        onSelectCategory={handleSelectCategory}
+        searchQuery={searchQuery}
+        totalGames={games.length}
+        totalCategories={Math.max(0, categories.length - 1)}
+        favoritesCount={favorites.length}
+        totalPlays={totalPlays}
+        onSearchChange={handleHeaderSearchChange}
+        onSelectLanding={handleSelectLanding}
+        onSelectAllGames={handleSelectAllGames}
         onSelectView={handleSelectView}
+        onSelectAiStudio={handleSelectAiStudio}
+        onSelectProxy={handleSelectProxy}
+        onSelectMiscTools={handleSelectMiscTools}
         onOpenSettings={() => setSettingsOpen(true)}
       />
 
-      <main className="flex-1 pb-12">
-        {loading ? (
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 text-center">
-            <p className="text-sm font-medium text-slate-600 dark:text-slate-400">
-              Loading game catalog...
-            </p>
-          </div>
-        ) : loadError ? (
-          <div className="max-w-xl mx-auto px-4 py-20 text-center">
-            <h1 className="font-display text-xl font-bold text-slate-900 dark:text-slate-50">
-              Unable to load games catalog
-            </h1>
-            <p className="mt-2 text-sm text-slate-600 dark:text-slate-400">{loadError}</p>
-            <button
-              type="button"
-              onClick={() => window.location.reload()}
-              className="mt-4 px-4 py-2 rounded-lg bg-cyan-500 text-slate-950 text-sm font-bold cursor-pointer"
-            >
-              Retry
-            </button>
-          </div>
-        ) : activeGame ? (
-          <GamePlayer
-            game={activeGame}
-            allGames={games}
-            theme={theme}
-            stats={getSingleGameStats(statsMap, activeGame.id)}
-            isFavorite={favorites.includes(activeGame.id)}
-            reloadSignal={reloadSignal}
-            onBack={() => setActiveGameId(null)}
-            onSelectGame={handlePlayGame}
-            onToggleFavorite={handleToggleFavorite}
-            onVote={handleVote}
-          />
-        ) : (
-          <>
-            {activeView === 'catalog' && activeCategory === 'All' && !searchQuery && (
-              <HeroSpotlight
-                featuredGame={featuredGame}
-                stats={featuredGame ? getSingleGameStats(statsMap, featuredGame.id) : { plays: 0, likes: 0, dislikes: 0 }}
-                onPlayGame={handlePlayGame}
-                onBrowseAll={scrollToCatalog}
+      <main className="flex-1">
+        <AnimatePresence mode="wait" initial={false}>
+          <motion.div
+            key={viewTransitionKey}
+            initial={{ opacity: 0, y: 6 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -4 }}
+            transition={{ duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
+          >
+            {loading ? (
+              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 text-center">
+                <p className="text-sm font-medium text-slate-600 dark:text-slate-400">
+                  Loading game catalog...
+                </p>
+              </div>
+            ) : loadError ? (
+              <div className="max-w-xl mx-auto px-4 py-20 text-center">
+                <h1 className="font-display text-xl font-bold text-slate-900 dark:text-slate-50">
+                  Unable to load games catalog
+                </h1>
+                <p className="mt-2 text-sm text-slate-600 dark:text-slate-400">{loadError}</p>
+                <button
+                  type="button"
+                  onClick={() => window.location.reload()}
+                  className="mt-4 px-4 py-2 rounded-lg bg-cyan-500 text-slate-950 text-sm font-bold cursor-pointer"
+                >
+                  Retry
+                </button>
+              </div>
+            ) : activeGame ? (
+              <GamePlayer
+                game={activeGame}
+                allGames={games}
+                theme={theme}
+                stats={getSingleGameStats(statsMap, activeGame.id)}
+                isFavorite={favorites.includes(activeGame.id)}
+                reloadSignal={reloadSignal}
+                onBack={() => setActiveGameId(null)}
+                onSelectGame={handlePlayGame}
+                onToggleFavorite={handleToggleFavorite}
+                onVote={handleVote}
               />
+            ) : currentScreen === 'home' ? (
+              <HomeLanding
+                games={games}
+                statsMap={statsMap}
+                sortBy={sortBy}
+                onChangeSort={setSortBy}
+                onEnterCatalog={handleSelectAllGames}
+                onPlayGame={handlePlayGame}
+              />
+            ) : currentScreen === 'ai-studio' ? (
+              <AiGameStudioView
+                reloadSignal={reloadSignal}
+                onBackToCatalog={handleSelectAllGames}
+              />
+            ) : currentScreen === 'proxy' ? (
+              <WebProxyView onBackToCatalog={handleSelectAllGames} />
+            ) : currentScreen === 'misc-tools' ? (
+              <MiscToolsView
+                games={games}
+                statsMap={statsMap}
+                tabCloak={tabCloak}
+                onChangeCloak={setTabCloak}
+                onPlayGame={handlePlayGame}
+                onBackToCatalog={handleSelectAllGames}
+              />
+            ) : (
+              <div className="pb-12">
+                {activeView === 'catalog' && activeCategory === 'All' && !searchQuery && (
+                  <HeroSpotlight
+                    featuredGame={featuredGame}
+                    stats={
+                      featuredGame
+                        ? getSingleGameStats(statsMap, featuredGame.id)
+                        : { plays: 0, likes: 0, dislikes: 0 }
+                    }
+                    onPlayGame={handlePlayGame}
+                    onBrowseAll={scrollToCatalog}
+                  />
+                )}
+                <GameGrid
+                  games={filteredGames}
+                  categories={categories}
+                  activeCategory={activeCategory}
+                  activeView={activeView}
+                  sortBy={sortBy}
+                  searchQuery={searchQuery}
+                  favorites={favorites}
+                  recentIds={recentIds}
+                  statsMap={statsMap}
+                  onSelectCategory={setActiveCategory}
+                  onSelectView={setActiveView}
+                  onChangeSort={setSortBy}
+                  onSearchChange={setSearchQuery}
+                  onResetFilters={handleResetFilters}
+                  onPlayGame={handlePlayGame}
+                  onToggleFavorite={handleToggleFavorite}
+                  onVote={handleVote}
+                />
+              </div>
             )}
-            <GameGrid
-              games={filteredGames}
-              categories={categories}
-              activeCategory={activeCategory}
-              activeView={activeView}
-              sortBy={sortBy}
-              searchQuery={searchQuery}
-              favorites={favorites}
-              recentIds={recentIds}
-              statsMap={statsMap}
-              onSelectCategory={setActiveCategory}
-              onSelectView={setActiveView}
-              onChangeSort={setSortBy}
-              onSearchChange={setSearchQuery}
-              onResetFilters={handleResetFilters}
-              onPlayGame={handlePlayGame}
-              onToggleFavorite={handleToggleFavorite}
-              onVote={handleVote}
-            />
-          </>
-        )}
+          </motion.div>
+        </AnimatePresence>
       </main>
 
       <SettingsModal

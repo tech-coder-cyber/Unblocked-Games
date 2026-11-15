@@ -60,7 +60,7 @@ export default function App() {
       try {
         setLoading(true);
         setLoadError('');
-        const res = await fetch('/data/games.json', { cache: 'no-store' });
+        const res = await fetch('./data/games.json', { cache: 'no-store' });
         if (!res.ok) {
           throw new Error(`Failed to load catalog (${res.status})`);
         }

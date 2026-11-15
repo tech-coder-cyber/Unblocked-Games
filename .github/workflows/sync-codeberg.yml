@@ -1,0 +1,21 @@
+name: Sync to Codeberg
+
+on:
+  push:
+    branches:
+      - '*'
+
+jobs:
+  mirror:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout GitHub repo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Push to Codeberg
+        env:
+          CODEBERG_TOKEN: ${{ secrets.CODEBERG_TOKEN }}
+        run: |
+          git push --force --prune https://oauth2:${CODEBERG_TOKEN}@codeberg.org/Master_at_Pvp/study-portal.git "refs/remotes/origin/*:refs/heads/*"

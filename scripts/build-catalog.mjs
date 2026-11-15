@@ -5,6 +5,9 @@ const gamesDir = path.resolve('public/games');
 const outDir = path.resolve('public/data');
 const outFile = path.join(outDir, 'games.json');
 
+// Add any game IDs with square cover images here to blur the sides automatically
+const SQUARE_COVERS = new Set(['clash-royale']);
+
 if (!fs.existsSync(outDir)) {
   fs.mkdirSync(outDir, { recursive: true });
 }
@@ -28,7 +31,6 @@ const games = files
     const fullPath = path.join(gamesDir, file);
     let html = fs.readFileSync(fullPath, 'utf8');
 
-    // Fix root-relative /games/launcher.css and /games/launcher.js so they work in /study-portal/
     const fixedHtml = html
       .replace(/href=["']\/games\/launcher\.css["']/gi, 'href="./launcher.css"')
       .replace(/src=["']\/games\/launcher\.js["']/gi, 'src="./launcher.js"');
@@ -40,7 +42,6 @@ const games = files
 
     const id = file.replace(/\.html$/i, '');
 
-    // Extract original title
     const h1Match = html.match(/<h1[^>]*>([\s\S]*?)<\/h1>/i);
     const titleMatch = html.match(/<title[^>]*>([\s\S]*?)<\/title>/i);
     const fallbackTitle = id
@@ -49,9 +50,8 @@ const games = files
       .join(' ');
     const title = decodeHtml(h1Match?.at(1) || titleMatch?.at(1)) || fallbackTitle;
 
-    // Extract original cover image URL
-    const iconImgMatch = html.match(/<div class="icon">[\s\S]*?<img[^>]+src=["']([^"']+)["']/i);
-    const anyImgMatch = html.match(/<img[^>]+src=["'](https?:\/\/[^"']+)["']/i);
+    const iconImgMatch = html.match(/<div class=["']icon["']>[\s\S]*?<img[^>]+(?:src|data-src)=["']([^"']+)["']/i);
+    const anyImgMatch = html.match(/<img[^>]+(?:src|data-src)=["'](https?:\/\/[^"']+)["']/i);
     const localJpg = path.resolve(`public/images/${id}.jpg`);
     const localPng = path.resolve(`public/images/${id}.png`);
     const thumbnail =
@@ -63,15 +63,14 @@ const games = files
         ? `./images/${id}.png`
         : '');
 
-    // Extract original category, description, tip, and note
-    const kickerMatch = html.match(/<div class="title-kicker">([\s\S]*?)<\/div>/i);
+    const kickerMatch = html.match(/<div class=["']title-kicker["']>([\s\S]*?)<\/div>/i);
     const category = decodeHtml(kickerMatch?.at(1)?.split('·')?.at(0)) || 'Arcade';
 
-    const descMatch = html.match(/<p class="desc">([\s\S]*?)<\/p>/i);
+    const descMatch = html.match(/<p class=["']desc["']>([\s\S]*?)<\/p>/i);
     const description =
       decodeHtml(descMatch?.at(1)) || `Play ${title} directly in your browser.`;
 
-    const miniParagraphs = [...html.matchAll(/<div class="card-mini">[\s\S]*?<p>([\s\S]*?)<\/p>/gi)];
+    const miniParagraphs = [...html.matchAll(/<div class=["']card-mini["']>[\s\S]*?<p>([\s\S]*?)<\/p>/gi)];
     const tip =
       decodeHtml(miniParagraphs.at(0)?.at(1)) ||
       'Click inside the game once it opens to focus keyboard and mouse input.';
@@ -80,6 +79,7 @@ const games = files
       'First load can take a few moments on lower-end devices.';
 
     const launchPath = `./games/${file}`;
+    const imageFit = SQUARE_COVERS.has(id) ? 'contain' : 'cover';
 
     return {
       id,
@@ -90,6 +90,7 @@ const games = files
       description,
       tip,
       note,
+      imageFit,
       controls: [
         { key: 'WASD / Arrows', action: 'Move' },
         { key: 'Mouse / Space', action: 'Interact / Action' },

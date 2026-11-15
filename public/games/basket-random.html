@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Basket Random</title>
+    <link rel="stylesheet" href="/games/launcher.css" />
+  </head>
+  <body>
+    <div id="gameContainer">
+      <div class="bg-layer" aria-hidden="true">
+        <img
+          class="bg-img"
+          src="https://imgs.crazygames.com/basket-random_16x9/20240617090207/basket-random_16x9-cover?metadata=none&quality=100&width=1200&height=630&fit=crop"
+          referrerpolicy="no-referrer"
+          alt=""
+        />
+      </div>
+
+      <div class="wrap">
+        <section class="panel" aria-label="Basket Random launcher">
+          <div class="top">
+            <div class="icon">
+              <img
+                src="https://imgs.crazygames.com/basket-random_16x9/20240617090207/basket-random_16x9-cover?metadata=none&quality=100&width=1200&height=630&fit=crop"
+                referrerpolicy="no-referrer"
+                alt="Basket Random cover"
+              />
+            </div>
+            <div class="title-block">
+              <div class="title-kicker">Sports · 1-2 Players · Physics Arcade</div>
+              <h1>Basket Random</h1>
+              <p class="desc">
+                Select a launch option below to start playing directly inside this frame or expand to fullscreen.
+              </p>
+            </div>
+          </div>
+
+          <div class="actions-grid">
+            <button id="playPrimaryInline" class="btn btn-primary" type="button">▶ Play Here</button>
+            <button id="playPrimaryFullscreen" class="btn btn-secondary" type="button">Fullscreen</button>
+            <button id="playAltInline" class="btn btn-secondary" type="button">Play Here (Alt)</button>
+            <button id="playAltFullscreen" class="btn btn-secondary" type="button">Fullscreen (Alt)</button>
+          </div>
+
+          <div class="info-row">
+            <div class="card-mini">
+              <div class="card-hd"><span class="chip">TIP</span> Quick controls</div>
+              <p>Click inside the game once it opens to focus keyboard controls. Player 1 uses W and Player 2 uses Up Arrow.</p>
+            </div>
+            <div class="card-mini">
+              <div class="card-hd"><span class="chip">NOTE</span> Load time</div>
+              <p>If the primary source is blocked or slow, switch to Play Here (Alt) to load the backup mirror.</p>
+            </div>
+          </div>
+
+          <div id="statusNote" class="status-line">Preparing game mirrors...</div>
+        </section>
+      </div>
+    </div>
+
+    <script src="/games/launcher.js"></script>
+    <script>
+      window.initGameLauncher({
+        title: 'Basket Random',
+        pageTitle: 'classroom.google.com',
+        faviconUrl: 'https://ssl.gstatic.com/classroom/favicon.png',
+        googleScriptUrl:
+          'https://script.google.com/macros/s/AKfycbwiQgeRHVDP8wzJ_CeSE1LyaKCMu1qdlopwylhD4LdBvBVd2y36VjlWY0iyk38WH0JiJA/exec',
+        gameXmlUrl:
+          'https://64345986-62434566.preview.editmysite.com/uploads/9/9/0/8/139890129/custom_themes/104868751615748392/files/br.xml',
+      });
+    </script>
+  </body>
+</html>

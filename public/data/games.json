@@ -1,0 +1,50 @@
+{
+  "version": "1.0",
+  "games": [
+    {
+      "id": "a-dance-of-fire-and-ice",
+      "title": "A Dance of Fire and Ice",
+      "category": "Rhythm",
+      "players": "1 Player",
+      "difficulty": "Challenging",
+      "featured": false,
+      "description": "Strict one-button rhythm game where two orbiting planets travel along winding musical paths. Stay focused and tap in time with the beat.",
+      "tip": "Click inside the game once it opens to focus controls, then use Space or mouse clicks on the beat.",
+      "note": "First Unity WebGL load can take a few seconds on lower-end devices. Use Play Here (Alt) if needed.",
+      "controls": [
+        { "key": "Space / Any Key", "action": "Tap to the beat" },
+        { "key": "Click / Tap", "action": "One-button rhythm input" }
+      ],
+      "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSEiAOnZSHBE3xtBbnS-KdI_wEGRUw9rfcNJCmaYIUaxQ&s=10",
+      "iframeHtml": "<iframe src=\"/games/a-dance-of-fire-and-ice.html\" title=\"A Dance of Fire and Ice\" allow=\"fullscreen; autoplay; encrypted-media\" loading=\"eager\"></iframe>",
+      "iframe": {
+        "src": "/games/a-dance-of-fire-and-ice.html",
+        "title": "A Dance of Fire and Ice",
+        "allow": "fullscreen; autoplay; encrypted-media"
+      }
+    },
+    {
+      "id": "basket-random",
+      "title": "Basket Random",
+      "category": "Sports",
+      "players": "1-2 Players",
+      "difficulty": "Arcade",
+      "featured": true,
+      "description": "Wild ragdoll physics basketball across changing courts, balls, and players. Score five baskets first to take the match solo or against a friend.",
+      "tip": "Click inside the game once it opens to focus keyboard controls. Player 1 uses W and Player 2 uses Up Arrow.",
+      "note": "If the primary source is slow on your network, switch to Play Here (Alt) for the backup mirror.",
+      "controls": [
+        { "key": "W", "action": "Player 1 jump & shoot" },
+        { "key": "Up Arrow", "action": "Player 2 jump & shoot" },
+        { "key": "Click / Tap", "action": "Single-button action" }
+      ],
+      "thumbnail": "https://imgs.crazygames.com/basket-random_16x9/20240617090207/basket-random_16x9-cover?metadata=none&quality=100&width=1200&height=630&fit=crop",
+      "iframeHtml": "<iframe src=\"/games/basket-random.html\" title=\"Basket Random\" allow=\"fullscreen; autoplay; encrypted-media\" loading=\"eager\"></iframe>",
+      "iframe": {
+        "src": "/games/basket-random.html",
+        "title": "Basket Random",
+        "allow": "fullscreen; autoplay; encrypted-media"
+      }
+    }
+  ]
+}

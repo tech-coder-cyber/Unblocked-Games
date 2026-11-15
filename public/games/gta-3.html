@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Grand Theft Auto III</title>
+    <link rel="stylesheet" href="./launcher.css" />
+  </head>
+  <body>
+    <div id="gameContainer">
+      <div class="bg-layer" aria-hidden="true">
+        <img
+          class="bg-img"
+          src="https://wikimedia.org"
+          referrerpolicy="no-referrer"
+          alt=""
+        />
+      </div>
+
+      <div class="wrap">
+        <section class="panel" aria-label="Grand Theft Auto III launcher">
+          <div class="top">
+            <div class="icon">
+              <img
+                src="https://wikimedia.org"
+                referrerpolicy="no-referrer"
+                alt="Grand Theft Auto III cover"
+              />
+            </div>
+            <div class="title-block">
+              <div class="title-kicker">Action · 1 Player · Open World</div>
+              <h1>Grand Theft Auto III</h1>
+              <p class="desc">
+                Select a launch option below to play inside this frame, expand to fullscreen, or open in a new tab for full pointer lock.
+              </p>
+            </div>
+          </div>
+
+          <div class="actions-grid actions-grid--3">
+            <button id="playPrimaryInline" class="btn btn-primary" type="button">▶ Play Here</button>
+            <button id="playPrimaryFullscreen" class="btn btn-secondary" type="button">Fullscreen</button>
+            <a
+              id="openNewTabLink"
+              class="btn btn-secondary"
+              href="https://developwithahsan.github.io/gta3-online/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Open in New Tab
+            </a>
+          </div>
+
+          <div class="info-row">
+            <div class="card-mini">
+              <div class="card-hd"><span class="chip">TIP</span> Quick controls</div>
+              <p>After it opens, click inside the game once to lock the cursor and focus controls.</p>
+            </div>
+            <div class="card-mini">
+              <div class="card-hd"><span class="chip">NOTE</span> Load time</div>
+              <p>WebAssembly game files can take 10–20 seconds to load on first launch. Open in New Tab gives the smoothest cursor lock.</p>
+            </div>
+            <div class="card-mini card-mini--full">
+              <div class="card-hd"><span class="chip chip--warn">WARNING</span> Maturity Notice</div>
+              <p>This game is intended for mature audiences and contains crude or violent themes. Play at your own discretion.</p>
+            </div>
+          </div>
+
+          <div id="statusNote" class="status-line">Source ready. Click Play Here or Open in New Tab for full cursor lock.</div>
+        </section>
+      </div>
+    </div>
+
+    <script src="./launcher.js"></script>
+    <script>
+      window.initGameLauncher({
+        title: 'Grand Theft Auto III',
+        pageTitle: '://google.com',
+        faviconUrl: 'https://gstatic.com',
+        allow: 'fullscreen; autoplay; encrypted-media; pointer-lock',
+        googleScriptUrl: 'https://developwithahsan.github.io/gta3-online/',
+      });
+    </script>
+  </body>
+</html>

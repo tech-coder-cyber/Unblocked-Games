@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Elastic Man</title>
+    <link rel="stylesheet" href="/games/launcher.css" />
+  </head>
+  <body>
+    <div id="gameContainer">
+      <div class="bg-layer" aria-hidden="true">
+        <img
+          class="bg-img"
+          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQZO1J6p6r6YPxM3bNiUH-_D5_bgKm5g-f9zFJhkqU10A&s=10"
+          referrerpolicy="no-referrer"
+          alt=""
+        />
+      </div>
+
+      <div class="wrap">
+        <section class="panel" aria-label="Elastic Man launcher">
+          <div class="top">
+            <div class="icon">
+              <img
+                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQZO1J6p6r6YPxM3bNiUH-_D5_bgKm5g-f9zFJhkqU10A&s=10"
+                referrerpolicy="no-referrer"
+                alt="Elastic Man cover"
+              />
+            </div>
+            <div class="title-block">
+              <div class="title-kicker">Arcade · 1 Player · Interactive Toy</div>
+              <h1>Elastic Man</h1>
+              <p class="desc">
+                Select a launch option below to pinch, pull, and wobble the squishy 3D rubber face right inside this frame, fullscreen, or in a new tab.
+              </p>
+            </div>
+          </div>
+
+          <div class="actions-grid actions-grid--3">
+            <button id="playPrimaryInline" class="btn btn-primary" type="button">▶ Play Here</button>
+            <button id="playPrimaryFullscreen" class="btn btn-secondary" type="button">Fullscreen</button>
+            <a
+              id="openNewTabLink"
+              class="btn btn-secondary"
+              href="/games/elastic-man-embed.html"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Open in New Tab
+            </a>
+          </div>
+
+          <div class="info-row">
+            <div class="card-mini">
+              <div class="card-hd"><span class="chip">TIP</span> Quick controls</div>
+              <p>Click and drag anywhere across the face to stretch and snap it in real time, or toggle Medium / High quality in the corner.</p>
+            </div>
+            <div class="card-mini">
+              <div class="card-hd"><span class="chip">NOTE</span> Smooth 3D physics</div>
+              <p>Runs locally via WebGL right inside the browser stage. Use Fullscreen for the crispest interactive physics feel.</p>
+            </div>
+          </div>
+
+          <div id="statusNote" class="status-line">Source ready. Click Play Here to begin.</div>
+        </section>
+      </div>
+    </div>
+
+    <script src="/games/launcher.js"></script>
+    <script>
+      window.initGameLauncher({
+        title: 'Elastic Man',
+        pageTitle: 'classroom.google.com',
+        faviconUrl: 'https://ssl.gstatic.com/classroom/favicon.png',
+        allow: 'fullscreen; autoplay; encrypted-media',
+        googleScriptUrl: '/games/elastic-man-embed.html',
+      });
+    </script>
+  </body>
+</html>

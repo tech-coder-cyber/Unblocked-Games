@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Friday Night Funkin'</title>
+    <link rel="stylesheet" href="/games/launcher.css" />
+  </head>
+  <body>
+    <div id="gameContainer">
+      <div class="bg-layer" aria-hidden="true">
+        <img
+          class="bg-img"
+          src="https://img.poki-cdn.com/cdn-cgi/image/q=78,scq=50,width=1200,height=1200,fit=cover,f=png/0cd0c8bc4dc15c069dba7ccfb6809f6d/friday-night-funkin-logo.png"
+          referrerpolicy="no-referrer"
+          alt=""
+        />
+      </div>
+
+      <div class="wrap">
+        <section class="panel" aria-label="Friday Night Funkin' launcher">
+          <div class="top">
+            <div class="icon">
+              <img
+                src="https://img.poki-cdn.com/cdn-cgi/image/q=78,scq=50,width=1200,height=1200,fit=cover,f=png/0cd0c8bc4dc15c069dba7ccfb6809f6d/friday-night-funkin-logo.png"
+                referrerpolicy="no-referrer"
+                alt="Friday Night Funkin' cover"
+              />
+            </div>
+            <div class="title-block">
+              <div class="title-kicker">Rhythm · 1 Player · Week 7</div>
+              <h1>Friday Night Funkin'</h1>
+              <p class="desc">
+                Select a launch option below to jump into FNF rhythm battles directly inside this frame, expand to fullscreen, or open in a dedicated tab.
+              </p>
+            </div>
+          </div>
+
+          <div class="actions-grid actions-grid--3">
+            <button id="playPrimaryInline" class="btn btn-primary" type="button">▶ Play Here</button>
+            <button id="playPrimaryFullscreen" class="btn btn-secondary" type="button">Fullscreen</button>
+            <a
+              id="openNewTabLink"
+              class="btn btn-secondary"
+              href="https://vackyton.github.io/snipersite/week7/index.html"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Open in New Tab
+            </a>
+          </div>
+
+          <div class="info-row">
+            <div class="card-mini">
+              <div class="card-hd"><span class="chip">TIP</span> Quick controls</div>
+              <p>Click inside the stage once loaded to focus keyboard timing. Use Arrow Keys or W A S D to match scrolling notes and Enter to confirm.</p>
+            </div>
+            <div class="card-mini">
+              <div class="card-hd"><span class="chip">NOTE</span> Weeks & audio</div>
+              <p>Includes Story Mode through Week 7 and Freeplay tracks. Click the frame if audio starts muted by your browser.</p>
+            </div>
+          </div>
+
+          <div id="statusNote" class="status-line">Source ready. Click Play Here to begin.</div>
+        </section>
+      </div>
+    </div>
+
+    <script src="/games/launcher.js"></script>
+    <script>
+      window.initGameLauncher({
+        title: "Friday Night Funkin'",
+        pageTitle: 'classroom.google.com',
+        faviconUrl: 'https://ssl.gstatic.com/classroom/favicon.png',
+        allow: 'fullscreen; autoplay; encrypted-media; gamepad',
+        googleScriptUrl: 'https://vackyton.github.io/snipersite/week7/index.html',
+      });
+    </script>
+  </body>
+</html>

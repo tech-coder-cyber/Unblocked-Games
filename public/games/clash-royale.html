@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Clash Royale</title>
+    <link rel="stylesheet" href="./launcher.css" />
+  </head>
+  <body>
+    <div id="gameContainer">
+      <div class="bg-layer" aria-hidden="true">
+        <img
+          class="bg-img"
+          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRuiw1mxvAWc5rd9evTy5PoL9B3yLtuC0vLvoP-2Okb0BAhdxn1lYQ17k8&s=10"
+          referrerpolicy="no-referrer"
+          alt=""
+        />
+      </div>
+
+      <div class="wrap">
+        <section class="panel" aria-label="Clash Royale launcher">
+          <div class="top">
+            <div class="icon">
+              <img
+                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRuiw1mxvAWc5rd9evTy5PoL9B3yLtuC0vLvoP-2Okb0BAhdxn1lYQ17k8&s=10"
+                referrerpolicy="no-referrer"
+                alt="Clash Royale cover"
+              />
+            </div>
+            <div class="title-block">
+              <div class="title-kicker">Strategy · Card Battle · Arena</div>
+              <h1>Clash Royale</h1>
+              <p class="desc">
+                Deploy troops, cast spells, and destroy enemy towers in fast-paced real-time arena battles.
+              </p>
+            </div>
+          </div>
+
+          <div class="actions-grid">
+            <button id="playPrimaryInline" class="btn btn-primary" type="button">▶ Play Here</button>
+            <button id="playPrimaryFullscreen" class="btn btn-secondary" type="button">Fullscreen</button>
+            <button id="playAltInline" class="btn btn-secondary" type="button">Play Here (Alt)</button>
+            <button id="playAltFullscreen" class="btn btn-secondary" type="button">Fullscreen (Alt)</button>
+          </div>
+
+          <div class="info-row">
+            <div class="card-mini">
+              <div class="card-hd"><span class="chip">TIP</span> Quick controls</div>
+              <p>Click or tap cards at the bottom to select them, then click on your side of the arena to deploy troops.</p>
+            </div>
+            <div class="card-mini">
+              <div class="card-hd"><span class="chip">NOTE</span> Load time</div>
+              <p>HTML5 canvas assets load quickly in browser. Click the play button once the splash screen appears.</p>
+            </div>
+          </div>
+
+          <div id="statusNote" class="status-line">Preparing game mirrors...</div>
+        </section>
+      </div>
+    </div>
+
+    <script src="./launcher.js"></script>
+    <script>
+      window.initGameLauncher({
+        title: 'Clash Royale',
+        pageTitle: '://google.com',
+        faviconUrl: 'https://gstatic.com',
+        allow: 'fullscreen; autoplay; encrypted-media; pointer-lock; gamepad',
+        gameXmlUrl: 'https://cdn.jsdelivr.net/gh/ertemr33/vahvah@main/1.xml',
+      });
+    </script>
+  </body>
+</html>

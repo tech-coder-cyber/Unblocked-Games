@@ -5,7 +5,6 @@ const gamesDir = path.resolve('public/games');
 const outDir = path.resolve('public/data');
 const outFile = path.join(outDir, 'games.json');
 
-// Add any game IDs with square cover images here to blur the sides automatically
 const SQUARE_COVERS = new Set(['clash-royale']);
 
 if (!fs.existsSync(outDir)) {
@@ -31,9 +30,11 @@ const games = files
     const fullPath = path.join(gamesDir, file);
     let html = fs.readFileSync(fullPath, 'utf8');
 
+    // Fix ALL root-relative /games/ paths so Codeberg Pages never looks for a repo named "games"
     const fixedHtml = html
-      .replace(/href=["']\/games\/launcher\.css["']/gi, 'href="./launcher.css"')
-      .replace(/src=["']\/games\/launcher\.js["']/gi, 'src="./launcher.js"');
+      .replace(/(["'])\/games\//gi, '$1./')
+      .replace(/\/games\/launcher\.css/gi, './launcher.css')
+      .replace(/\/games\/launcher\.js/gi, './launcher.js');
 
     if (fixedHtml !== html) {
       fs.writeFileSync(fullPath, fixedHtml, 'utf8');

@@ -10,7 +10,7 @@ if (!fs.existsSync(outDir)) {
   fs.mkdirSync(outDir, { recursive: true });
 }
 
-// Scan public/assets/aistudio/ for any image URLs you pasted earlier
+// Scan public/assets/aistudio/ to recover any original cover image URLs
 const pasteEntries = [];
 if (fs.existsSync(aistudioDir)) {
   const pasteFiles = fs.readdirSync(aistudioDir).sort();
@@ -74,6 +74,7 @@ const games = files
     const embedCandidate = `${id}-embed.html`;
     const hasEmbed = files.includes(embedCandidate);
     const launchPath = `./games/${hasEmbed ? embedCandidate : file}`;
+    const iframeTag = `<iframe src="${launchPath}" title="${title}" allowfullscreen></iframe>`;
 
     return {
       id,
@@ -82,15 +83,21 @@ const games = files
       players: '1P',
       difficulty: 'Medium',
       description: `Play ${title} directly in your browser.`,
+      tip: 'Click inside the game window after it loads to enable keyboard controls.',
+      note: 'Runs directly in your browser.',
       controls: [
         { key: 'WASD / Arrows', action: 'Move' },
         { key: 'Mouse / Space', action: 'Action' },
       ],
       url: launchPath,
       path: launchPath,
+      file: launchPath,
+      gameUrl: launchPath,
       embedUrl: launchPath,
       iframeUrl: launchPath,
       src: launchPath,
+      iframeHtml: iframeTag,
+      embedCode: iframeTag,
       thumbnail: findOriginalCover(id, title),
     };
   });

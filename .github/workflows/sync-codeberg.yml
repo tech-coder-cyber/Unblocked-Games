@@ -1,4 +1,4 @@
-name: Sync to Codeberg
+name: Sync and Build to Codeberg
 
 on:
   push:
@@ -14,9 +14,31 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Push to Codeberg
+      - name: Mirror repo to Codeberg
         env:
           CODEBERG_TOKEN: ${{ secrets.CODEBERG_TOKEN }}
         run: |
-          git push --force --prune https://oauth2:${CODEBERG_TOKEN}@codeberg.org/Master_at_Pvp/study-portal.git "refs/remotes/origin/*:refs/heads/*"
-          git push --force https://oauth2:${CODEBERG_TOKEN}@codeberg.org/Master_at_Pvp/study-portal.git "refs/remotes/origin/main:refs/heads/pages"
+          git push --force --prune https://oauth2:${CODEBERG_TOKEN}@codeberg.org/study-hub/study-portal.git "refs/remotes/origin/*:refs/heads/*"
+
+      - name: Setup Node and Build Vite
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install and Build
+        run: |
+          npm install
+          npm run build -- --base=/study-portal/
+
+      - name: Deploy dist to Codeberg pages branch
+        env:
+          CODEBERG_TOKEN: ${{ secrets.CODEBERG_TOKEN }}
+        run: |
+          cd dist
+          git init
+          git checkout -b pages
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+          git add .
+          git commit -m "Deploy built site to Codeberg Pages"
+          git push --force https://oauth2:${CODEBERG_TOKEN}@codeberg.org/study-hub/study-portal.git pages

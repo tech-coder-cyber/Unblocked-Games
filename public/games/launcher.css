@@ -233,6 +233,10 @@ h1 {
   grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
+.btn-full {
+  grid-column: 1 / -1;
+}
+
 .btn {
   border: 1px solid transparent;
   border-radius: 12px;

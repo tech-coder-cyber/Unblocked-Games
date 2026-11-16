@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Steal a Brainrot</title>
+    <link rel="stylesheet" href="./launcher.css" />
+  </head>
+  <body>
+    <div id="gameContainer">
+      <div class="bg-layer" aria-hidden="true">
+        <img
+          class="bg-img"
+          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcThF8KGKSvisrXFZzt9doexyzcSqL0YNCB8ylJt-nRFPA&s"
+          referrerpolicy="no-referrer"
+          alt=""
+        />
+      </div>
+
+      <div class="wrap">
+        <section class="panel" aria-label="Steal a Brainrot launcher">
+          <div class="top">
+            <div class="icon">
+              <img
+                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcThF8KGKSvisrXFZzt9doexyzcSqL0YNCB8ylJt-nRFPA&s"
+                referrerpolicy="no-referrer"
+                alt="Steal a Brainrot cover"
+              />
+            </div>
+            <div class="title-block">
+              <div class="title-kicker">Action · Multiplayer · Base Raid</div>
+              <h1>Steal a Brainrot</h1>
+              <p class="desc">
+                Collect absurd meme characters, defend your base with traps and locks, and raid rival plots to snag rare Brainrots back to your vault.
+              </p>
+            </div>
+          </div>
+
+          <div class="actions-grid">
+            <button id="playPrimaryInline" class="btn btn-primary" type="button">▶ Play Here</button>
+            <button id="playPrimaryFullscreen" class="btn btn-secondary" type="button">Fullscreen</button>
+          </div>
+
+          <div class="info-row">
+            <div class="card-mini">
+              <div class="card-hd"><span class="chip">TIP</span> Quick controls</div>
+              <p>Click inside the arena to lock camera controls. Look with Mouse, move with WASD, jump with Space, Left Click to swing/defend, and press E to buy, lock bases, or steal Brainrots.</p>
+            </div>
+            <div class="card-mini">
+              <div class="card-hd"><span class="chip">NOTE</span> Load time</div>
+              <p>Initial Unity WebGL download (~7.7 MB) takes a few moments; avoid refreshing while the progress bar completes.</p>
+            </div>
+          </div>
+
+          <div id="statusNote" class="status-line">Preparing Steal a Brainrot bundle...</div>
+        </section>
+      </div>
+    </div>
+
+    <script src="./launcher.js"></script>
+    <script>
+      window.initGameLauncher({
+        title: 'Steal a Brainrot',
+        pageTitle: 'classroom.google.com',
+        faviconUrl: 'https://ssl.gstatic.com/classroom/favicon.png',
+        allow: 'fullscreen; autoplay; encrypted-media; pointer-lock; gamepad',
+        gameXmlUrl:
+          'https://cdn.jsdelivr.net/gh/xana-cmd/dev@9dfeb026d341e213c6a2a9b45a3ecc0b9ff5b287/main/sab.xml',
+      });
+    </script>
+  </body>
+</html>

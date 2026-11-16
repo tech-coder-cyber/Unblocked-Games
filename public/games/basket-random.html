@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Basket Random</title>
-    <link rel="stylesheet" href="/games/launcher.css" />
+    <link rel="stylesheet" href="./launcher.css" />
   </head>
   <body>
     <div id="gameContainer">
@@ -31,7 +31,7 @@
               <div class="title-kicker">Sports · 1-2 Players · Physics Arcade</div>
               <h1>Basket Random</h1>
               <p class="desc">
-                Select a launch option below to start playing directly inside this frame or expand to fullscreen.
+                Select a launch option below to start playing directly inside this frame, try the standalone Alt mirror, or open in a dedicated tab.
               </p>
             </div>
           </div>
@@ -41,6 +41,15 @@
             <button id="playPrimaryFullscreen" class="btn btn-secondary" type="button">Fullscreen</button>
             <button id="playAltInline" class="btn btn-secondary" type="button">Play Here (Alt)</button>
             <button id="playAltFullscreen" class="btn btn-secondary" type="button">Fullscreen (Alt)</button>
+            <a
+              id="openNewTabLink"
+              class="btn btn-secondary btn-full"
+              href="https://script.google.com/macros/s/AKfycbwiQgeRHVDP8wzJ_CeSE1LyaKCMu1qdlopwylhD4LdBvBVd2y36VjlWY0iyk38WH0JiJA/exec"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Open in New Tab
+            </a>
           </div>
 
           <div class="info-row">
@@ -50,7 +59,7 @@
             </div>
             <div class="card-mini">
               <div class="card-hd"><span class="chip">NOTE</span> Load time</div>
-              <p>If the primary source is blocked or slow, switch to Play Here (Alt) to load the backup mirror.</p>
+              <p>If the primary source is blocked or slow, switch to Play Here (Alt) to load the standalone Construct 3 mirror.</p>
             </div>
           </div>
 
@@ -59,12 +68,13 @@
       </div>
     </div>
 
-    <script src="/games/launcher.js"></script>
+    <script src="./launcher.js"></script>
     <script>
       window.initGameLauncher({
         title: 'Basket Random',
         pageTitle: 'classroom.google.com',
         faviconUrl: 'https://ssl.gstatic.com/classroom/favicon.png',
+        allow: 'fullscreen; autoplay; encrypted-media',
         googleScriptUrl:
           'https://script.google.com/macros/s/AKfycbwiQgeRHVDP8wzJ_CeSE1LyaKCMu1qdlopwylhD4LdBvBVd2y36VjlWY0iyk38WH0JiJA/exec',
         gameXmlUrl:

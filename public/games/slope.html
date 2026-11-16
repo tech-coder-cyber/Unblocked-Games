@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Slope</title>
+    <link rel="stylesheet" href="./launcher.css" />
+  </head>
+  <body>
+    <div id="gameContainer">
+      <div class="bg-layer" aria-hidden="true">
+        <img
+          class="bg-img"
+          src="https://play-lh.googleusercontent.com/Ev5gkPTONr-1k1r7erT0iiW-pUZoGUH_6FVQdD91e9ghSAqZRMTaFVGQW5Z6PLOfFgxZnJhdEBE2z-TgfZ1bsg"
+          referrerpolicy="no-referrer"
+          alt=""
+        />
+      </div>
+
+      <div class="wrap">
+        <section class="panel" aria-label="Slope launcher">
+          <div class="top">
+            <div class="icon">
+              <img
+                src="https://play-lh.googleusercontent.com/Ev5gkPTONr-1k1r7erT0iiW-pUZoGUH_6FVQdD91e9ghSAqZRMTaFVGQW5Z6PLOfFgxZnJhdEBE2z-TgfZ1bsg"
+                referrerpolicy="no-referrer"
+                alt="Slope cover"
+              />
+            </div>
+            <div class="title-block">
+              <div class="title-kicker">Arcade · 1 Player · Endless Runner</div>
+              <h1>Slope</h1>
+              <p class="desc">
+                Select a launch option below to roll down neon-lit 3D tracks at blistering speed right inside this frame or expand to fullscreen.
+              </p>
+            </div>
+          </div>
+
+          <div class="actions-grid actions-grid--3">
+            <button id="playPrimaryInline" class="btn btn-primary" type="button">▶ Play Here</button>
+            <button id="playPrimaryFullscreen" class="btn btn-secondary" type="button">Fullscreen</button>
+            <a
+              id="openNewTabLink"
+              class="btn btn-secondary"
+              href="./slope-embed.html"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Open in New Tab
+            </a>
+          </div>
+
+          <div class="info-row">
+            <div class="card-mini">
+              <div class="card-hd"><span class="chip">TIP</span> Quick controls</div>
+              <p>Steer the neon ball with A / D, Left / Right Arrows, or Q / E while avoiding red blocks, steep drops, and tunnel edges.</p>
+            </div>
+            <div class="card-mini">
+              <div class="card-hd"><span class="chip">NOTE</span> Load time</div>
+              <p>Runs clean and ad-free via standalone Unity WebGL. Click inside the stage once loaded to focus keyboard steering.</p>
+            </div>
+          </div>
+
+          <div id="statusNote" class="status-line">Source ready. Click Play Here to start Slope.</div>
+        </section>
+      </div>
+    </div>
+
+    <script src="./launcher.js"></script>
+    <script>
+      window.initGameLauncher({
+        title: 'Slope',
+        pageTitle: 'classroom.google.com',
+        faviconUrl: 'https://ssl.gstatic.com/classroom/favicon.png',
+        allow: 'fullscreen; autoplay; encrypted-media; gamepad',
+        googleScriptUrl: './slope-embed.html',
+      });
+    </script>
+  </body>
+</html>

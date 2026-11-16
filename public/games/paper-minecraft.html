@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Paper Minecraft</title>
+    <link rel="stylesheet" href="./launcher.css" />
+  </head>
+  <body>
+    <div id="gameContainer">
+      <div class="bg-layer" aria-hidden="true">
+        <img
+          class="bg-img"
+          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTLE-pJ1U6BSYf_8FdZUMVKLAba4Ey7gWpW6OUFFLx4Z50Bq9hAOPoc-xE&s=10"
+          referrerpolicy="no-referrer"
+          alt=""
+        />
+      </div>
+
+      <div class="wrap">
+        <section class="panel" aria-label="Paper Minecraft launcher">
+          <div class="top">
+            <div class="icon">
+              <img
+                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTLE-pJ1U6BSYf_8FdZUMVKLAba4Ey7gWpW6OUFFLx4Z50Bq9hAOPoc-xE&s=10"
+                referrerpolicy="no-referrer"
+                alt="Paper Minecraft cover"
+              />
+            </div>
+            <div class="title-block">
+              <div class="title-kicker">Arcade · 1 Player · 2D Sandbox</div>
+              <h1>Paper Minecraft</h1>
+              <p class="desc">
+                Select a launch option below to mine, craft, and explore the classic 2D tile world directly inside this frame or expand to fullscreen.
+              </p>
+            </div>
+          </div>
+
+          <div class="actions-grid">
+            <button id="playPrimaryInline" class="btn btn-primary" type="button">▶ Play Here</button>
+            <button id="playPrimaryFullscreen" class="btn btn-secondary" type="button">Fullscreen</button>
+            <button id="playAltInline" class="btn btn-secondary" type="button">Play Here (Scratch)</button>
+            <a
+              id="openNewTabLink"
+              class="btn btn-secondary"
+              href="https://turbowarp.org/54605156/embed"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Open in New Tab
+            </a>
+          </div>
+
+          <div class="info-row">
+            <div class="card-mini">
+              <div class="card-hd"><span class="chip">TIP</span> Quick controls</div>
+              <p>Move with A / D, jump with W / Space (double-tap to fly), crouch with S, click to mine/place blocks, use 1–9 for the hotbar, E for inventory/chests, and F / Q to eat or drop items.</p>
+            </div>
+            <div class="card-mini">
+              <div class="card-hd"><span class="chip">NOTE</span> Mirror fallback</div>
+              <p>Play Here uses the fast TurboWarp mirror for Chromebook compatibility. Switch to Play Here (Scratch) or Open in New Tab anytime.</p>
+            </div>
+          </div>
+
+          <div id="statusNote" class="status-line">Preparing game mirrors...</div>
+        </section>
+      </div>
+    </div>
+
+    <script src="./launcher.js"></script>
+    <script>
+      window.initGameLauncher({
+        title: 'Paper Minecraft',
+        pageTitle: 'classroom.google.com',
+        faviconUrl: 'https://ssl.gstatic.com/classroom/favicon.png',
+        allow: 'fullscreen; autoplay; encrypted-media',
+        googleScriptUrl: 'https://turbowarp.org/54605156/embed',
+        gameXmlUrl:
+          'data:text/html;charset=utf-8,' +
+          encodeURIComponent(
+            '<!doctype html><html><body style="margin:0;overflow:hidden;background:#000"><iframe src="https://scratch.mit.edu/projects/54605156/embed" style="width:100vw;height:100vh;border:0;display:block" allowtransparency="true" allowfullscreen></iframe></body></html>'
+          ),
+      });
+    </script>
+  </body>
+</html>

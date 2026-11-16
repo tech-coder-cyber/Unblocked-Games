@@ -2,5 +2,5 @@
   "name": "Recess Arcade",
   "description": "Fast, distraction-free unblocked browser games catalog with responsive light and dark themes and iframe-embedded HTML5 arcade classics.",
   "requestFramePermissions": [],
-  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+  "majorCapabilities": []
 }

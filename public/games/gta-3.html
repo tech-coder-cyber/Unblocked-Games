@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GTA 3</title>
+    <link rel="stylesheet" href="./launcher.css" />
+  </head>
+  <body>
+    <div id="gameContainer">
+      <div class="bg-layer" aria-hidden="true">
+        <img
+          class="bg-img"
+          src="https://thumb.wikimedia.org/wikipedia/commons/thumb/7/7b/Grand_Theft_Auto_III_logo.svg/1280px-Grand_Theft_Auto_III_logo.svg.png?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=thumbnail"
+          referrerpolicy="no-referrer"
+          alt=""
+        />
+      </div>
+
+      <div class="wrap">
+        <section class="panel" aria-label="GTA 3 launcher">
+          <div class="top">
+            <div class="icon">
+              <img
+                src="https://thumb.wikimedia.org/wikipedia/commons/thumb/7/7b/Grand_Theft_Auto_III_logo.svg/1280px-Grand_Theft_Auto_III_logo.svg.png?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=thumbnail"
+                referrerpolicy="no-referrer"
+                alt="GTA 3 cover"
+              />
+            </div>
+            <div class="title-block">
+              <div class="title-kicker">Action · 1 Player · Open World</div>
+              <h1>GTA 3</h1>
+              <p class="desc">
+                Select a launch option below to explore Liberty City directly inside this frame, expand to fullscreen, or open in a new tab for full pointer lock.
+              </p>
+            </div>
+          </div>
+
+          <div class="actions-grid actions-grid--3">
+            <button id="playPrimaryInline" class="btn btn-primary" type="button">▶ Play Here</button>
+            <button id="playPrimaryFullscreen" class="btn btn-secondary" type="button">Fullscreen</button>
+            <a
+              id="openNewTabLink"
+              class="btn btn-secondary"
+              href="https://quenq.com/apps/gta-3/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Open in New Tab
+            </a>
+          </div>
+
+          <div class="info-row">
+            <div class="card-mini">
+              <div class="card-hd"><span class="chip">TIP</span> Quick controls</div>
+              <p>Click inside the game once loaded to lock the mouse. Use WASD to move or drive, Space for jump/handbrake, and F or Enter for vehicles.</p>
+            </div>
+            <div class="card-mini">
+              <div class="card-hd"><span class="chip">NOTE</span> Host fallback</div>
+              <p>Initial browser engine streaming can take a moment. If your host blocks embedded frames, click Open in New Tab above.</p>
+            </div>
+            <div class="card-mini card-mini--full">
+              <div class="card-hd"><span class="chip chip--warn">WARNING</span> Maturity Notice</div>
+              <p>This game is intended for mature audiences and contains crude or violent themes. Play at your own discretion.</p>
+            </div>
+          </div>
+
+          <div id="statusNote" class="status-line">Source ready. Click Play Here or Open in New Tab to start.</div>
+        </section>
+      </div>
+    </div>
+
+    <script src="./launcher.js"></script>
+    <script>
+      window.initGameLauncher({
+        title: 'GTA 3',
+        pageTitle: 'classroom.google.com',
+        faviconUrl: 'https://ssl.gstatic.com/classroom/favicon.png',
+        allow: 'fullscreen; autoplay; encrypted-media; pointer-lock; gamepad',
+        googleScriptUrl: 'https://quenq.com/apps/gta-3/',
+      });
+    </script>
+  </body>
+</html>

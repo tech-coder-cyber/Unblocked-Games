@@ -9,8 +9,8 @@ import {
   Layers,
   Search,
   SlidersHorizontal,
-  Sparkles,
   Star,
+  History,
   X,
 } from 'lucide-react';
 
@@ -19,6 +19,7 @@ export default function Header({
   activeGameId,
   activeView,
   searchQuery,
+  showTopStrip = true,
   totalGames = 0,
   totalCategories = 0,
   favoritesCount = 0,
@@ -27,7 +28,6 @@ export default function Header({
   onSelectLanding,
   onSelectAllGames,
   onSelectView,
-  onSelectAiStudio,
   onSelectProxy,
   onSelectMiscTools,
   onOpenSettings,
@@ -36,25 +36,46 @@ export default function Header({
   const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
   const [now, setNow] = useState(() => new Date());
   const dropdownRef = useRef(null);
+  const desktopInputRef = useRef(null);
   const mobileInputRef = useRef(null);
 
   const inCatalog = currentScreen === 'catalog' && !activeGameId;
-  const inMisc =
-    !activeGameId &&
-    (currentScreen === 'proxy' || currentScreen === 'misc-tools' || currentScreen === 'ai-studio');
+  const inMisc = !activeGameId && (currentScreen === 'proxy' || currentScreen === 'misc-tools');
 
   useEffect(() => {
+    if (!showTopStrip) return undefined;
+    setNow(new Date());
     const timer = window.setInterval(() => {
       setNow(new Date());
     }, 1000);
     return () => window.clearInterval(timer);
-  }, []);
+  }, [showTopStrip]);
 
   useEffect(() => {
     if (mobileSearchOpen && mobileInputRef.current) {
       mobileInputRef.current.focus();
     }
   }, [mobileSearchOpen]);
+
+  // Focus quick search on "/" hotkey outside text inputs
+  useEffect(() => {
+    function handleShortcut(e) {
+      if (e.key !== '/' || e.ctrlKey || e.metaKey || e.altKey) return;
+      const target = e.target;
+      const tag = target?.tagName?.toLowerCase();
+      if (tag === 'input' || tag === 'textarea' || tag === 'select' || target?.isContentEditable) {
+        return;
+      }
+      e.preventDefault();
+      if (window.innerWidth < 640) {
+        setMobileSearchOpen(true);
+      } else {
+        desktopInputRef.current?.focus();
+      }
+    }
+    window.addEventListener('keydown', handleShortcut);
+    return () => window.removeEventListener('keydown', handleShortcut);
+  }, []);
 
   useEffect(() => {
     if (!miscOpen) return;
@@ -94,65 +115,77 @@ export default function Header({
   const navLinkClass = (isActive) =>
     `text-sm font-medium whitespace-nowrap shrink-0 transition-colors duration-150 py-1 border-b-2 cursor-pointer ${
       isActive
-        ? 'text-cyan-600 dark:text-cyan-400 border-cyan-600 dark:border-cyan-400'
+        ? 'accent-nav-active'
         : 'text-slate-600 dark:text-slate-300 border-transparent hover:text-slate-900 dark:hover:text-white hover:border-slate-300 dark:hover:border-slate-700'
     }`;
 
+  const handleSearchKeyDown = (e) => {
+    if (e.key === 'Escape') {
+      if (searchQuery) {
+        onSearchChange('');
+      } else {
+        e.currentTarget.blur();
+        setMobileSearchOpen(false);
+      }
+    }
+  };
+
   return (
-    <header className="sticky top-0 z-30 w-full bg-white/90 dark:bg-slate-950/90 backdrop-blur-md border-b border-slate-200 dark:border-cyan-500/20 transition-colors duration-150">
-      {/* Top Info Strip: Time, Date, Library Count & Arcade Stats */}
-      <div className="border-b border-slate-200/80 dark:border-slate-800/80 bg-slate-100/80 dark:bg-slate-900/75">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-8 flex items-center justify-between gap-4 text-[11px] sm:text-xs text-slate-600 dark:text-slate-300">
-          <div className="flex items-center gap-3 sm:gap-4 min-w-0">
-            <span className="inline-flex items-center gap-1.5 font-semibold text-slate-900 dark:text-cyan-300 tabular-nums whitespace-nowrap">
-              <Clock className="w-3.5 h-3.5 text-cyan-600 dark:text-cyan-400 shrink-0" aria-hidden="true" />
-              <span>{timeString}</span>
-            </span>
-            <span className="hidden xs:inline-flex sm:inline-flex items-center gap-1.5 text-slate-500 dark:text-slate-400 whitespace-nowrap">
-              <Calendar className="w-3.5 h-3.5 shrink-0" aria-hidden="true" />
-              <span>{dateString}</span>
-            </span>
-          </div>
+    <header className="sticky top-0 z-30 w-full bg-white/90 dark:bg-slate-950/90 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 accent-border-panel transition-colors duration-150">
+      {showTopStrip && (
+        <div className="border-b border-slate-200/80 dark:border-slate-800/80 bg-slate-100/80 dark:bg-slate-900/75">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-8 flex items-center justify-between gap-4 text-[11px] sm:text-xs text-slate-600 dark:text-slate-300">
+            <div className="flex items-center gap-3 sm:gap-4 min-w-0">
+              <span className="inline-flex items-center gap-1.5 font-semibold text-slate-900 dark:text-slate-100 tabular-nums whitespace-nowrap">
+                <Clock className="w-3.5 h-3.5 accent-fg shrink-0" aria-hidden="true" />
+                <span>{timeString}</span>
+              </span>
+              <span className="hidden xs:inline-flex sm:inline-flex items-center gap-1.5 text-slate-500 dark:text-slate-400 whitespace-nowrap">
+                <Calendar className="w-3.5 h-3.5 shrink-0" aria-hidden="true" />
+                <span>{dateString}</span>
+              </span>
+            </div>
 
-          <div className="flex items-center gap-3 sm:gap-4 shrink-0 tabular-nums">
-            <button
-              type="button"
-              onClick={() => {
-                setMiscOpen(false);
-                onSelectAllGames();
-              }}
-              className="inline-flex items-center gap-1.5 font-semibold text-slate-800 dark:text-slate-100 hover:text-cyan-600 dark:hover:text-cyan-300 transition-colors whitespace-nowrap cursor-pointer"
-              title="Browse all games"
-            >
-              <Gamepad2 className="w-3.5 h-3.5 text-cyan-600 dark:text-cyan-400 shrink-0" aria-hidden="true" />
-              <span>{totalGames} Games</span>
-            </button>
+            <div className="flex items-center gap-3 sm:gap-4 shrink-0 tabular-nums">
+              <button
+                type="button"
+                onClick={() => {
+                  setMiscOpen(false);
+                  onSelectAllGames();
+                }}
+                className="inline-flex items-center gap-1.5 font-semibold text-slate-800 dark:text-slate-100 hover:opacity-80 transition-opacity whitespace-nowrap cursor-pointer"
+                title="Browse all games"
+              >
+                <Gamepad2 className="w-3.5 h-3.5 accent-fg shrink-0" aria-hidden="true" />
+                <span>{totalGames} Games</span>
+              </button>
 
-            <span className="hidden sm:inline-flex items-center gap-1.5 text-slate-500 dark:text-slate-400 whitespace-nowrap">
-              <Layers className="w-3.5 h-3.5 shrink-0" aria-hidden="true" />
-              <span>{totalCategories} Genres</span>
-            </span>
+              <span className="hidden sm:inline-flex items-center gap-1.5 text-slate-500 dark:text-slate-400 whitespace-nowrap">
+                <Layers className="w-3.5 h-3.5 shrink-0" aria-hidden="true" />
+                <span>{totalCategories} Genres</span>
+              </span>
 
-            <button
-              type="button"
-              onClick={() => {
-                setMiscOpen(false);
-                onSelectView('favorites');
-              }}
-              className="hidden md:inline-flex items-center gap-1.5 text-slate-600 dark:text-slate-300 hover:text-amber-500 dark:hover:text-amber-300 transition-colors whitespace-nowrap cursor-pointer"
-              title="View saved favorites"
-            >
-              <Star className="w-3.5 h-3.5 text-amber-500 shrink-0" aria-hidden="true" />
-              <span>{favoritesCount} Saved</span>
-            </button>
+              <button
+                type="button"
+                onClick={() => {
+                  setMiscOpen(false);
+                  onSelectView('favorites');
+                }}
+                className="hidden md:inline-flex items-center gap-1.5 text-slate-600 dark:text-slate-300 hover:text-amber-500 dark:hover:text-amber-300 transition-colors whitespace-nowrap cursor-pointer"
+                title="View saved favorites"
+              >
+                <Star className="w-3.5 h-3.5 text-amber-500 shrink-0" aria-hidden="true" />
+                <span>{favoritesCount} Saved</span>
+              </button>
 
-            <span className="hidden md:inline-flex items-center gap-1.5 text-slate-500 dark:text-slate-400 whitespace-nowrap">
-              <Flame className="w-3.5 h-3.5 text-orange-500 shrink-0" aria-hidden="true" />
-              <span>{totalPlays} Plays</span>
-            </span>
+              <span className="hidden md:inline-flex items-center gap-1.5 text-slate-500 dark:text-slate-400 whitespace-nowrap">
+                <Flame className="w-3.5 h-3.5 text-orange-500 shrink-0" aria-hidden="true" />
+                <span>{totalPlays} Plays</span>
+              </span>
+            </div>
           </div>
         </div>
-      </div>
+      )}
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-3">
         {/* Zone 1: Single-line brand wordmark returns to Home */}
@@ -186,7 +219,7 @@ export default function Header({
               setMiscOpen(false);
               onSelectView('favorites');
             }}
-            className={`hidden md:inline-block ${navLinkClass(inCatalog && activeView === 'favorites')}`}
+            className={`hidden sm:inline-block ${navLinkClass(inCatalog && activeView === 'favorites')}`}
           >
             Favorites
           </button>
@@ -197,7 +230,7 @@ export default function Header({
               setMiscOpen(false);
               onSelectView('recent');
             }}
-            className={`hidden lg:inline-block ${navLinkClass(inCatalog && activeView === 'recent')}`}
+            className={`hidden md:inline-block ${navLinkClass(inCatalog && activeView === 'recent')}`}
           >
             Recent
           </button>
@@ -222,29 +255,42 @@ export default function Header({
               <div
                 role="menu"
                 aria-label="Miscellaneous tools"
-                className="absolute right-0 sm:left-0 mt-2.5 w-60 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-cyan-500/25 shadow-xl py-1.5 z-50"
+                className="absolute right-0 sm:left-0 mt-2.5 w-60 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700/80 accent-border-panel shadow-xl py-1.5 z-50"
               >
-                <button
-                  type="button"
-                  role="menuitem"
-                  onClick={() => {
-                    setMiscOpen(false);
-                    onSelectAiStudio();
-                  }}
-                  className={`w-full px-3.5 py-2.5 flex items-center gap-3 text-left text-sm transition-colors cursor-pointer ${
-                    currentScreen === 'ai-studio' && !activeGameId
-                      ? 'bg-cyan-50 dark:bg-cyan-950/60 text-cyan-700 dark:text-cyan-300 font-semibold'
-                      : 'text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800'
-                  }`}
-                >
-                  <Sparkles className="w-4 h-4 shrink-0 text-sky-500 dark:text-sky-400" aria-hidden="true" />
-                  <div>
-                    <div>AI Game Studio</div>
-                    <div className="text-[11px] font-normal text-slate-500 dark:text-slate-400">
-                      Build, Save & Download
-                    </div>
-                  </div>
-                </button>
+                <div className="sm:hidden border-b border-slate-200 dark:border-slate-800 pb-1 mb-1">
+                  <button
+                    type="button"
+                    role="menuitem"
+                    onClick={() => {
+                      setMiscOpen(false);
+                      onSelectView('favorites');
+                    }}
+                    className={`w-full px-3.5 py-2 flex items-center gap-3 text-left text-sm transition-colors cursor-pointer ${
+                      inCatalog && activeView === 'favorites'
+                        ? 'accent-soft-box font-semibold'
+                        : 'text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800'
+                    }`}
+                  >
+                    <Star className="w-4 h-4 shrink-0 text-amber-500" aria-hidden="true" />
+                    <span>Favorites ({favoritesCount})</span>
+                  </button>
+                  <button
+                    type="button"
+                    role="menuitem"
+                    onClick={() => {
+                      setMiscOpen(false);
+                      onSelectView('recent');
+                    }}
+                    className={`w-full px-3.5 py-2 flex items-center gap-3 text-left text-sm transition-colors cursor-pointer ${
+                      inCatalog && activeView === 'recent'
+                        ? 'accent-soft-box font-semibold'
+                        : 'text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800'
+                    }`}
+                  >
+                    <History className="w-4 h-4 shrink-0 accent-fg" aria-hidden="true" />
+                    <span>Recently Played</span>
+                  </button>
+                </div>
 
                 <button
                   type="button"
@@ -255,11 +301,11 @@ export default function Header({
                   }}
                   className={`w-full px-3.5 py-2.5 flex items-center gap-3 text-left text-sm transition-colors cursor-pointer ${
                     currentScreen === 'proxy' && !activeGameId
-                      ? 'bg-cyan-50 dark:bg-cyan-950/60 text-cyan-700 dark:text-cyan-300 font-semibold'
+                      ? 'accent-soft-box font-semibold'
                       : 'text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800'
                   }`}
                 >
-                  <Globe className="w-4 h-4 shrink-0 text-cyan-600 dark:text-cyan-400" aria-hidden="true" />
+                  <Globe className="w-4 h-4 shrink-0 accent-fg" aria-hidden="true" />
                   <div>
                     <div>Web Proxy</div>
                     <div className="text-[11px] font-normal text-slate-500 dark:text-slate-400">
@@ -277,7 +323,7 @@ export default function Header({
                   }}
                   className={`w-full px-3.5 py-2.5 flex items-center gap-3 text-left text-sm transition-colors cursor-pointer ${
                     currentScreen === 'misc-tools' && !activeGameId
-                      ? 'bg-cyan-50 dark:bg-cyan-950/60 text-cyan-700 dark:text-cyan-300 font-semibold'
+                      ? 'accent-soft-box font-semibold'
                       : 'text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800'
                   }`}
                 >
@@ -315,10 +361,12 @@ export default function Header({
               aria-hidden="true"
             />
             <input
+              ref={desktopInputRef}
               type="search"
               value={searchQuery}
               onChange={(e) => onSearchChange(e.target.value)}
-              placeholder="Search games..."
+              onKeyDown={handleSearchKeyDown}
+              placeholder="Search games... (/)"
               aria-label="Quick search games"
               className="w-full pl-8 pr-7 py-1.5 min-h-[38px] text-xs sm:text-sm rounded-lg bg-slate-100 dark:bg-slate-900 border border-slate-300 dark:border-slate-800 text-slate-900 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-cyan-500"
             />
@@ -340,7 +388,7 @@ export default function Header({
               setMiscOpen(false);
               onOpenSettings();
             }}
-            className="px-3.5 sm:px-4 py-2 min-h-[38px] text-xs sm:text-sm font-semibold rounded-lg bg-slate-900 text-white hover:bg-slate-800 dark:bg-cyan-500 dark:text-slate-950 dark:hover:bg-cyan-400 transition-colors duration-150 whitespace-nowrap shrink-0 cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-500"
+            className="px-3.5 sm:px-4 py-2 min-h-[38px] text-xs sm:text-sm font-semibold rounded-lg accent-solid-btn transition-colors duration-150 whitespace-nowrap shrink-0 cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-500"
           >
             Settings
           </button>
@@ -359,6 +407,7 @@ export default function Header({
               type="search"
               value={searchQuery}
               onChange={(e) => onSearchChange(e.target.value)}
+              onKeyDown={handleSearchKeyDown}
               placeholder="Search all games..."
               aria-label="Search games on mobile"
               className="w-full pl-9 pr-8 py-2 min-h-[40px] text-sm rounded-lg bg-slate-100 dark:bg-slate-900 border border-slate-300 dark:border-slate-800 text-slate-900 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-cyan-500"

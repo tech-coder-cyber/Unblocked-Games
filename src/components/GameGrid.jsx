@@ -1,4 +1,4 @@
-import { Search, X, ArrowDownAZ, Flame } from 'lucide-react';
+import { Search, X, ArrowDownAZ, Flame, LayoutGrid, Grid3x3 } from 'lucide-react';
 import GameCard from './GameCard.jsx';
 import { getSingleGameStats } from '../utils/storage.js';
 
@@ -8,6 +8,8 @@ export default function GameGrid({
   activeCategory,
   activeView,
   sortBy,
+  gridDensity = 'comfortable',
+  showDescriptions = true,
   searchQuery,
   favorites,
   recentIds,
@@ -15,12 +17,15 @@ export default function GameGrid({
   onSelectCategory,
   onSelectView,
   onChangeSort,
+  onChangeDensity,
   onSearchChange,
   onResetFilters,
   onPlayGame,
   onToggleFavorite,
   onVote,
 }) {
+  const isCompact = gridDensity === 'compact';
+
   return (
     <section
       id="game-catalog"
@@ -66,39 +71,76 @@ export default function GameGrid({
             </button>
           </div>
 
-          {/* Sort & Search controls */}
+          {/* Sort, Density & Search controls */}
           <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
-            <div
-              className="inline-flex items-center gap-1 p-1 bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-lg self-start sm:self-auto"
-              role="group"
-              aria-label="Sort games"
-            >
-              <button
-                type="button"
-                onClick={() => onChangeSort('az')}
-                aria-pressed={sortBy === 'az'}
-                className={`inline-flex items-center gap-1.5 px-3 py-1.5 min-h-[36px] text-xs font-semibold rounded-md transition-colors whitespace-nowrap shrink-0 cursor-pointer ${
-                  sortBy === 'az'
-                    ? 'bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-50 shadow-xs'
-                    : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100'
-                }`}
+            <div className="flex items-center gap-2">
+              <div
+                className="inline-flex items-center gap-1 p-1 bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-lg"
+                role="group"
+                aria-label="Sort games"
               >
-                <ArrowDownAZ className="w-3.5 h-3.5" aria-hidden="true" />
-                <span>A-Z</span>
-              </button>
-              <button
-                type="button"
-                onClick={() => onChangeSort('popularity')}
-                aria-pressed={sortBy === 'popularity'}
-                className={`inline-flex items-center gap-1.5 px-3 py-1.5 min-h-[36px] text-xs font-semibold rounded-md transition-colors whitespace-nowrap shrink-0 cursor-pointer ${
-                  sortBy === 'popularity'
-                    ? 'bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-50 shadow-xs'
-                    : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100'
-                }`}
-              >
-                <Flame className="w-3.5 h-3.5" aria-hidden="true" />
-                <span>Popularity</span>
-              </button>
+                <button
+                  type="button"
+                  onClick={() => onChangeSort('az')}
+                  aria-pressed={sortBy === 'az'}
+                  className={`inline-flex items-center gap-1.5 px-3 py-1.5 min-h-[36px] text-xs font-semibold rounded-md transition-colors whitespace-nowrap shrink-0 cursor-pointer ${
+                    sortBy === 'az'
+                      ? 'bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-50 shadow-xs'
+                      : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100'
+                  }`}
+                >
+                  <ArrowDownAZ className="w-3.5 h-3.5" aria-hidden="true" />
+                  <span>A-Z</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => onChangeSort('popularity')}
+                  aria-pressed={sortBy === 'popularity'}
+                  className={`inline-flex items-center gap-1.5 px-3 py-1.5 min-h-[36px] text-xs font-semibold rounded-md transition-colors whitespace-nowrap shrink-0 cursor-pointer ${
+                    sortBy === 'popularity'
+                      ? 'bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-50 shadow-xs'
+                      : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100'
+                  }`}
+                >
+                  <Flame className="w-3.5 h-3.5" aria-hidden="true" />
+                  <span>Popularity</span>
+                </button>
+              </div>
+
+              {onChangeDensity && (
+                <div
+                  className="hidden xl:inline-flex items-center gap-1 p-1 bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-lg"
+                  role="group"
+                  aria-label="Grid density"
+                >
+                  <button
+                    type="button"
+                    onClick={() => onChangeDensity('comfortable')}
+                    aria-pressed={!isCompact}
+                    title="Comfortable 3-column grid"
+                    className={`inline-flex items-center justify-center w-9 h-9 rounded-md transition-colors cursor-pointer ${
+                      !isCompact
+                        ? 'bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-50 shadow-xs'
+                        : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100'
+                    }`}
+                  >
+                    <LayoutGrid className="w-4 h-4" aria-hidden="true" />
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => onChangeDensity('compact')}
+                    aria-pressed={isCompact}
+                    title="Compact 4-column grid"
+                    className={`inline-flex items-center justify-center w-9 h-9 rounded-md transition-colors cursor-pointer ${
+                      isCompact
+                        ? 'bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-50 shadow-xs'
+                        : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100'
+                    }`}
+                  >
+                    <Grid3x3 className="w-4 h-4" aria-hidden="true" />
+                  </button>
+                </div>
+              )}
             </div>
 
             <div className="relative w-full sm:w-64">
@@ -142,7 +184,7 @@ export default function GameGrid({
                   onClick={() => onSelectCategory(cat)}
                   className={`px-3.5 py-1.5 min-h-[36px] text-xs font-semibold rounded-lg transition-colors whitespace-nowrap shrink-0 cursor-pointer ${
                     selected
-                      ? 'bg-slate-900 text-white dark:bg-cyan-500 dark:text-slate-950'
+                      ? 'accent-solid-btn shadow-xs'
                       : 'bg-slate-100 dark:bg-slate-900 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-800'
                   }`}
                 >
@@ -157,7 +199,7 @@ export default function GameGrid({
               <button
                 type="button"
                 onClick={onResetFilters}
-                className="text-xs font-semibold text-cyan-600 dark:text-cyan-400 hover:underline cursor-pointer"
+                className="text-xs font-semibold accent-fg hover:underline cursor-pointer"
               >
                 Reset filters
               </button>
@@ -172,13 +214,21 @@ export default function GameGrid({
 
       {/* Grid or Empty state */}
       {games.length > 0 ? (
-        <div className="mt-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div
+          className={`mt-6 grid ${
+            isCompact
+              ? 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4'
+              : 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'
+          }`}
+        >
           {games.map((game) => (
             <GameCard
               key={game.id}
               game={game}
               stats={getSingleGameStats(statsMap, game.id)}
               isFavorite={favorites.includes(game.id)}
+              compact={isCompact}
+              showDescription={showDescriptions}
               onPlay={onPlayGame}
               onToggleFavorite={onToggleFavorite}
               onVote={onVote}
@@ -200,7 +250,7 @@ export default function GameGrid({
           <button
             type="button"
             onClick={onResetFilters}
-            className="mt-5 px-4 py-2 min-h-[40px] rounded-lg bg-cyan-500 hover:bg-cyan-400 text-slate-950 text-sm font-bold transition-colors cursor-pointer"
+            className="mt-5 px-4 py-2 min-h-[40px] rounded-lg accent-solid-btn text-sm font-bold transition-colors cursor-pointer"
           >
             Show All Games
           </button>

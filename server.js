@@ -1,83 +1,15 @@
 import 'dotenv/config';
 import express from 'express';
-import crypto from 'crypto';
 import fs from 'fs';
 import net from 'net';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { GoogleGenAI, Type } from '@google/genai';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const PORT = Number(process.env.PORT || 3000);
 const isProduction = process.env.NODE_ENV === 'production';
-
-const DATA_DIR = path.join(__dirname, 'data');
-const STUDIO_STORE_PATH = path.join(DATA_DIR, 'studio-games.json');
-
-function getAiClient() {
-  const apiKey = process.env.GEMINI_API_KEY;
-  if (!apiKey) return null;
-  return new GoogleGenAI({
-    apiKey,
-    httpOptions: {
-      headers: {
-        'User-Agent': 'aistudio-build',
-      },
-    },
-  });
-}
-
-function readStudioStore() {
-  try {
-    if (!fs.existsSync(STUDIO_STORE_PATH)) {
-      return [];
-    }
-    const raw = fs.readFileSync(STUDIO_STORE_PATH, 'utf8');
-    const parsed = JSON.parse(raw);
-    return Array.isArray(parsed.games) ? parsed.games : [];
-  } catch {
-    return [];
-  }
-}
-
-function writeStudioStore(games) {
-  if (!fs.existsSync(DATA_DIR)) {
-    fs.mkdirSync(DATA_DIR, { recursive: true });
-  }
-  const tmpPath = `${STUDIO_STORE_PATH}.tmp`;
-  fs.writeFileSync(tmpPath, JSON.stringify({ version: '1.0', games }, null, 2), 'utf8');
-  fs.renameSync(tmpPath, STUDIO_STORE_PATH);
-}
-
-function sanitizeStudioRecord(record, requesterCreatorId) {
-  return {
-    id: record.id,
-    title: record.title,
-    description: record.description,
-    category: record.category,
-    controls: record.controls,
-    html: record.html,
-    creatorName: record.creatorName || 'ArcadeBuilder',
-    isPublic: Boolean(record.isPublic),
-    plays: Number(record.plays || 0),
-    likes: Number(record.likes || 0),
-    createdAt: record.createdAt,
-    updatedAt: record.updatedAt,
-    isOwner: Boolean(requesterCreatorId && record.creatorId === requesterCreatorId),
-  };
-}
-
-function stripCodeFences(raw) {
-  if (typeof raw !== 'string') return '';
-  let text = raw.trim();
-  const match = text.match(/^```(?:html|xml)?\s*\n?([\s\S]*?)\n?```$/i);
-  if (match) {
-    text = match[1].trim();
-  }
-  return text;
-}
 
 function isPrivateHostname(hostname) {
   if (!hostname) return true;
@@ -369,6 +301,72 @@ function extractReadableSummary(html, finalUrl) {
   return { title, description, headings, paragraphs, links };
 }
 
+const STATS_DATA_DIR = path.join(__dirname, 'data');
+const STATS_FILE_PATH = path.join(STATS_DATA_DIR, 'game-stats.json');
+
+function sanitizeGameId(raw) {
+  if (typeof raw !== 'string') return null;
+  const trimmed = raw.trim();
+  return /^[a-z0-9-]{1,64}$/.test(trimmed) ? trimmed : null;
+}
+
+function normalizeStatEntry(entry) {
+  return {
+    plays: Math.max(0, Math.floor(Number(entry?.plays) || 0)),
+    likes: Math.max(0, Math.floor(Number(entry?.likes) || 0)),
+    dislikes: Math.max(0, Math.floor(Number(entry?.dislikes) || 0)),
+  };
+}
+
+function loadStatsFromDisk() {
+  try {
+    if (!fs.existsSync(STATS_FILE_PATH)) {
+      return {};
+    }
+    const raw = fs.readFileSync(STATS_FILE_PATH, 'utf8');
+    const parsed = JSON.parse(raw);
+    const source = parsed && typeof parsed.stats === 'object' ? parsed.stats : parsed;
+    if (!source || typeof source !== 'object' || Array.isArray(source)) {
+      return {};
+    }
+    const normalized = {};
+    for (const [key, val] of Object.entries(source)) {
+      const id = sanitizeGameId(key);
+      if (!id || !val || typeof val !== 'object') continue;
+      normalized[id] = normalizeStatEntry(val);
+    }
+    return normalized;
+  } catch (err) {
+    console.warn('Could not read persisted game stats, starting fresh:', err?.message || err);
+    return {};
+  }
+}
+
+const statsStore = loadStatsFromDisk();
+let statsWriteChain = Promise.resolve();
+
+function persistStatsToDisk() {
+  const snapshot = JSON.stringify({ version: 1, stats: statsStore }, null, 2);
+  statsWriteChain = statsWriteChain
+    .then(async () => {
+      await fs.promises.mkdir(STATS_DATA_DIR, { recursive: true });
+      const tmpPath = `${STATS_FILE_PATH}.tmp`;
+      await fs.promises.writeFile(tmpPath, snapshot, 'utf8');
+      await fs.promises.rename(tmpPath, STATS_FILE_PATH);
+    })
+    .catch((err) => {
+      console.error('Failed to persist game stats:', err);
+    });
+  return statsWriteChain;
+}
+
+function getOrCreateStatEntry(gameId) {
+  if (!statsStore[gameId]) {
+    statsStore[gameId] = { plays: 0, likes: 0, dislikes: 0 };
+  }
+  return statsStore[gameId];
+}
+
 async function createAppServer() {
   const app = express();
   app.use(express.urlencoded({ extended: true, limit: '4mb' }));
@@ -378,273 +376,43 @@ async function createAppServer() {
     res.json({ ok: true });
   });
 
-  // Server-side AI Game Generator (returns a complete playable standalone HTML5 game)
-  app.post('/api/ai/generate-game', async (req, res) => {
-    const ai = getAiClient();
-    if (!ai) {
-      return res.status(503).json({
-        error: 'Gemini API key is not configured on the server. Add GEMINI_API_KEY in Settings > Secrets.',
-      });
-    }
-
-    const prompt = String(req.body?.prompt || '').trim().slice(0, 2000);
-    const genre = String(req.body?.genre || 'Auto').trim().slice(0, 60);
-    const themeStyle = String(req.body?.themeStyle || 'Neon Arcade').trim().slice(0, 60);
-    const currentHtml = typeof req.body?.currentHtml === 'string' ? req.body.currentHtml.slice(0, 200000) : '';
-
-    if (!prompt) {
-      return res.status(400).json({ error: 'Describe the game you want to create or update.' });
-    }
-
-    const systemInstruction = [
-      'You are an expert HTML5 canvas and Web game developer building crisp, fun, zero-dependency single-file browser games.',
-      'Rules for the generated "html" field:',
-      '1. Return a COMPLETE, self-contained HTML5 document starting with <!DOCTYPE html> that runs completely offline in a sandboxed iframe or downloaded .html file.',
-      '2. Do NOT use external CDNs, external images, external audio files, or network requests. Use procedural HTML5 Canvas 2D drawing, CSS gradients, and Web Audio API sound effects (unlocked safely after user interaction).',
-      '3. Never use window.alert, window.confirm, window.prompt, or window.open.',
-      '4. Fill the viewport cleanly (html, body { margin: 0; width: 100%; height: 100%; overflow: hidden; }) and resize the canvas smoothly.',
-      '5. Include: a crisp start overlay or immediate start button, smooth requestAnimationFrame loop with delta time clamping, responsive keyboard (WASD + Arrows + Space) and/or mouse/touch controls, live score/HUD, and a clean Game Over overlay with an instant Play Again button.',
-      '6. Ensure zero syntax errors, zero undefined variables, and engaging, fair gameplay.',
-    ].join('\n');
-
-    const contents = currentHtml
-      ? `Update and improve the existing HTML5 game below based on these instructions.\n\nCreator Instructions: ${prompt}\nRequested Genre: ${genre}\nVisual Style: ${themeStyle}\n\nExisting HTML:\n${currentHtml}`
-      : `Create a brand-new, super playable single-file HTML5 browser game.\n\nGame Idea: ${prompt}\nPreferred Genre: ${genre}\nVisual Style: ${themeStyle}`;
-
-    try {
-      const response = await ai.models.generateContent({
-        model: 'gemini-4-hydrogen',
-        contents,
-        config: {
-          systemInstruction,
-          responseMimeType: 'application/json',
-          responseSchema: {
-            type: Type.OBJECT,
-            properties: {
-              title: {
-                type: Type.STRING,
-                description: 'Short catchy title of the game (2-5 words).',
-              },
-              description: {
-                type: Type.STRING,
-                description: 'Concise 1-2 sentence description of gameplay and objective.',
-              },
-              category: {
-                type: Type.STRING,
-                description: 'Single-word genre category (e.g. Arcade, Action, Puzzle, Racing, Shooter, Strategy, Horror).',
-              },
-              controls: {
-                type: Type.STRING,
-                description: 'Short controls summary for the player (e.g. "WASD or Arrow Keys to move, Space to dash").',
-              },
-              html: {
-                type: Type.STRING,
-                description: 'Complete self-contained <!DOCTYPE html> single-file HTML5 game.',
-              },
-            },
-            required: ['title', 'description', 'category', 'controls', 'html'],
-          },
-        },
-      });
-
-      const rawText = (response.text || '').trim();
-      if (!rawText) {
-        return res.status(502).json({ error: 'The model returned an empty response. Please try again.' });
-      }
-
-      const parsed = JSON.parse(rawText);
-      const html = stripCodeFences(parsed.html || '');
-      if (!html || html.length < 120) {
-        return res.status(502).json({ error: 'Generated game HTML was incomplete. Try refining your prompt.' });
-      }
-
-      return res.json({
-        title: String(parsed.title || 'Custom Arcade Game').slice(0, 80),
-        description: String(parsed.description || prompt).slice(0, 320),
-        category: String(parsed.category || 'Arcade').slice(0, 32),
-        controls: String(parsed.controls || 'Keyboard & Mouse').slice(0, 140),
-        html,
-      });
-    } catch (err) {
-      const message = err?.message || 'Failed to generate game.';
-      const status = typeof err?.status === 'number' && err.status >= 400 ? err.status : 500;
-      return res.status(status).json({ error: message });
-    }
+  app.get('/api/stats', (_req, res) => {
+    res.setHeader('Cache-Control', 'no-store');
+    res.json({ stats: statsStore });
   });
 
-  // Studio Save & Community Games API (persistent local JSON store)
-  app.get('/api/studio/games', (req, res) => {
-    const creatorId = String(req.query.creatorId || '').trim().slice(0, 128);
-    const all = readStudioStore();
-
-    const myGames = creatorId
-      ? all
-          .filter((item) => item.creatorId === creatorId)
-          .sort((a, b) => Number(b.updatedAt || 0) - Number(a.updatedAt || 0))
-          .map((item) => sanitizeStudioRecord(item, creatorId))
-      : [];
-
-    const publicGames = all
-      .filter((item) => Boolean(item.isPublic))
-      .sort((a, b) => Number(b.updatedAt || 0) - Number(a.updatedAt || 0))
-      .map((item) => sanitizeStudioRecord(item, creatorId));
-
-    return res.json({ myGames, publicGames });
+  app.post('/api/stats/:gameId/play', async (req, res) => {
+    const gameId = sanitizeGameId(req.params.gameId);
+    if (!gameId) {
+      return res.status(400).json({ error: 'Invalid game id.' });
+    }
+    const entry = getOrCreateStatEntry(gameId);
+    entry.plays += 1;
+    await persistStatsToDisk();
+    res.setHeader('Cache-Control', 'no-store');
+    return res.json({ gameId, stats: entry, allStats: statsStore });
   });
 
-  app.post('/api/studio/games', (req, res) => {
-    const creatorId = String(req.body?.creatorId || '').trim().slice(0, 128);
-    const creatorName = String(req.body?.creatorName || 'ArcadeBuilder').trim().slice(0, 40) || 'ArcadeBuilder';
-    const title = String(req.body?.title || '').trim().slice(0, 80);
-    const description = String(req.body?.description || '').trim().slice(0, 400);
-    const category = String(req.body?.category || 'Arcade').trim().slice(0, 32) || 'Arcade';
-    const controls = String(req.body?.controls || 'Keyboard & Mouse').trim().slice(0, 160);
-    const html = typeof req.body?.html === 'string' ? req.body.html : '';
-    const isPublic = Boolean(req.body?.isPublic);
+  app.post('/api/stats/:gameId/vote', async (req, res) => {
+    const gameId = sanitizeGameId(req.params.gameId);
+    if (!gameId) {
+      return res.status(400).json({ error: 'Invalid game id.' });
+    }
+    const normalizeVote = (val) => (val === 'like' || val === 'dislike' ? val : null);
+    const prevVote = normalizeVote(req.body?.prevVote);
+    const nextVote = normalizeVote(req.body?.nextVote);
 
-    if (!creatorId) {
-      return res.status(400).json({ error: 'Missing creator profile ID.' });
-    }
-    if (!title || !html || html.length < 50) {
-      return res.status(400).json({ error: 'Game title and valid HTML content are required.' });
-    }
-    if (html.length > 450000) {
-      return res.status(400).json({ error: 'Game HTML exceeds maximum size (450 KB).' });
+    const entry = getOrCreateStatEntry(gameId);
+    if (prevVote !== nextVote) {
+      if (prevVote === 'like') entry.likes = Math.max(0, entry.likes - 1);
+      if (prevVote === 'dislike') entry.dislikes = Math.max(0, entry.dislikes - 1);
+      if (nextVote === 'like') entry.likes += 1;
+      if (nextVote === 'dislike') entry.dislikes += 1;
+      await persistStatsToDisk();
     }
 
-    const now = Date.now();
-    const record = {
-      id: `studio-${crypto.randomBytes(6).toString('hex')}`,
-      creatorId,
-      creatorName,
-      title,
-      description,
-      category,
-      controls,
-      html,
-      isPublic,
-      plays: 0,
-      likes: 0,
-      createdAt: now,
-      updatedAt: now,
-    };
-
-    const all = readStudioStore();
-    all.unshift(record);
-    writeStudioStore(all);
-
-    return res.status(201).json({ game: sanitizeStudioRecord(record, creatorId) });
-  });
-
-  app.patch('/api/studio/games/:id', (req, res) => {
-    const id = String(req.params.id || '').trim();
-    const creatorId = String(req.body?.creatorId || '').trim().slice(0, 128);
-    if (!creatorId) {
-      return res.status(400).json({ error: 'Missing creator profile ID.' });
-    }
-
-    const all = readStudioStore();
-    const index = all.findIndex((item) => item.id === id);
-    if (index === -1) {
-      return res.status(404).json({ error: 'Saved game not found.' });
-    }
-
-    const existing = all[index];
-    if (existing.creatorId !== creatorId) {
-      return res.status(403).json({ error: 'Only the creator can modify this game.' });
-    }
-
-    const updated = {
-      ...existing,
-      title:
-        typeof req.body?.title === 'string' && req.body.title.trim()
-          ? req.body.title.trim().slice(0, 80)
-          : existing.title,
-      description:
-        typeof req.body?.description === 'string'
-          ? req.body.description.trim().slice(0, 400)
-          : existing.description,
-      category:
-        typeof req.body?.category === 'string' && req.body.category.trim()
-          ? req.body.category.trim().slice(0, 32)
-          : existing.category,
-      controls:
-        typeof req.body?.controls === 'string'
-          ? req.body.controls.trim().slice(0, 160)
-          : existing.controls,
-      creatorName:
-        typeof req.body?.creatorName === 'string' && req.body.creatorName.trim()
-          ? req.body.creatorName.trim().slice(0, 40)
-          : existing.creatorName,
-      html:
-        typeof req.body?.html === 'string' && req.body.html.length >= 50 && req.body.html.length <= 450000
-          ? req.body.html
-          : existing.html,
-      isPublic: typeof req.body?.isPublic === 'boolean' ? req.body.isPublic : existing.isPublic,
-      updatedAt: Date.now(),
-    };
-
-    all[index] = updated;
-    writeStudioStore(all);
-    return res.json({ game: sanitizeStudioRecord(updated, creatorId) });
-  });
-
-  app.post('/api/studio/games/:id/play', (req, res) => {
-    const id = String(req.params.id || '').trim();
-    const creatorId = String(req.body?.creatorId || '').trim().slice(0, 128);
-    const all = readStudioStore();
-    const index = all.findIndex((item) => item.id === id);
-    if (index === -1) {
-      return res.status(404).json({ error: 'Game not found.' });
-    }
-    if (!all[index].isPublic && all[index].creatorId !== creatorId) {
-      return res.status(403).json({ error: 'This game is private.' });
-    }
-    all[index] = {
-      ...all[index],
-      plays: Number(all[index].plays || 0) + 1,
-    };
-    writeStudioStore(all);
-    return res.json({ game: sanitizeStudioRecord(all[index], creatorId) });
-  });
-
-  app.post('/api/studio/games/:id/like', (req, res) => {
-    const id = String(req.params.id || '').trim();
-    const creatorId = String(req.body?.creatorId || '').trim().slice(0, 128);
-    const delta = req.body?.delta === -1 ? -1 : 1;
-    const all = readStudioStore();
-    const index = all.findIndex((item) => item.id === id);
-    if (index === -1) {
-      return res.status(404).json({ error: 'Game not found.' });
-    }
-    if (!all[index].isPublic && all[index].creatorId !== creatorId) {
-      return res.status(403).json({ error: 'This game is private.' });
-    }
-    all[index] = {
-      ...all[index],
-      likes: Math.max(0, Number(all[index].likes || 0) + delta),
-    };
-    writeStudioStore(all);
-    return res.json({ game: sanitizeStudioRecord(all[index], creatorId) });
-  });
-
-  app.delete('/api/studio/games/:id', (req, res) => {
-    const id = String(req.params.id || '').trim();
-    const creatorId = String(req.query.creatorId || req.body?.creatorId || '').trim().slice(0, 128);
-    if (!creatorId) {
-      return res.status(400).json({ error: 'Missing creator profile ID.' });
-    }
-    const all = readStudioStore();
-    const existing = all.find((item) => item.id === id);
-    if (!existing) {
-      return res.status(404).json({ error: 'Game not found.' });
-    }
-    if (existing.creatorId !== creatorId) {
-      return res.status(403).json({ error: 'Only the creator can delete this game.' });
-    }
-    const filtered = all.filter((item) => item.id !== id);
-    writeStudioStore(filtered);
-    return res.json({ ok: true });
+    res.setHeader('Cache-Control', 'no-store');
+    return res.json({ gameId, stats: entry, allStats: statsStore });
   });
 
   // Custom Reader / Direct Fetch Endpoint (no iframe required)

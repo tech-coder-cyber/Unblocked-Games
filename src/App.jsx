@@ -1,28 +1,35 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'motion/react';
 import Header from './components/Header.jsx';
 import HomeLanding from './components/HomeLanding.jsx';
 import HeroSpotlight from './components/HeroSpotlight.jsx';
 import GameGrid from './components/GameGrid.jsx';
 import GamePlayer from './components/GamePlayer.jsx';
-import AiGameStudioView from './components/AiGameStudioView.jsx';
 import WebProxyView from './components/WebProxyView.jsx';
 import MiscToolsView from './components/MiscToolsView.jsx';
 import SettingsModal from './components/SettingsModal.jsx';
 import {
   applyTabCloak,
   applyTheme,
+  applyUserPrefs,
   clearAllSiteData,
+  fetchServerStats,
   getFavorites,
   getGameStatsMap,
   getInitialCloak,
   getInitialTheme,
   getRecentGames,
   getSingleGameStats,
+  getUserPrefs,
   incrementGamePlays,
+  normalizePanicUrl,
+  postServerPlay,
+  postServerVote,
   recordRecentGame,
   saveFavorites,
+  saveUserPrefs,
   toggleGameVote,
+  importAllSiteData,
 } from './utils/storage.js';
 
 export default function App() {
@@ -32,18 +39,49 @@ export default function App() {
 
   const [theme, setTheme] = useState(() => getInitialTheme());
   const [tabCloak, setTabCloak] = useState(() => getInitialCloak());
+  const [prefs, setPrefs] = useState(() => getUserPrefs());
   const [favorites, setFavorites] = useState(() => getFavorites());
   const [recentList, setRecentList] = useState(() => getRecentGames());
   const [statsMap, setStatsMap] = useState(() => getGameStatsMap());
 
-  const [currentScreen, setCurrentScreen] = useState('home'); // 'home' | 'catalog' | 'proxy' | 'misc-tools'
+  const [currentScreen, setCurrentScreen] = useState(() => prefs.startScreen); // 'home' | 'catalog' | 'proxy' | 'misc-tools'
   const [activeGameId, setActiveGameId] = useState(null);
   const [activeView, setActiveView] = useState('catalog'); // 'catalog' | 'favorites' | 'recent'
   const [activeCategory, setActiveCategory] = useState('All');
-  const [sortBy, setSortBy] = useState('az'); // 'az' | 'popularity'
+  const [sortBy, setSortBy] = useState(() => prefs.defaultSort); // 'az' | 'popularity'
   const [searchQuery, setSearchQuery] = useState('');
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [reloadSignal, setReloadSignal] = useState(0);
+  const pendingStatsOpsRef = useRef(0);
+
+  const syncStatsFromServer = useCallback(async () => {
+    if (pendingStatsOpsRef.current > 0) return;
+    try {
+      const synced = await fetchServerStats();
+      if (pendingStatsOpsRef.current === 0) {
+        setStatsMap(synced);
+      }
+    } catch {
+      // Keep cached stats if server is temporarily unreachable
+    }
+  }, []);
+
+  useEffect(() => {
+    syncStatsFromServer();
+    const handleVisibilityOrFocus = () => {
+      if (!document.hidden) {
+        syncStatsFromServer();
+      }
+    };
+    window.addEventListener('focus', handleVisibilityOrFocus);
+    document.addEventListener('visibilitychange', handleVisibilityOrFocus);
+    const intervalId = window.setInterval(syncStatsFromServer, 10000);
+    return () => {
+      window.removeEventListener('focus', handleVisibilityOrFocus);
+      document.removeEventListener('visibilitychange', handleVisibilityOrFocus);
+      window.clearInterval(intervalId);
+    };
+  }, [syncStatsFromServer]);
 
   useEffect(() => {
     applyTheme(theme);
@@ -52,6 +90,30 @@ export default function App() {
   useEffect(() => {
     applyTabCloak(tabCloak);
   }, [tabCloak]);
+
+  useEffect(() => {
+    applyUserPrefs(prefs);
+  }, [prefs]);
+
+  // Global Panic Key shortcut (Shift + P outside text inputs)
+  useEffect(() => {
+    if (!prefs.panicEnabled) return undefined;
+
+    function handlePanicKey(e) {
+      if (!e.shiftKey || e.ctrlKey || e.metaKey || e.altKey) return;
+      if (e.key !== 'P' && e.key !== 'p') return;
+      const target = e.target;
+      const tag = target?.tagName?.toLowerCase();
+      if (tag === 'input' || tag === 'textarea' || tag === 'select' || target?.isContentEditable) {
+        return;
+      }
+      e.preventDefault();
+      window.location.replace(normalizePanicUrl(prefs.panicUrl));
+    }
+
+    window.addEventListener('keydown', handlePanicKey);
+    return () => window.removeEventListener('keydown', handlePanicKey);
+  }, [prefs.panicEnabled, prefs.panicUrl]);
 
   useEffect(() => {
     let cancelled = false;
@@ -92,11 +154,27 @@ export default function App() {
     return ['All', ...unique];
   }, [games]);
 
+  // Ensure stale or removed categories reset automatically to All
+  useEffect(() => {
+    if (activeCategory !== 'All' && categories.length > 1 && !categories.includes(activeCategory)) {
+      setActiveCategory('All');
+    }
+  }, [categories, activeCategory]);
+
   const featuredGame = useMemo(() => {
     return games.find((g) => g.featured) || games[0] || null;
   }, [games]);
 
   const recentIds = useMemo(() => recentList.map((r) => r.id), [recentList]);
+
+  const totalGamesCount = useMemo(
+    () =>
+      games.reduce(
+        (sum, game) => sum + (Array.isArray(game.versions) && game.versions.length > 0 ? game.versions.length : 1),
+        0
+      ),
+    [games]
+  );
 
   const totalPlays = useMemo(
     () => Object.values(statsMap || {}).reduce((sum, entry) => sum + (entry?.plays || 0), 0),
@@ -149,16 +227,49 @@ export default function App() {
     [games, activeGameId]
   );
 
+  const handleUpdatePrefs = (patch) => {
+    setPrefs((prev) => {
+      const updated = saveUserPrefs({ ...prev, ...patch });
+      if (patch.defaultSort && (patch.defaultSort === 'az' || patch.defaultSort === 'popularity')) {
+        setSortBy(patch.defaultSort);
+      }
+      return updated;
+    });
+  };
+
   const handlePlayGame = (game) => {
     setCurrentScreen('catalog');
     setActiveGameId(game.id);
     setRecentList(recordRecentGame(game.id));
     setStatsMap(incrementGamePlays(game.id));
     window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    pendingStatsOpsRef.current += 1;
+    postServerPlay(game.id)
+      .then((synced) => {
+        setStatsMap(synced);
+      })
+      .catch(() => {})
+      .finally(() => {
+        pendingStatsOpsRef.current = Math.max(0, pendingStatsOpsRef.current - 1);
+      });
   };
 
   const handleVote = (gameId, voteType) => {
-    setStatsMap(toggleGameVote(gameId, voteType));
+    const prevVote = getSingleGameStats(statsMap, gameId).userVote;
+    const optimistic = toggleGameVote(gameId, voteType);
+    const nextVote = getSingleGameStats(optimistic, gameId).userVote;
+    setStatsMap(optimistic);
+
+    pendingStatsOpsRef.current += 1;
+    postServerVote(gameId, prevVote, nextVote)
+      .then((synced) => {
+        setStatsMap(synced);
+      })
+      .catch(() => {})
+      .finally(() => {
+        pendingStatsOpsRef.current = Math.max(0, pendingStatsOpsRef.current - 1);
+      });
   };
 
   const handleToggleFavorite = (gameId) => {
@@ -193,12 +304,6 @@ export default function App() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const handleSelectAiStudio = () => {
-    setActiveGameId(null);
-    setCurrentScreen('ai-studio');
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
-
   const handleSelectProxy = () => {
     setActiveGameId(null);
     setCurrentScreen('proxy');
@@ -223,18 +328,33 @@ export default function App() {
   const handleResetFilters = () => {
     setActiveView('catalog');
     setActiveCategory('All');
-    setSortBy('az');
+    setSortBy(prefs.defaultSort);
     setSearchQuery('');
   };
 
+  const handleImportSiteData = (raw) => {
+    const restored = importAllSiteData(raw);
+    setTheme(restored.theme);
+    setTabCloak(restored.tabCloak);
+    setPrefs(restored.prefs);
+    setSortBy(restored.prefs.defaultSort);
+    setFavorites(restored.favorites);
+    setRecentList(restored.recent);
+    setStatsMap(restored.statsMap);
+    setReloadSignal((s) => s + 1);
+  };
+
   const handleClearSiteData = () => {
-    const resetTheme = clearAllSiteData();
+    const { theme: resetTheme, prefs: resetPrefs } = clearAllSiteData();
     setTheme(resetTheme);
+    setPrefs(resetPrefs);
+    setSortBy(resetPrefs.defaultSort);
     setTabCloak('default');
     setFavorites([]);
     setRecentList([]);
     setStatsMap({});
     setReloadSignal((s) => s + 1);
+    syncStatsFromServer();
   };
 
   const scrollToCatalog = () => {
@@ -260,7 +380,8 @@ export default function App() {
         activeGameId={activeGameId}
         activeView={activeView}
         searchQuery={searchQuery}
-        totalGames={games.length}
+        showTopStrip={prefs.showTopStrip}
+        totalGames={totalGamesCount}
         totalCategories={Math.max(0, categories.length - 1)}
         favoritesCount={favorites.length}
         totalPlays={totalPlays}
@@ -268,7 +389,6 @@ export default function App() {
         onSelectLanding={handleSelectLanding}
         onSelectAllGames={handleSelectAllGames}
         onSelectView={handleSelectView}
-        onSelectAiStudio={handleSelectAiStudio}
         onSelectProxy={handleSelectProxy}
         onSelectMiscTools={handleSelectMiscTools}
         onOpenSettings={() => setSettingsOpen(true)}
@@ -278,10 +398,10 @@ export default function App() {
         <AnimatePresence mode="wait" initial={false}>
           <motion.div
             key={viewTransitionKey}
-            initial={{ opacity: 0, y: 6 }}
+            initial={prefs.reducedMotion ? false : { opacity: 0, y: 6 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -4 }}
-            transition={{ duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
+            exit={prefs.reducedMotion ? { opacity: 1 } : { opacity: 0, y: -4 }}
+            transition={{ duration: prefs.reducedMotion ? 0 : 0.2, ease: [0.22, 1, 0.36, 1] }}
           >
             {loading ? (
               <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 text-center">
@@ -298,7 +418,7 @@ export default function App() {
                 <button
                   type="button"
                   onClick={() => window.location.reload()}
-                  className="mt-4 px-4 py-2 rounded-lg bg-cyan-500 text-slate-950 text-sm font-bold cursor-pointer"
+                  className="mt-4 px-4 py-2 rounded-lg accent-solid-btn text-sm font-bold cursor-pointer"
                 >
                   Retry
                 </button>
@@ -321,14 +441,11 @@ export default function App() {
                 games={games}
                 statsMap={statsMap}
                 sortBy={sortBy}
+                showTopStrip={prefs.showTopStrip}
+                reducedMotion={prefs.reducedMotion}
                 onChangeSort={setSortBy}
                 onEnterCatalog={handleSelectAllGames}
                 onPlayGame={handlePlayGame}
-              />
-            ) : currentScreen === 'ai-studio' ? (
-              <AiGameStudioView
-                reloadSignal={reloadSignal}
-                onBackToCatalog={handleSelectAllGames}
               />
             ) : currentScreen === 'proxy' ? (
               <WebProxyView onBackToCatalog={handleSelectAllGames} />
@@ -361,6 +478,8 @@ export default function App() {
                   activeCategory={activeCategory}
                   activeView={activeView}
                   sortBy={sortBy}
+                  gridDensity={prefs.gridDensity}
+                  showDescriptions={prefs.showDescriptions}
                   searchQuery={searchQuery}
                   favorites={favorites}
                   recentIds={recentIds}
@@ -368,6 +487,7 @@ export default function App() {
                   onSelectCategory={setActiveCategory}
                   onSelectView={setActiveView}
                   onChangeSort={setSortBy}
+                  onChangeDensity={(density) => handleUpdatePrefs({ gridDensity: density })}
                   onSearchChange={setSearchQuery}
                   onResetFilters={handleResetFilters}
                   onPlayGame={handlePlayGame}
@@ -383,7 +503,12 @@ export default function App() {
       <SettingsModal
         isOpen={settingsOpen}
         theme={theme}
+        prefs={prefs}
+        tabCloak={tabCloak}
         onChangeTheme={setTheme}
+        onUpdatePrefs={handleUpdatePrefs}
+        onChangeCloak={setTabCloak}
+        onImportSiteData={handleImportSiteData}
         onClearSiteData={handleClearSiteData}
         onClose={() => setSettingsOpen(false)}
       />

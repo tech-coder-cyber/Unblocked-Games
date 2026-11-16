@@ -5,6 +5,8 @@ export default function GameCard({
   game,
   stats,
   isFavorite,
+  compact = false,
+  showDescription = true,
   onPlay,
   onToggleFavorite,
   onVote,
@@ -16,7 +18,7 @@ export default function GameCard({
   }, [game.thumbnail]);
 
   return (
-    <article className="group flex flex-col bg-white dark:bg-slate-900/85 dark:backdrop-blur-md border border-slate-200 dark:border-cyan-500/20 hover:border-slate-300 dark:hover:border-cyan-400/50 hover:shadow-lg dark:hover:shadow-cyan-950/35 rounded-2xl overflow-hidden transition-all duration-200 hover:-translate-y-0.5">
+    <article className="group flex flex-col bg-white dark:bg-slate-900/85 dark:backdrop-blur-md border border-slate-200 dark:border-slate-800 accent-border-panel hover:border-slate-300 dark:hover:border-slate-600 hover:shadow-lg dark:hover:shadow-slate-950/60 rounded-2xl overflow-hidden transition-all duration-200 hover:-translate-y-0.5">
       <button
         type="button"
         onClick={() => onPlay(game)}
@@ -61,13 +63,17 @@ export default function GameCard({
         )}
         <div
           aria-hidden="true"
-          className="absolute inset-x-0 bottom-0 h-12 bg-gradient-to-t from-slate-950/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-20 pointer-events-none"
-        />
+          className="absolute inset-x-0 bottom-0 h-14 bg-gradient-to-t from-slate-950/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-20 pointer-events-none flex items-end justify-end p-2.5"
+        >
+          <span className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-emerald-500 text-slate-950 shadow-md">
+            <Play className="w-3.5 h-3.5 fill-current ml-0.5" />
+          </span>
+        </div>
       </button>
 
-      <div className="flex flex-col flex-1 p-5 gap-3">
+      <div className={`flex flex-col flex-1 ${compact ? 'p-4 gap-2.5' : 'p-5 gap-3'}`}>
         <div>
-          <h3 className="font-display text-lg font-semibold text-slate-900 dark:text-slate-50 leading-snug">
+          <h3 className={`font-display ${compact ? 'text-base' : 'text-lg'} font-semibold text-slate-900 dark:text-slate-50 leading-snug`}>
             {game.titleStyle === 'glitch-red' ? (
               <span className="glitch-title-red" aria-label={game.title}>
                 {game.displayTitle || game.title}
@@ -85,12 +91,14 @@ export default function GameCard({
           </div>
         </div>
 
-        <p className="text-sm text-slate-600 dark:text-slate-300 leading-relaxed line-clamp-2 flex-1">
-          {game.description}
-        </p>
+        {showDescription && (
+          <p className="text-sm text-slate-600 dark:text-slate-300 leading-relaxed line-clamp-2 flex-1">
+            {game.description}
+          </p>
+        )}
 
         {/* Plays, Likes, and Dislikes row */}
-        <div className="pt-2 flex items-center justify-between gap-2 text-xs text-slate-600 dark:text-slate-300 tabular-nums border-t border-slate-100 dark:border-slate-800/80">
+        <div className={`${showDescription ? 'pt-2' : 'mt-auto pt-2'} flex items-center justify-between gap-2 text-xs text-slate-600 dark:text-slate-300 tabular-nums border-t border-slate-100 dark:border-slate-800/80`}>
           <span className="inline-flex items-center gap-1.5 font-medium whitespace-nowrap">
             <Play className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" aria-hidden="true" />
             <span>
@@ -104,7 +112,7 @@ export default function GameCard({
               onClick={() => onVote(game.id, 'like')}
               aria-label={`Like ${game.title} (${stats.likes} likes)`}
               aria-pressed={stats.userVote === 'like'}
-              className={`inline-flex items-center gap-1 px-2.5 py-1.5 min-h-[36px] rounded-lg border text-xs font-medium transition-colors cursor-pointer ${
+              className={`inline-flex items-center gap-1 px-2.5 py-1.5 min-h-[34px] rounded-lg border text-xs font-medium transition-colors cursor-pointer ${
                 stats.userVote === 'like'
                   ? 'bg-emerald-50 dark:bg-emerald-950/60 border-emerald-400 dark:border-emerald-500/60 text-emerald-700 dark:text-emerald-300'
                   : 'bg-slate-50 dark:bg-slate-950/60 border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800'
@@ -119,7 +127,7 @@ export default function GameCard({
               onClick={() => onVote(game.id, 'dislike')}
               aria-label={`Dislike ${game.title} (${stats.dislikes} dislikes)`}
               aria-pressed={stats.userVote === 'dislike'}
-              className={`inline-flex items-center gap-1 px-2.5 py-1.5 min-h-[36px] rounded-lg border text-xs font-medium transition-colors cursor-pointer ${
+              className={`inline-flex items-center gap-1 px-2.5 py-1.5 min-h-[34px] rounded-lg border text-xs font-medium transition-colors cursor-pointer ${
                 stats.userVote === 'dislike'
                   ? 'bg-rose-50 dark:bg-rose-950/60 border-rose-400 dark:border-rose-500/60 text-rose-700 dark:text-rose-300'
                   : 'bg-slate-50 dark:bg-slate-950/60 border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800'

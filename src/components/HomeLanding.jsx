@@ -6,6 +6,8 @@ export default function HomeLanding({
   games,
   statsMap,
   sortBy,
+  showTopStrip = true,
+  reducedMotion = false,
   onChangeSort,
   onEnterCatalog,
   onPlayGame,
@@ -47,7 +49,8 @@ export default function HomeLanding({
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const isMotionReduced =
+      reducedMotion || window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     let width = 0;
     let height = 0;
     let dpr = Math.min(window.devicePixelRatio || 1, 2);
@@ -98,8 +101,7 @@ export default function HomeLanding({
       const maxLinkDist = 148;
       const pointerLinkDist = 185;
 
-      // Update positions if motion allowed
-      if (!reducedMotion) {
+      if (!isMotionReduced) {
         for (let i = 0; i < particles.length; i++) {
           const p = particles[i];
 
@@ -109,13 +111,11 @@ export default function HomeLanding({
             const distSq = dx * dx + dy * dy;
             if (distSq > 900 && distSq < pointerLinkDist * pointerLinkDist) {
               const dist = Math.sqrt(distSq);
-              // Gentle attraction / drift toward cursor for responsive feel
               p.vx += (dx / dist) * 0.014;
               p.vy += (dy / dist) * 0.014;
             }
           }
 
-          // Clamp speed smoothly
           p.vx *= 0.992;
           p.vy *= 0.992;
           const speed = Math.hypot(p.vx, p.vy);
@@ -147,7 +147,6 @@ export default function HomeLanding({
         }
       }
 
-      // Draw particle-to-particle lines
       for (let i = 0; i < particles.length; i++) {
         const a = particles[i];
         for (let j = i + 1; j < particles.length; j++) {
@@ -168,8 +167,7 @@ export default function HomeLanding({
         }
       }
 
-      // Draw interactive lines from pointer to nearby white dots
-      if (pointer.active) {
+      if (pointer.active && !isMotionReduced) {
         for (let i = 0; i < particles.length; i++) {
           const p = particles[i];
           const dx = pointer.x - p.x;
@@ -187,7 +185,6 @@ export default function HomeLanding({
         }
       }
 
-      // Draw crisp floating white dots
       for (let i = 0; i < particles.length; i++) {
         const p = particles[i];
         ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
@@ -196,12 +193,13 @@ export default function HomeLanding({
         ctx.fill();
       }
 
-      if (!reducedMotion) {
+      if (!isMotionReduced) {
         animId = window.requestAnimationFrame(stepAndDraw);
       }
     }
 
     function handlePointerMove(e) {
+      if (isMotionReduced) return;
       const rect = container.getBoundingClientRect();
       pointer.x = e.clientX - rect.left;
       pointer.y = e.clientY - rect.top;
@@ -213,7 +211,7 @@ export default function HomeLanding({
     }
 
     function handlePointerDown(e) {
-      if (reducedMotion) return;
+      if (isMotionReduced) return;
       const rect = container.getBoundingClientRect();
       const clickX = e.clientX - rect.left;
       const clickY = e.clientY - rect.top;
@@ -251,13 +249,15 @@ export default function HomeLanding({
       container.removeEventListener('pointerleave', handlePointerLeave);
       container.removeEventListener('pointerdown', handlePointerDown);
     };
-  }, []);
+  }, [reducedMotion]);
 
   return (
     <section
       ref={containerRef}
       aria-label="Home landing"
-      className="relative min-h-[calc(100vh-4rem)] flex items-center justify-center overflow-hidden bg-slate-900 dark:bg-slate-950 text-slate-100"
+      className={`relative ${
+        showTopStrip ? 'min-h-[calc(100vh-6rem)]' : 'min-h-[calc(100vh-4rem)]'
+      } flex items-center justify-center overflow-hidden bg-slate-900 dark:bg-slate-950 text-slate-100`}
     >
       {/* Interactive floating white dots + connecting lines canvas */}
       <canvas
@@ -272,7 +272,7 @@ export default function HomeLanding({
         className="absolute inset-0 pointer-events-none bg-[radial-gradient(ellipse_at_center,transparent_25%,rgba(2,6,23,0.68)_100%)]"
       />
 
-      <div className="relative z-10 w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14">
+      <div className="relative z-10 w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center">
           {/* Left intro + moving light-blue Enter button */}
           <div className="lg:col-span-6 text-center lg:text-left">
@@ -367,7 +367,7 @@ export default function HomeLanding({
               </div>
 
               <ul
-                className="divide-y divide-white/10 max-h-[380px] overflow-y-auto"
+                className="divide-y divide-white/10 max-h-[360px] overflow-y-auto"
                 aria-label="Available games"
               >
                 {sortedGames.length === 0 ? (

@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Drift Boss</title>
+    <link rel="stylesheet" href="./launcher.css" />
+  </head>
+  <body>
+    <div id="gameContainer">
+      <div class="bg-layer" aria-hidden="true">
+        <img
+          class="bg-img"
+          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTMW_L-ZhbnvWj1lwNrWeAGDaK0rG0lCw52zSIsTfTmWNZ9oOVhXvQ_oJRA&s=10"
+          referrerpolicy="no-referrer"
+          alt=""
+        />
+      </div>
+
+      <div class="wrap">
+        <section class="panel" aria-label="Drift Boss launcher">
+          <div class="top">
+            <div class="icon">
+              <img
+                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTMW_L-ZhbnvWj1lwNrWeAGDaK0rG0lCw52zSIsTfTmWNZ9oOVhXvQ_oJRA&s=10"
+                referrerpolicy="no-referrer"
+                alt="Drift Boss cover"
+              />
+            </div>
+            <div class="title-block">
+              <div class="title-kicker">Racing · 1 Player · One-Button Drift</div>
+              <h1>Drift Boss</h1>
+              <p class="desc">
+                Hold to drift right, release to straighten left, and stay on the endless narrow sky track while collecting coins and car unlocks.
+              </p>
+            </div>
+          </div>
+
+          <div class="actions-grid">
+            <button id="playPrimaryInline" class="btn btn-primary" type="button">▶ Play Here</button>
+            <button id="playPrimaryFullscreen" class="btn btn-secondary" type="button">Fullscreen</button>
+          </div>
+
+          <div class="info-row">
+            <div class="card-mini">
+              <div class="card-hd"><span class="chip">TIP</span> Quick controls</div>
+              <p>Hold Left Click, Spacebar, or tap the screen to drift right; release to drive straight and nail sharp 90-degree turns.</p>
+            </div>
+            <div class="card-mini">
+              <div class="card-hd"><span class="chip">NOTE</span> Fast load</div>
+              <p>Lightweight HTML5 canvas game that launches rapidly inside your browser with local coin and upgrade saves.</p>
+            </div>
+          </div>
+
+          <div id="statusNote" class="status-line">Source ready. Click Play Here to start drifting.</div>
+        </section>
+      </div>
+    </div>
+
+    <script src="./launcher.js"></script>
+    <script>
+      window.initGameLauncher({
+        title: 'Drift Boss',
+        pageTitle: 'classroom.google.com',
+        faviconUrl: 'https://ssl.gstatic.com/classroom/favicon.png',
+        allow: 'fullscreen; autoplay; encrypted-media; gamepad',
+        googleScriptUrl:
+          'data:text/html;base64,PCFET0NUWVBFIGh0bWw+CjxodG1sPgo8aGVhZD4KPHRpdGxlPkRyaWZ0IEJvc3M8L3RpdGxlPgo8bWV0YSBodHRwLWVxdWl2PSJDb250ZW50LXR5cGUiIGNvbnRlbnQ9InRleHQvaHRtbDsgY2hhcnNldD11dGYtOCI+CjxtZXRhIG5hbWU9InJvYm90cyIgY29udGVudD0ibm9pbmRleCwgbm9mb2xsb3ciPgo8bWV0YSBuYW1lPSJ2aWV3cG9ydCIgY29udGVudD0id2lkdGg9ZGV2aWNlLXdpZHRoLGhlaWdodD1kZXZpY2UtaGVpZ2h0LCBpbml0aWFsLXNjYWxlPTEsIG1heGltdW0tc2NhbGU9MSwgdXNlci1zY2FsYWJsZT0wLCBtaW5pbWFsLXVpIiAvPgo8bWV0YSBuYW1lPSJhcHBsZS1tb2JpbGUtd2ViLWFwcC1jYXBhYmxlIiBjb250ZW50PSJ5ZXMiPgo8bGluayByZWw9InN0eWxlc2hlZXQiIHR5cGU9InRleHQvY3NzIiBocmVmPSJodHRwczovLzczODUwMTYyOS00NjEwODI3NDgyNjEwNTg0MjcucHJldmlldy5lZGl0bXlzaXRlLmNvbS91cGxvYWRzL2IvMTM5ODkwMTI5LTgxNzUxMDY1MjMyMzEyOTQwNy9maWxlcy9nYW1lLmNzcyI+CjxzY3JpcHQgdHlwZT0idGV4dC9qYXZhc2NyaXB0IiBzcmM9Imh0dHBzOi8vNzM4NTAxNjI5LTQ2MTA4Mjc0ODI2MTA1ODQyNy5wcmV2aWV3LmVkaXRteXNpdGUuY29tL3VwbG9hZHMvYi8xMzk4OTAxMjktODE3NTEwNjUyMzIzMTI5NDA3L2ZpbGVzL2dhbWUuanMiPjwvc2NyaXB0Pgo8L2hlYWQ+Cjxib2R5IG9ubG9hZD0ic2V0VGltZW91dChmdW5jdGlvbigpe3dpbmRvdy5zY3JvbGxUbygwLDEpfSwxKTsiPgo8ZGl2IGlkPSJhamF4YmFyIj4KPGRpdiBpZD0iZ2FtZSI+PGNhbnZhcyBpZD0iY2FudmFzIj48L2NhbnZhcz48L2Rpdj4KPGRpdiBpZD0id2ViZ2wiPjxjYW52YXMgaWQ9IndlYmdsY2FudmFzIj48L2NhbnZhcz48L2Rpdj4KPGRpdiBpZD0ib3JpZW50YXRlIj48aW1nIHNyYz0iaHR0cHM6Ly83Mzg1MDE2MjktNDYxMDgyNzQ4MjYxMDU4NDI3LnByZXZpZXcuZWRpdG15c2l0ZS5jb20vdXBsb2Fkcy9iLzEzOTg5MDEyOS04MTc1MTA2NTIzMjMxMjk0MDcvZmlsZXMvbWVkaWEvZ3JhcGhpY3Mvb3JpZW50YXRlL2xhbmRzY2FwZS5qcGciPjwvZGl2Pgo8ZGl2IGlkPSJwbGF5IiBjbGFzcz0icGxheSIgb25jbGljaz0iIj48aW1nIHNyYz0iaHR0cHM6Ly83Mzg1MDE2MjktNDYxMDgyNzQ4MjYxMDU4NDI3LnByZXZpZXcuZWRpdG15c2l0ZS5jb20vdXBsb2Fkcy9iLzEzOTg5MDEyOS04MTc1MTA2NTIzMjMxMjk0MDcvZmlsZXMvbWVkaWEvZ3JhcGhpY3Mvc3BsYXNoL21vYmlsZS9jb3Zlci1zdGFydC5qcGciPjwvZGl2Pgo8L2Rpdj4KPC9ib2R5Pgo8L2h0bWw+',
+      });
+    </script>
+  </body>
+</html>

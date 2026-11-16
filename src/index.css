@@ -7,6 +7,72 @@
   --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
 }
 
+:root {
+  --accent-solid: #0891b2;
+  --accent-solid-hover: #0e7490;
+  --accent-solid-text: #ffffff;
+  --accent-fg: #0891b2;
+  --accent-border: rgba(8, 145, 178, 0.32);
+  --accent-soft: rgba(8, 145, 178, 0.1);
+}
+
+html.dark {
+  --accent-solid: #06b6d4;
+  --accent-solid-hover: #22d3ee;
+  --accent-solid-text: #020617;
+  --accent-fg: #22d3ee;
+  --accent-border: rgba(34, 211, 238, 0.28);
+  --accent-soft: rgba(6, 182, 212, 0.14);
+}
+
+html[data-accent="emerald"] {
+  --accent-solid: #059669;
+  --accent-solid-hover: #047857;
+  --accent-fg: #059669;
+  --accent-border: rgba(5, 150, 105, 0.34);
+  --accent-soft: rgba(5, 150, 105, 0.1);
+}
+
+html.dark[data-accent="emerald"] {
+  --accent-solid: #10b981;
+  --accent-solid-hover: #34d399;
+  --accent-fg: #34d399;
+  --accent-border: rgba(52, 211, 153, 0.28);
+  --accent-soft: rgba(16, 185, 129, 0.14);
+}
+
+html[data-accent="violet"] {
+  --accent-solid: #7c3aed;
+  --accent-solid-hover: #6d28d9;
+  --accent-fg: #7c3aed;
+  --accent-border: rgba(124, 58, 237, 0.34);
+  --accent-soft: rgba(124, 58, 237, 0.1);
+}
+
+html.dark[data-accent="violet"] {
+  --accent-solid: #8b5cf6;
+  --accent-solid-hover: #a78bfa;
+  --accent-fg: #a78bfa;
+  --accent-border: rgba(167, 139, 250, 0.28);
+  --accent-soft: rgba(139, 92, 246, 0.14);
+}
+
+html[data-accent="amber"] {
+  --accent-solid: #d97706;
+  --accent-solid-hover: #b45309;
+  --accent-fg: #d97706;
+  --accent-border: rgba(217, 119, 6, 0.34);
+  --accent-soft: rgba(217, 119, 6, 0.1);
+}
+
+html.dark[data-accent="amber"] {
+  --accent-solid: #f59e0b;
+  --accent-solid-hover: #fbbf24;
+  --accent-fg: #fbbf24;
+  --accent-border: rgba(251, 191, 36, 0.28);
+  --accent-soft: rgba(245, 158, 11, 0.14);
+}
+
 @layer base {
   html {
     font-family: var(--font-sans);
@@ -24,6 +90,34 @@
   .text-balance {
     text-wrap: balance;
   }
+}
+
+.accent-fg {
+  color: var(--accent-fg);
+}
+
+.accent-nav-active {
+  color: var(--accent-fg);
+  border-bottom-color: var(--accent-fg);
+}
+
+.accent-solid-btn {
+  background-color: var(--accent-solid);
+  color: var(--accent-solid-text);
+}
+
+.accent-solid-btn:hover {
+  background-color: var(--accent-solid-hover);
+}
+
+.accent-soft-box {
+  background-color: var(--accent-soft);
+  border-color: var(--accent-border);
+  color: var(--accent-fg);
+}
+
+.accent-border-panel {
+  border-color: var(--accent-border);
 }
 
 @keyframes lightBlueStream {
@@ -87,6 +181,21 @@
 
 html.dark .glitch-title-red {
   color: #ef4444;
+}
+
+html.reduce-motion .btn-enter-stream,
+html.reduce-motion .glitch-title-red {
+  animation: none;
+  background-position: 50% 50%;
+}
+
+html.reduce-motion *,
+html.reduce-motion *::before,
+html.reduce-motion *::after {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+  scroll-behavior: auto !important;
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -2,7 +2,9 @@ const THEME_KEY = 'recess_theme';
 const FAVORITES_KEY = 'recess_favorites';
 const RECENT_KEY = 'recess_recent';
 const STATS_KEY = 'recess_game_stats';
+const USER_VOTES_KEY = 'recess_user_votes';
 const CLOAK_KEY = 'recess_tab_cloak';
+const PREFS_KEY = 'recess_prefs';
 
 export const TAB_CLOAK_PRESETS = [
   {
@@ -30,6 +32,90 @@ export const TAB_CLOAK_PRESETS = [
     icon: 'https://ssl.gstatic.com/images/branding/product/1x/drive_2020q4_32dp.png',
   },
 ];
+
+export const ACCENT_PRESETS = [
+  { id: 'cyan', label: 'Ocean Cyan', swatch: '#06b6d4' },
+  { id: 'emerald', label: 'Arcade Emerald', swatch: '#10b981' },
+  { id: 'violet', label: 'Electric Violet', swatch: '#8b5cf6' },
+  { id: 'amber', label: 'Solar Amber', swatch: '#f59e0b' },
+];
+
+export const PANIC_URL_PRESETS = [
+  { label: 'Google Classroom', url: 'https://classroom.google.com' },
+  { label: 'Google Docs', url: 'https://docs.google.com' },
+  { label: 'Google Drive', url: 'https://drive.google.com' },
+  { label: 'Khan Academy', url: 'https://www.khanacademy.org' },
+];
+
+export const DEFAULT_PREFS = {
+  accent: 'cyan',
+  startScreen: 'home',
+  defaultSort: 'az',
+  gridDensity: 'comfortable',
+  showDescriptions: true,
+  showTopStrip: true,
+  reducedMotion: false,
+  panicEnabled: false,
+  panicUrl: 'https://classroom.google.com',
+};
+
+const VALID_ACCENTS = new Set(ACCENT_PRESETS.map((a) => a.id));
+
+export function normalizePanicUrl(value) {
+  const raw = String(value || '').trim();
+  if (!raw) return DEFAULT_PREFS.panicUrl;
+  try {
+    const parsed = new URL(raw.startsWith('http://') || raw.startsWith('https://') ? raw : `https://${raw}`);
+    if (parsed.protocol === 'https:' || parsed.protocol === 'http:') {
+      return parsed.href;
+    }
+  } catch {
+    // Fallback to default
+  }
+  return DEFAULT_PREFS.panicUrl;
+}
+
+export function normalizePrefs(input) {
+  const src = input && typeof input === 'object' ? input : {};
+  return {
+    accent: VALID_ACCENTS.has(src.accent) ? src.accent : DEFAULT_PREFS.accent,
+    startScreen: src.startScreen === 'catalog' ? 'catalog' : 'home',
+    defaultSort: src.defaultSort === 'popularity' ? 'popularity' : 'az',
+    gridDensity: src.gridDensity === 'compact' ? 'compact' : 'comfortable',
+    showDescriptions: typeof src.showDescriptions === 'boolean' ? src.showDescriptions : DEFAULT_PREFS.showDescriptions,
+    showTopStrip: typeof src.showTopStrip === 'boolean' ? src.showTopStrip : DEFAULT_PREFS.showTopStrip,
+    reducedMotion: typeof src.reducedMotion === 'boolean' ? src.reducedMotion : DEFAULT_PREFS.reducedMotion,
+    panicEnabled: typeof src.panicEnabled === 'boolean' ? src.panicEnabled : DEFAULT_PREFS.panicEnabled,
+    panicUrl: normalizePanicUrl(src.panicUrl),
+  };
+}
+
+export function getUserPrefs() {
+  try {
+    const raw = localStorage.getItem(PREFS_KEY);
+    if (!raw) return { ...DEFAULT_PREFS };
+    return normalizePrefs(JSON.parse(raw));
+  } catch {
+    return { ...DEFAULT_PREFS };
+  }
+}
+
+export function applyUserPrefs(prefs) {
+  const safe = normalizePrefs(prefs);
+  document.documentElement.dataset.accent = safe.accent;
+  document.documentElement.classList.toggle('reduce-motion', Boolean(safe.reducedMotion));
+}
+
+export function saveUserPrefs(nextPrefs) {
+  const safe = normalizePrefs(nextPrefs);
+  applyUserPrefs(safe);
+  try {
+    localStorage.setItem(PREFS_KEY, JSON.stringify(safe));
+  } catch {
+    // Ignore storage write errors
+  }
+  return safe;
+}
 
 export function getInitialTheme() {
   try {
@@ -92,7 +178,7 @@ export function getFavorites() {
   try {
     const raw = localStorage.getItem(FAVORITES_KEY);
     const parsed = raw ? JSON.parse(raw) : [];
-    return Array.isArray(parsed) ? parsed : [];
+    return Array.isArray(parsed) ? parsed.filter((id) => typeof id === 'string') : [];
   } catch {
     return [];
   }
@@ -110,7 +196,9 @@ export function getRecentGames() {
   try {
     const raw = localStorage.getItem(RECENT_KEY);
     const parsed = raw ? JSON.parse(raw) : [];
-    return Array.isArray(parsed) ? parsed : [];
+    return Array.isArray(parsed)
+      ? parsed.filter((item) => item && typeof item.id === 'string')
+      : [];
   } catch {
     return [];
   }
@@ -127,14 +215,70 @@ export function recordRecentGame(gameId) {
   return updated;
 }
 
-export function getGameStatsMap() {
+export function getLocalVotesMap() {
   try {
-    const raw = localStorage.getItem(STATS_KEY);
-    const parsed = raw ? JSON.parse(raw) : {};
-    return parsed && typeof parsed === 'object' ? parsed : {};
+    const raw = localStorage.getItem(USER_VOTES_KEY);
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      if (parsed && typeof parsed === 'object' && !Array.isArray(parsed)) {
+        const clean = {};
+        for (const [id, vote] of Object.entries(parsed)) {
+          if (vote === 'like' || vote === 'dislike') clean[id] = vote;
+        }
+        return clean;
+      }
+    }
+    // Fallback migration from legacy per-device stats map
+    const legacy = getGameStatsMapRaw();
+    const migrated = {};
+    for (const [id, entry] of Object.entries(legacy)) {
+      if (entry?.userVote === 'like' || entry?.userVote === 'dislike') {
+        migrated[id] = entry.userVote;
+      }
+    }
+    return migrated;
   } catch {
     return {};
   }
+}
+
+export function saveLocalVotesMap(votesMap) {
+  try {
+    localStorage.setItem(USER_VOTES_KEY, JSON.stringify(votesMap || {}));
+  } catch {
+    // Ignore storage write errors
+  }
+}
+
+function getGameStatsMapRaw() {
+  try {
+    const raw = localStorage.getItem(STATS_KEY);
+    const parsed = raw ? JSON.parse(raw) : {};
+    return parsed && typeof parsed === 'object' && !Array.isArray(parsed) ? parsed : {};
+  } catch {
+    return {};
+  }
+}
+
+export function mergeStatsWithLocalVotes(serverStats, localVotes = getLocalVotesMap()) {
+  const merged = {};
+  const source = serverStats && typeof serverStats === 'object' ? serverStats : {};
+  const allIds = new Set([...Object.keys(source), ...Object.keys(localVotes || {})]);
+  for (const gameId of allIds) {
+    const entry = source[gameId];
+    const vote = localVotes?.[gameId];
+    merged[gameId] = {
+      plays: Math.max(0, Number(entry?.plays || 0) || 0),
+      likes: Math.max(0, Number(entry?.likes || 0) || 0),
+      dislikes: Math.max(0, Number(entry?.dislikes || 0) || 0),
+      userVote: vote === 'like' || vote === 'dislike' ? vote : null,
+    };
+  }
+  return merged;
+}
+
+export function getGameStatsMap() {
+  return mergeStatsWithLocalVotes(getGameStatsMapRaw(), getLocalVotesMap());
 }
 
 function saveGameStatsMap(statsMap) {
@@ -171,6 +315,7 @@ export function incrementGamePlays(gameId) {
 
 export function toggleGameVote(gameId, voteType) {
   const map = getGameStatsMap();
+  const localVotes = getLocalVotesMap();
   const current = getSingleGameStats(map, gameId);
   let { likes, dislikes, userVote } = current;
 
@@ -186,6 +331,14 @@ export function toggleGameVote(gameId, voteType) {
     userVote = voteType;
   }
 
+  const nextVotes = { ...localVotes };
+  if (userVote) {
+    nextVotes[gameId] = userVote;
+  } else {
+    delete nextVotes[gameId];
+  }
+  saveLocalVotesMap(nextVotes);
+
   const next = {
     ...map,
     [gameId]: {
@@ -197,6 +350,48 @@ export function toggleGameVote(gameId, voteType) {
   };
   saveGameStatsMap(next);
   return next;
+}
+
+export async function fetchServerStats() {
+  const res = await fetch('/api/stats', { cache: 'no-store' });
+  if (!res.ok) {
+    throw new Error(`Failed to fetch stats (${res.status})`);
+  }
+  const data = await res.json();
+  const merged = mergeStatsWithLocalVotes(data?.stats || {}, getLocalVotesMap());
+  saveGameStatsMap(merged);
+  return merged;
+}
+
+export async function postServerPlay(gameId) {
+  const res = await fetch(`/api/stats/${encodeURIComponent(gameId)}/play`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    keepalive: true,
+  });
+  if (!res.ok) {
+    throw new Error(`Failed to record play (${res.status})`);
+  }
+  const data = await res.json();
+  const merged = mergeStatsWithLocalVotes(data?.allStats || {}, getLocalVotesMap());
+  saveGameStatsMap(merged);
+  return merged;
+}
+
+export async function postServerVote(gameId, prevVote, nextVote) {
+  const res = await fetch(`/api/stats/${encodeURIComponent(gameId)}/vote`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ prevVote: prevVote || null, nextVote: nextVote || null }),
+    keepalive: true,
+  });
+  if (!res.ok) {
+    throw new Error(`Failed to record vote (${res.status})`);
+  }
+  const data = await res.json();
+  const merged = mergeStatsWithLocalVotes(data?.allStats || {}, getLocalVotesMap());
+  saveGameStatsMap(merged);
+  return merged;
 }
 
 export function getSiteDataSummary() {
@@ -241,6 +436,78 @@ export function formatBytes(bytes) {
   return `${(bytes / 1024).toFixed(1)} KB`;
 }
 
+export function exportAllSiteData() {
+  return {
+    version: 1,
+    exportedAt: new Date().toISOString(),
+    theme: getInitialTheme(),
+    tabCloak: getInitialCloak(),
+    prefs: getUserPrefs(),
+    favorites: getFavorites(),
+    recent: getRecentGames(),
+    statsMap: getGameStatsMap(),
+  };
+}
+
+export function importAllSiteData(rawInput) {
+  const parsed = typeof rawInput === 'string' ? JSON.parse(rawInput) : rawInput;
+  if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed)) {
+    throw new Error('Backup file must be a JSON object.');
+  }
+
+  const nextTheme = parsed.theme === 'light' ? 'light' : 'dark';
+  const nextCloak = TAB_CLOAK_PRESETS.some((p) => p.id === parsed.tabCloak)
+    ? parsed.tabCloak
+    : 'default';
+  const nextPrefs = normalizePrefs(parsed.prefs);
+  const nextFavorites = Array.isArray(parsed.favorites)
+    ? Array.from(new Set(parsed.favorites.filter((id) => typeof id === 'string')))
+    : [];
+  const nextRecent = Array.isArray(parsed.recent)
+    ? parsed.recent
+        .filter((r) => r && typeof r.id === 'string')
+        .map((r) => ({ id: r.id, playedAt: Number(r.playedAt || Date.now()) }))
+        .slice(0, 12)
+    : [];
+
+  const nextStats = {};
+  const nextVotes = {};
+  if (parsed.statsMap && typeof parsed.statsMap === 'object' && !Array.isArray(parsed.statsMap)) {
+    for (const [id, entry] of Object.entries(parsed.statsMap)) {
+      if (typeof id !== 'string' || !entry || typeof entry !== 'object') continue;
+      const vote = entry.userVote === 'like' || entry.userVote === 'dislike' ? entry.userVote : null;
+      if (vote) nextVotes[id] = vote;
+      nextStats[id] = {
+        plays: Math.max(0, Number(entry.plays || 0) || 0),
+        likes: Math.max(0, Number(entry.likes || 0) || 0),
+        dislikes: Math.max(0, Number(entry.dislikes || 0) || 0),
+        userVote: vote,
+      };
+    }
+  }
+
+  applyTheme(nextTheme);
+  applyTabCloak(nextCloak);
+  saveUserPrefs(nextPrefs);
+  saveFavorites(nextFavorites);
+  saveLocalVotesMap(nextVotes);
+  saveGameStatsMap(nextStats);
+  try {
+    localStorage.setItem(RECENT_KEY, JSON.stringify(nextRecent));
+  } catch {
+    // Ignore storage errors
+  }
+
+  return {
+    theme: nextTheme,
+    tabCloak: nextCloak,
+    prefs: nextPrefs,
+    favorites: nextFavorites,
+    recent: nextRecent,
+    statsMap: nextStats,
+  };
+}
+
 export function clearAllSiteData() {
   try {
     localStorage.clear();
@@ -249,66 +516,11 @@ export function clearAllSiteData() {
     // Ignore storage clear errors
   }
   applyTabCloak('default');
+  applyUserPrefs(DEFAULT_PREFS);
   const fallbackTheme = 'dark';
   document.documentElement.classList.add('dark');
-  return fallbackTheme;
-}
-
-const CREATOR_PROFILE_KEY = 'recess_creator_profile';
-const STUDIO_LIKES_KEY = 'recess_studio_likes';
-
-function generateCreatorId() {
-  if (typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function') {
-    return `creator-${crypto.randomUUID()}`;
-  }
-  return `creator-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 10)}`;
-}
-
-export function getCreatorProfile() {
-  try {
-    const raw = localStorage.getItem(CREATOR_PROFILE_KEY);
-    const parsed = raw ? JSON.parse(raw) : null;
-    if (parsed && typeof parsed.id === 'string' && parsed.id.trim()) {
-      return {
-        id: parsed.id,
-        name: typeof parsed.name === 'string' && parsed.name.trim() ? parsed.name.trim() : 'ArcadeBuilder',
-      };
-    }
-  } catch {
-    // Ignore storage access errors
-  }
-
-  const created = {
-    id: generateCreatorId(),
-    name: 'ArcadeBuilder',
+  return {
+    theme: fallbackTheme,
+    prefs: { ...DEFAULT_PREFS },
   };
-  saveCreatorProfile(created);
-  return created;
 }
-
-export function saveCreatorProfile(profile) {
-  try {
-    localStorage.setItem(CREATOR_PROFILE_KEY, JSON.stringify(profile));
-  } catch {
-    // Ignore storage write errors
-  }
-}
-
-export function getLikedStudioIds() {
-  try {
-    const raw = localStorage.getItem(STUDIO_LIKES_KEY);
-    const parsed = raw ? JSON.parse(raw) : [];
-    return Array.isArray(parsed) ? parsed : [];
-  } catch {
-    return [];
-  }
-}
-
-export function saveLikedStudioIds(ids) {
-  try {
-    localStorage.setItem(STUDIO_LIKES_KEY, JSON.stringify(ids));
-  } catch {
-    // Ignore storage write errors
-  }
-}
-

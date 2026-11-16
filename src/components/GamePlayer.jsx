@@ -227,7 +227,7 @@ export default function GamePlayer({
       {/* Iframe stage */}
       <div
         ref={stageRef}
-        className="mt-5 relative w-full h-[540px] sm:h-[640px] lg:h-[720px] rounded-2xl overflow-hidden border border-slate-200 dark:border-cyan-500/25 bg-slate-100 dark:bg-slate-950 shadow-xl"
+        className="mt-5 relative w-full h-[min(74vh,720px)] min-h-[420px] rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-800 accent-border-panel bg-slate-100 dark:bg-slate-950 shadow-xl"
       >
         {isLoading && (
           <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 bg-slate-100 dark:bg-slate-950 z-10 pointer-events-none">

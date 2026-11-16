@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Funny Shooter</title>
+    <link rel="stylesheet" href="./launcher.css" />
+  </head>
+  <body>
+    <div id="gameContainer">
+      <div class="bg-layer" aria-hidden="true">
+        <img
+          class="bg-img"
+          src="https://imgs.crazygames.com/funny-shooter---destroy-all_16x9/20241118080945/funny-shooter---destroy-all_16x9-cover?metadata=none&quality=60&height=4421"
+          referrerpolicy="no-referrer"
+          alt=""
+        />
+      </div>
+
+      <div class="wrap">
+        <section class="panel" aria-label="Funny Shooter launcher">
+          <div class="top">
+            <div class="icon">
+              <img
+                src="https://imgs.crazygames.com/funny-shooter---destroy-all_16x9/20241118080945/funny-shooter---destroy-all_16x9-cover?metadata=none&quality=60&height=4421"
+                referrerpolicy="no-referrer"
+                alt="Funny Shooter cover"
+              />
+            </div>
+            <div class="title-block">
+              <div class="title-kicker">Action · 1 Player · Arena FPS</div>
+              <h1>Funny Shooter</h1>
+              <p class="desc">
+                Select a launch option below to jump into wild first-person wave battles right inside this frame, expand to fullscreen, or open in a dedicated tab.
+              </p>
+            </div>
+          </div>
+
+          <div class="actions-grid actions-grid--3">
+            <button id="playPrimaryInline" class="btn btn-primary" type="button">▶ Play Here</button>
+            <button id="playPrimaryFullscreen" class="btn btn-secondary" type="button">Fullscreen</button>
+            <a
+              id="openNewTabLink"
+              class="btn btn-secondary"
+              href="https://crisisapple89.github.io/games/games/FunnyShooter/index.html"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Open in New Tab
+            </a>
+          </div>
+
+          <div class="info-row">
+            <div class="card-mini">
+              <div class="card-hd"><span class="chip">TIP</span> Quick controls</div>
+              <p>Click inside the arena to lock mouse look. Move with WASD, sprint with Shift, jump with Space, fire with Left Click, and swap guns with 1–7.</p>
+            </div>
+            <div class="card-mini">
+              <div class="card-hd"><span class="chip">NOTE</span> Load time</div>
+              <p>Initial Unity WebGL download can take a few seconds. Use Fullscreen or Open in New Tab for smooth cursor capture.</p>
+            </div>
+          </div>
+
+          <div id="statusNote" class="status-line">Source ready. Click Play Here to start.</div>
+        </section>
+      </div>
+    </div>
+
+    <script src="./launcher.js"></script>
+    <script>
+      window.initGameLauncher({
+        title: 'Funny Shooter',
+        pageTitle: 'classroom.google.com',
+        faviconUrl: 'https://ssl.gstatic.com/classroom/favicon.png',
+        allow: 'fullscreen; autoplay; encrypted-media; pointer-lock; gamepad',
+        googleScriptUrl: 'https://crisisapple89.github.io/games/games/FunnyShooter/index.html',
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Snow Rider 3D</title>
+    <link rel="stylesheet" href="./launcher.css" />
+  </head>
+  <body>
+    <div id="gameContainer">
+      <div class="bg-layer" aria-hidden="true">
+        <img
+          class="bg-img"
+          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTmjAFOUhNbrgvp88XTuh75OhE3-VxbbiI5lxcMO2y9WPsPqCNOTzV2ooB1&s=10"
+          referrerpolicy="no-referrer"
+          alt=""
+        />
+      </div>
+
+      <div class="wrap">
+        <section class="panel" aria-label="Snow Rider 3D launcher">
+          <div class="top">
+            <div class="icon">
+              <img
+                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTmjAFOUhNbrgvp88XTuh75OhE3-VxbbiI5lxcMO2y9WPsPqCNOTzV2ooB1&s=10"
+                referrerpolicy="no-referrer"
+                alt="Snow Rider 3D cover"
+              />
+            </div>
+            <div class="title-block">
+              <div class="title-kicker">Racing · 1 Player · Endless Sledding</div>
+              <h1>Snow Rider 3D</h1>
+              <p class="desc">
+                Select a launch option below to carve down snowy mountain slopes, dodge trees and rolling snowballs, and collect gift boxes for new sleds.
+              </p>
+            </div>
+          </div>
+
+          <div class="actions-grid actions-grid--3">
+            <button id="playPrimaryInline" class="btn btn-primary" type="button">▶ Play Here</button>
+            <button id="playPrimaryFullscreen" class="btn btn-secondary" type="button">Fullscreen</button>
+            <a
+              id="openNewTabLink"
+              class="btn btn-secondary"
+              href="./snow-rider-3d-embed.html"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Open in New Tab
+            </a>
+          </div>
+
+          <div class="info-row">
+            <div class="card-mini">
+              <div class="card-hd"><span class="chip">TIP</span> Quick controls</div>
+              <p>Click inside the slope once loaded, then steer with A / D or Left / Right Arrows and press W, Up Arrow, or Space to jump over obstacles.</p>
+            </div>
+            <div class="card-mini">
+              <div class="card-hd"><span class="chip">NOTE</span> Load time</div>
+              <p>Initial Unity WebGL download can take a few moments on first boot. Use Fullscreen or Open in New Tab for maximum visibility.</p>
+            </div>
+          </div>
+
+          <div id="statusNote" class="status-line">Source ready. Click Play Here to start Snow Rider 3D.</div>
+        </section>
+      </div>
+    </div>
+
+    <script src="./launcher.js"></script>
+    <script>
+      window.initGameLauncher({
+        title: 'Snow Rider 3D',
+        pageTitle: 'classroom.google.com',
+        faviconUrl: 'https://ssl.gstatic.com/classroom/favicon.png',
+        allow: 'fullscreen; autoplay; encrypted-media; gamepad',
+        googleScriptUrl: './snow-rider-3d-embed.html',
+      });
+    </script>
+  </body>
+</html>

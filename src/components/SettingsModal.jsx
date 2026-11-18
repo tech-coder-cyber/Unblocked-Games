@@ -119,7 +119,7 @@ export default function SettingsModal({
       setSummary(getSiteDataSummary());
       setStatusBanner({
         type: 'success',
-        text: 'Backup restored. Favorites, stats, and preferences are now active.',
+        text: 'Backup restored. Favorites, history, and preferences are now active.',
       });
     } catch (err) {
       setStatusBanner({
@@ -377,35 +377,6 @@ export default function SettingsModal({
 
               <div>
                 <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-100">
-                  Default Catalog Sort
-                </h3>
-                <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">
-                  Applied automatically when launching Recess Arcade.
-                </p>
-                <div className="mt-3 grid grid-cols-2 gap-3">
-                  <button
-                    type="button"
-                    onClick={() => onUpdatePrefs({ defaultSort: 'az' })}
-                    aria-pressed={prefs.defaultSort === 'az'}
-                    className={optionClass(prefs.defaultSort === 'az')}
-                  >
-                    Alphabetical (A-Z)
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => onUpdatePrefs({ defaultSort: 'popularity' })}
-                    aria-pressed={prefs.defaultSort === 'popularity'}
-                    className={optionClass(prefs.defaultSort === 'popularity')}
-                  >
-                    Most Played
-                  </button>
-                </div>
-              </div>
-
-              <hr className="border-slate-200 dark:border-slate-800" />
-
-              <div>
-                <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-100">
                   Catalog Grid Density
                 </h3>
                 <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">
@@ -579,10 +550,10 @@ export default function SettingsModal({
                   Browser Site Data
                 </h3>
                 <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">
-                  Favorites, play history, and custom preferences stay local to your browser, while shared play, like, and dislike counts sync across devices.
+                  Favorites, play history, and custom preferences are saved locally inside your browser.
                 </p>
 
-                <dl className="mt-3 grid grid-cols-2 gap-3 p-3.5 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-xs">
+                <dl className="mt-3 grid grid-cols-3 gap-3 p-3.5 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-xs">
                   <div>
                     <dt className="text-slate-500 dark:text-slate-400">Favorites</dt>
                     <dd className="mt-0.5 font-semibold text-slate-900 dark:text-slate-100 tabular-nums">
@@ -593,12 +564,6 @@ export default function SettingsModal({
                     <dt className="text-slate-500 dark:text-slate-400">Recent Plays</dt>
                     <dd className="mt-0.5 font-semibold text-slate-900 dark:text-slate-100 tabular-nums">
                       {summary.recentCount}
-                    </dd>
-                  </div>
-                  <div>
-                    <dt className="text-slate-500 dark:text-slate-400">Play &amp; Vote Records</dt>
-                    <dd className="mt-0.5 font-semibold text-slate-900 dark:text-slate-100 tabular-nums">
-                      {summary.trackedGamesCount}
                     </dd>
                   </div>
                   <div>
@@ -663,7 +628,7 @@ export default function SettingsModal({
                 ) : (
                   <div className="p-3.5 rounded-xl border border-red-300 dark:border-red-800 bg-red-50 dark:bg-red-950/40 space-y-2.5">
                     <p className="text-xs font-medium text-red-800 dark:text-red-200">
-                      This will erase all favorites, play history, play counts, likes, dislikes, tab cloak, and appearance settings.
+                      This will erase all favorites, play history, tab cloak, and appearance settings.
                     </p>
                     <div className="flex items-center gap-2">
                       <button

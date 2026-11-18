@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { AnimatePresence, motion } from 'motion/react';
 import Header from './components/Header.jsx';
 import HomeLanding from './components/HomeLanding.jsx';
@@ -13,22 +13,15 @@ import {
   applyTheme,
   applyUserPrefs,
   clearAllSiteData,
-  fetchServerStats,
   getFavorites,
-  getGameStatsMap,
   getInitialCloak,
   getInitialTheme,
   getRecentGames,
-  getSingleGameStats,
   getUserPrefs,
-  incrementGamePlays,
   normalizePanicUrl,
-  postServerPlay,
-  postServerVote,
   recordRecentGame,
   saveFavorites,
   saveUserPrefs,
-  toggleGameVote,
   importAllSiteData,
 } from './utils/storage.js';
 
@@ -42,46 +35,14 @@ export default function App() {
   const [prefs, setPrefs] = useState(() => getUserPrefs());
   const [favorites, setFavorites] = useState(() => getFavorites());
   const [recentList, setRecentList] = useState(() => getRecentGames());
-  const [statsMap, setStatsMap] = useState(() => getGameStatsMap());
 
   const [currentScreen, setCurrentScreen] = useState(() => prefs.startScreen); // 'home' | 'catalog' | 'proxy' | 'misc-tools'
   const [activeGameId, setActiveGameId] = useState(null);
   const [activeView, setActiveView] = useState('catalog'); // 'catalog' | 'favorites' | 'recent'
   const [activeCategory, setActiveCategory] = useState('All');
-  const [sortBy, setSortBy] = useState(() => prefs.defaultSort); // 'az' | 'popularity'
   const [searchQuery, setSearchQuery] = useState('');
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [reloadSignal, setReloadSignal] = useState(0);
-  const pendingStatsOpsRef = useRef(0);
-
-  const syncStatsFromServer = useCallback(async () => {
-    if (pendingStatsOpsRef.current > 0) return;
-    try {
-      const synced = await fetchServerStats();
-      if (pendingStatsOpsRef.current === 0) {
-        setStatsMap(synced);
-      }
-    } catch {
-      // Keep cached stats if server is temporarily unreachable
-    }
-  }, []);
-
-  useEffect(() => {
-    syncStatsFromServer();
-    const handleVisibilityOrFocus = () => {
-      if (!document.hidden) {
-        syncStatsFromServer();
-      }
-    };
-    window.addEventListener('focus', handleVisibilityOrFocus);
-    document.addEventListener('visibilitychange', handleVisibilityOrFocus);
-    const intervalId = window.setInterval(syncStatsFromServer, 10000);
-    return () => {
-      window.removeEventListener('focus', handleVisibilityOrFocus);
-      document.removeEventListener('visibilitychange', handleVisibilityOrFocus);
-      window.clearInterval(intervalId);
-    };
-  }, [syncStatsFromServer]);
 
   useEffect(() => {
     applyTheme(theme);
@@ -176,11 +137,6 @@ export default function App() {
     [games]
   );
 
-  const totalPlays = useMemo(
-    () => Object.values(statsMap || {}).reduce((sum, entry) => sum + (entry?.plays || 0), 0),
-    [statsMap]
-  );
-
   const filteredGames = useMemo(() => {
     let list = [...games];
 
@@ -205,22 +161,9 @@ export default function App() {
       );
     }
 
-    if (sortBy === 'popularity') {
-      list.sort((a, b) => {
-        const sa = getSingleGameStats(statsMap, a.id);
-        const sb = getSingleGameStats(statsMap, b.id);
-        if (sb.plays !== sa.plays) return sb.plays - sa.plays;
-        const netB = sb.likes - sb.dislikes;
-        const netA = sa.likes - sa.dislikes;
-        if (netB !== netA) return netB - netA;
-        return a.title.localeCompare(b.title);
-      });
-    } else {
-      list.sort((a, b) => a.title.localeCompare(b.title));
-    }
-
+    list.sort((a, b) => a.title.localeCompare(b.title));
     return list;
-  }, [games, activeView, activeCategory, searchQuery, sortBy, favorites, recentIds, statsMap]);
+  }, [games, activeView, activeCategory, searchQuery, favorites, recentIds]);
 
   const activeGame = useMemo(
     () => games.find((g) => g.id === activeGameId) || null,
@@ -228,48 +171,14 @@ export default function App() {
   );
 
   const handleUpdatePrefs = (patch) => {
-    setPrefs((prev) => {
-      const updated = saveUserPrefs({ ...prev, ...patch });
-      if (patch.defaultSort && (patch.defaultSort === 'az' || patch.defaultSort === 'popularity')) {
-        setSortBy(patch.defaultSort);
-      }
-      return updated;
-    });
+    setPrefs((prev) => saveUserPrefs({ ...prev, ...patch }));
   };
 
   const handlePlayGame = (game) => {
     setCurrentScreen('catalog');
     setActiveGameId(game.id);
     setRecentList(recordRecentGame(game.id));
-    setStatsMap(incrementGamePlays(game.id));
     window.scrollTo({ top: 0, behavior: 'smooth' });
-
-    pendingStatsOpsRef.current += 1;
-    postServerPlay(game.id)
-      .then((synced) => {
-        setStatsMap(synced);
-      })
-      .catch(() => {})
-      .finally(() => {
-        pendingStatsOpsRef.current = Math.max(0, pendingStatsOpsRef.current - 1);
-      });
-  };
-
-  const handleVote = (gameId, voteType) => {
-    const prevVote = getSingleGameStats(statsMap, gameId).userVote;
-    const optimistic = toggleGameVote(gameId, voteType);
-    const nextVote = getSingleGameStats(optimistic, gameId).userVote;
-    setStatsMap(optimistic);
-
-    pendingStatsOpsRef.current += 1;
-    postServerVote(gameId, prevVote, nextVote)
-      .then((synced) => {
-        setStatsMap(synced);
-      })
-      .catch(() => {})
-      .finally(() => {
-        pendingStatsOpsRef.current = Math.max(0, pendingStatsOpsRef.current - 1);
-      });
   };
 
   const handleToggleFavorite = (gameId) => {
@@ -328,7 +237,6 @@ export default function App() {
   const handleResetFilters = () => {
     setActiveView('catalog');
     setActiveCategory('All');
-    setSortBy(prefs.defaultSort);
     setSearchQuery('');
   };
 
@@ -337,10 +245,8 @@ export default function App() {
     setTheme(restored.theme);
     setTabCloak(restored.tabCloak);
     setPrefs(restored.prefs);
-    setSortBy(restored.prefs.defaultSort);
     setFavorites(restored.favorites);
     setRecentList(restored.recent);
-    setStatsMap(restored.statsMap);
     setReloadSignal((s) => s + 1);
   };
 
@@ -348,13 +254,10 @@ export default function App() {
     const { theme: resetTheme, prefs: resetPrefs } = clearAllSiteData();
     setTheme(resetTheme);
     setPrefs(resetPrefs);
-    setSortBy(resetPrefs.defaultSort);
     setTabCloak('default');
     setFavorites([]);
     setRecentList([]);
-    setStatsMap({});
     setReloadSignal((s) => s + 1);
-    syncStatsFromServer();
   };
 
   const scrollToCatalog = () => {
@@ -384,7 +287,6 @@ export default function App() {
         totalGames={totalGamesCount}
         totalCategories={Math.max(0, categories.length - 1)}
         favoritesCount={favorites.length}
-        totalPlays={totalPlays}
         onSearchChange={handleHeaderSearchChange}
         onSelectLanding={handleSelectLanding}
         onSelectAllGames={handleSelectAllGames}
@@ -428,22 +330,17 @@ export default function App() {
                 game={activeGame}
                 allGames={games}
                 theme={theme}
-                stats={getSingleGameStats(statsMap, activeGame.id)}
                 isFavorite={favorites.includes(activeGame.id)}
                 reloadSignal={reloadSignal}
                 onBack={() => setActiveGameId(null)}
                 onSelectGame={handlePlayGame}
                 onToggleFavorite={handleToggleFavorite}
-                onVote={handleVote}
               />
             ) : currentScreen === 'home' ? (
               <HomeLanding
                 games={games}
-                statsMap={statsMap}
-                sortBy={sortBy}
                 showTopStrip={prefs.showTopStrip}
                 reducedMotion={prefs.reducedMotion}
-                onChangeSort={setSortBy}
                 onEnterCatalog={handleSelectAllGames}
                 onPlayGame={handlePlayGame}
               />
@@ -452,7 +349,6 @@ export default function App() {
             ) : currentScreen === 'misc-tools' ? (
               <MiscToolsView
                 games={games}
-                statsMap={statsMap}
                 tabCloak={tabCloak}
                 onChangeCloak={setTabCloak}
                 onPlayGame={handlePlayGame}
@@ -463,11 +359,6 @@ export default function App() {
                 {activeView === 'catalog' && activeCategory === 'All' && !searchQuery && (
                   <HeroSpotlight
                     featuredGame={featuredGame}
-                    stats={
-                      featuredGame
-                        ? getSingleGameStats(statsMap, featuredGame.id)
-                        : { plays: 0, likes: 0, dislikes: 0 }
-                    }
                     onPlayGame={handlePlayGame}
                     onBrowseAll={scrollToCatalog}
                   />
@@ -477,22 +368,18 @@ export default function App() {
                   categories={categories}
                   activeCategory={activeCategory}
                   activeView={activeView}
-                  sortBy={sortBy}
                   gridDensity={prefs.gridDensity}
                   showDescriptions={prefs.showDescriptions}
                   searchQuery={searchQuery}
                   favorites={favorites}
                   recentIds={recentIds}
-                  statsMap={statsMap}
                   onSelectCategory={setActiveCategory}
                   onSelectView={setActiveView}
-                  onChangeSort={setSortBy}
                   onChangeDensity={(density) => handleUpdatePrefs({ gridDensity: density })}
                   onSearchChange={setSearchQuery}
                   onResetFilters={handleResetFilters}
                   onPlayGame={handlePlayGame}
                   onToggleFavorite={handleToggleFavorite}
-                  onVote={handleVote}
                 />
               </div>
             )}

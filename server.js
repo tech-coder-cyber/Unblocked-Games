@@ -301,72 +301,6 @@ function extractReadableSummary(html, finalUrl) {
   return { title, description, headings, paragraphs, links };
 }
 
-const STATS_DATA_DIR = path.join(__dirname, 'data');
-const STATS_FILE_PATH = path.join(STATS_DATA_DIR, 'game-stats.json');
-
-function sanitizeGameId(raw) {
-  if (typeof raw !== 'string') return null;
-  const trimmed = raw.trim();
-  return /^[a-z0-9-]{1,64}$/.test(trimmed) ? trimmed : null;
-}
-
-function normalizeStatEntry(entry) {
-  return {
-    plays: Math.max(0, Math.floor(Number(entry?.plays) || 0)),
-    likes: Math.max(0, Math.floor(Number(entry?.likes) || 0)),
-    dislikes: Math.max(0, Math.floor(Number(entry?.dislikes) || 0)),
-  };
-}
-
-function loadStatsFromDisk() {
-  try {
-    if (!fs.existsSync(STATS_FILE_PATH)) {
-      return {};
-    }
-    const raw = fs.readFileSync(STATS_FILE_PATH, 'utf8');
-    const parsed = JSON.parse(raw);
-    const source = parsed && typeof parsed.stats === 'object' ? parsed.stats : parsed;
-    if (!source || typeof source !== 'object' || Array.isArray(source)) {
-      return {};
-    }
-    const normalized = {};
-    for (const [key, val] of Object.entries(source)) {
-      const id = sanitizeGameId(key);
-      if (!id || !val || typeof val !== 'object') continue;
-      normalized[id] = normalizeStatEntry(val);
-    }
-    return normalized;
-  } catch (err) {
-    console.warn('Could not read persisted game stats, starting fresh:', err?.message || err);
-    return {};
-  }
-}
-
-const statsStore = loadStatsFromDisk();
-let statsWriteChain = Promise.resolve();
-
-function persistStatsToDisk() {
-  const snapshot = JSON.stringify({ version: 1, stats: statsStore }, null, 2);
-  statsWriteChain = statsWriteChain
-    .then(async () => {
-      await fs.promises.mkdir(STATS_DATA_DIR, { recursive: true });
-      const tmpPath = `${STATS_FILE_PATH}.tmp`;
-      await fs.promises.writeFile(tmpPath, snapshot, 'utf8');
-      await fs.promises.rename(tmpPath, STATS_FILE_PATH);
-    })
-    .catch((err) => {
-      console.error('Failed to persist game stats:', err);
-    });
-  return statsWriteChain;
-}
-
-function getOrCreateStatEntry(gameId) {
-  if (!statsStore[gameId]) {
-    statsStore[gameId] = { plays: 0, likes: 0, dislikes: 0 };
-  }
-  return statsStore[gameId];
-}
-
 async function createAppServer() {
   const app = express();
   app.use(express.urlencoded({ extended: true, limit: '4mb' }));
@@ -374,45 +308,6 @@ async function createAppServer() {
 
   app.get('/api/health', (_req, res) => {
     res.json({ ok: true });
-  });
-
-  app.get('/api/stats', (_req, res) => {
-    res.setHeader('Cache-Control', 'no-store');
-    res.json({ stats: statsStore });
-  });
-
-  app.post('/api/stats/:gameId/play', async (req, res) => {
-    const gameId = sanitizeGameId(req.params.gameId);
-    if (!gameId) {
-      return res.status(400).json({ error: 'Invalid game id.' });
-    }
-    const entry = getOrCreateStatEntry(gameId);
-    entry.plays += 1;
-    await persistStatsToDisk();
-    res.setHeader('Cache-Control', 'no-store');
-    return res.json({ gameId, stats: entry, allStats: statsStore });
-  });
-
-  app.post('/api/stats/:gameId/vote', async (req, res) => {
-    const gameId = sanitizeGameId(req.params.gameId);
-    if (!gameId) {
-      return res.status(400).json({ error: 'Invalid game id.' });
-    }
-    const normalizeVote = (val) => (val === 'like' || val === 'dislike' ? val : null);
-    const prevVote = normalizeVote(req.body?.prevVote);
-    const nextVote = normalizeVote(req.body?.nextVote);
-
-    const entry = getOrCreateStatEntry(gameId);
-    if (prevVote !== nextVote) {
-      if (prevVote === 'like') entry.likes = Math.max(0, entry.likes - 1);
-      if (prevVote === 'dislike') entry.dislikes = Math.max(0, entry.dislikes - 1);
-      if (nextVote === 'like') entry.likes += 1;
-      if (nextVote === 'dislike') entry.dislikes += 1;
-      await persistStatsToDisk();
-    }
-
-    res.setHeader('Cache-Control', 'no-store');
-    return res.json({ gameId, stats: entry, allStats: statsStore });
   });
 
   // Custom Reader / Direct Fetch Endpoint (no iframe required)

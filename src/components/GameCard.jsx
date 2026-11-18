@@ -1,15 +1,13 @@
 import { useEffect, useState } from 'react';
-import { Play, Star, Gamepad2, ThumbsUp, ThumbsDown } from 'lucide-react';
+import { Play, Star, Gamepad2 } from 'lucide-react';
 
 export default function GameCard({
   game,
-  stats,
   isFavorite,
   compact = false,
   showDescription = true,
   onPlay,
   onToggleFavorite,
-  onVote,
 }) {
   const [imgError, setImgError] = useState(false);
 
@@ -97,50 +95,8 @@ export default function GameCard({
           </p>
         )}
 
-        {/* Plays, Likes, and Dislikes row */}
-        <div className={`${showDescription ? 'pt-2' : 'mt-auto pt-2'} flex items-center justify-between gap-2 text-xs text-slate-600 dark:text-slate-300 tabular-nums border-t border-slate-100 dark:border-slate-800/80`}>
-          <span className="inline-flex items-center gap-1.5 font-medium whitespace-nowrap">
-            <Play className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" aria-hidden="true" />
-            <span>
-              {stats.plays.toLocaleString()} {stats.plays === 1 ? 'play' : 'plays'}
-            </span>
-          </span>
-
-          <div className="flex items-center gap-1.5">
-            <button
-              type="button"
-              onClick={() => onVote(game.id, 'like')}
-              aria-label={`Like ${game.title} (${stats.likes} likes)`}
-              aria-pressed={stats.userVote === 'like'}
-              className={`inline-flex items-center gap-1 px-2.5 py-1.5 min-h-[34px] rounded-lg border text-xs font-medium transition-colors cursor-pointer ${
-                stats.userVote === 'like'
-                  ? 'bg-emerald-50 dark:bg-emerald-950/60 border-emerald-400 dark:border-emerald-500/60 text-emerald-700 dark:text-emerald-300'
-                  : 'bg-slate-50 dark:bg-slate-950/60 border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800'
-              }`}
-            >
-              <ThumbsUp className="w-3.5 h-3.5" aria-hidden="true" />
-              <span>{stats.likes.toLocaleString()}</span>
-            </button>
-
-            <button
-              type="button"
-              onClick={() => onVote(game.id, 'dislike')}
-              aria-label={`Dislike ${game.title} (${stats.dislikes} dislikes)`}
-              aria-pressed={stats.userVote === 'dislike'}
-              className={`inline-flex items-center gap-1 px-2.5 py-1.5 min-h-[34px] rounded-lg border text-xs font-medium transition-colors cursor-pointer ${
-                stats.userVote === 'dislike'
-                  ? 'bg-rose-50 dark:bg-rose-950/60 border-rose-400 dark:border-rose-500/60 text-rose-700 dark:text-rose-300'
-                  : 'bg-slate-50 dark:bg-slate-950/60 border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800'
-              }`}
-            >
-              <ThumbsDown className="w-3.5 h-3.5" aria-hidden="true" />
-              <span>{stats.dislikes.toLocaleString()}</span>
-            </button>
-          </div>
-        </div>
-
         {/* Action row */}
-        <div className="pt-1 flex items-center justify-between gap-2.5">
+        <div className={`${showDescription ? 'pt-2' : 'mt-auto pt-2'} flex items-center justify-between gap-2.5 border-t border-slate-100 dark:border-slate-800/80`}>
           <button
             type="button"
             onClick={() => onPlay(game)}

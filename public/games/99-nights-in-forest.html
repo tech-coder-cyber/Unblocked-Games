@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>99 Nights in Forest</title>
+    <link rel="stylesheet" href="./launcher.css" />
+  </head>
+  <body>
+    <div id="gameContainer">
+      <div class="bg-layer" aria-hidden="true">
+        <img
+          class="bg-img"
+          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTsWy3aqBjY-eYLd8_fQvgsWDYSRNE4bHnzKb7TYf11zjK26EcE8IiozHw&s=10"
+          referrerpolicy="no-referrer"
+          alt=""
+        />
+      </div>
+
+      <div class="wrap">
+        <section class="panel" aria-label="99 Nights in Forest launcher">
+          <div class="top">
+            <div class="icon">
+              <img
+                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTsWy3aqBjY-eYLd8_fQvgsWDYSRNE4bHnzKb7TYf11zjK26EcE8IiozHw&s=10"
+                referrerpolicy="no-referrer"
+                alt="99 Nights in Forest cover"
+              />
+            </div>
+            <div class="title-block">
+              <div class="title-kicker">Horror · 1 Player · Forest Survival</div>
+              <h1>99 Nights in Forest</h1>
+              <p class="desc">
+                Select a launch option below to gather timber, keep your campfire burning bright, scavenge gear by day, and survive 99 perilous nights in the haunted woods.
+              </p>
+            </div>
+          </div>
+
+          <div class="actions-grid">
+            <button id="playPrimaryInline" class="btn btn-primary" type="button">▶ Play Here</button>
+            <button id="playPrimaryFullscreen" class="btn btn-secondary" type="button">Fullscreen</button>
+          </div>
+
+          <div class="info-row">
+            <div class="card-mini">
+              <div class="card-hd"><span class="chip">TIP</span> Quick controls</div>
+              <p>Click inside the woods to focus input. Move with WASD, look with Mouse, sprint with Shift, jump with Space, chop or attack with Left Click, and interact with E / F.</p>
+            </div>
+            <div class="card-mini">
+              <div class="card-hd"><span class="chip">NOTE</span> Load time</div>
+              <p>Downloads segmented Unity WebGL assets directly inside the launcher. Wait a moment on first boot before nightfall begins.</p>
+            </div>
+          </div>
+
+          <div id="statusNote" class="status-line">Preparing 99 Nights in Forest bundle...</div>
+        </section>
+      </div>
+    </div>
+
+    <script src="./launcher.js"></script>
+    <script>
+      window.initGameLauncher({
+        title: '99 Nights in Forest',
+        pageTitle: 'classroom.google.com',
+        faviconUrl: 'https://ssl.gstatic.com/classroom/favicon.png',
+        allow: 'fullscreen; autoplay; encrypted-media; pointer-lock; gamepad',
+        gameXmlUrl: 'https://cdn.jsdelivr.net/gh/centerclassroom/ola@main/21.xml',
+      });
+    </script>
+  </body>
+</html>

@@ -1,8 +1,6 @@
 const THEME_KEY = 'recess_theme';
 const FAVORITES_KEY = 'recess_favorites';
 const RECENT_KEY = 'recess_recent';
-const STATS_KEY = 'recess_game_stats';
-const USER_VOTES_KEY = 'recess_user_votes';
 const CLOAK_KEY = 'recess_tab_cloak';
 const PREFS_KEY = 'recess_prefs';
 
@@ -50,7 +48,6 @@ export const PANIC_URL_PRESETS = [
 export const DEFAULT_PREFS = {
   accent: 'cyan',
   startScreen: 'home',
-  defaultSort: 'az',
   gridDensity: 'comfortable',
   showDescriptions: true,
   showTopStrip: true,
@@ -80,7 +77,6 @@ export function normalizePrefs(input) {
   return {
     accent: VALID_ACCENTS.has(src.accent) ? src.accent : DEFAULT_PREFS.accent,
     startScreen: src.startScreen === 'catalog' ? 'catalog' : 'home',
-    defaultSort: src.defaultSort === 'popularity' ? 'popularity' : 'az',
     gridDensity: src.gridDensity === 'compact' ? 'compact' : 'comfortable',
     showDescriptions: typeof src.showDescriptions === 'boolean' ? src.showDescriptions : DEFAULT_PREFS.showDescriptions,
     showTopStrip: typeof src.showTopStrip === 'boolean' ? src.showTopStrip : DEFAULT_PREFS.showTopStrip,
@@ -215,195 +211,14 @@ export function recordRecentGame(gameId) {
   return updated;
 }
 
-export function getLocalVotesMap() {
-  try {
-    const raw = localStorage.getItem(USER_VOTES_KEY);
-    if (raw) {
-      const parsed = JSON.parse(raw);
-      if (parsed && typeof parsed === 'object' && !Array.isArray(parsed)) {
-        const clean = {};
-        for (const [id, vote] of Object.entries(parsed)) {
-          if (vote === 'like' || vote === 'dislike') clean[id] = vote;
-        }
-        return clean;
-      }
-    }
-    // Fallback migration from legacy per-device stats map
-    const legacy = getGameStatsMapRaw();
-    const migrated = {};
-    for (const [id, entry] of Object.entries(legacy)) {
-      if (entry?.userVote === 'like' || entry?.userVote === 'dislike') {
-        migrated[id] = entry.userVote;
-      }
-    }
-    return migrated;
-  } catch {
-    return {};
-  }
-}
-
-export function saveLocalVotesMap(votesMap) {
-  try {
-    localStorage.setItem(USER_VOTES_KEY, JSON.stringify(votesMap || {}));
-  } catch {
-    // Ignore storage write errors
-  }
-}
-
-function getGameStatsMapRaw() {
-  try {
-    const raw = localStorage.getItem(STATS_KEY);
-    const parsed = raw ? JSON.parse(raw) : {};
-    return parsed && typeof parsed === 'object' && !Array.isArray(parsed) ? parsed : {};
-  } catch {
-    return {};
-  }
-}
-
-export function mergeStatsWithLocalVotes(serverStats, localVotes = getLocalVotesMap()) {
-  const merged = {};
-  const source = serverStats && typeof serverStats === 'object' ? serverStats : {};
-  const allIds = new Set([...Object.keys(source), ...Object.keys(localVotes || {})]);
-  for (const gameId of allIds) {
-    const entry = source[gameId];
-    const vote = localVotes?.[gameId];
-    merged[gameId] = {
-      plays: Math.max(0, Number(entry?.plays || 0) || 0),
-      likes: Math.max(0, Number(entry?.likes || 0) || 0),
-      dislikes: Math.max(0, Number(entry?.dislikes || 0) || 0),
-      userVote: vote === 'like' || vote === 'dislike' ? vote : null,
-    };
-  }
-  return merged;
-}
-
-export function getGameStatsMap() {
-  return mergeStatsWithLocalVotes(getGameStatsMapRaw(), getLocalVotesMap());
-}
-
-function saveGameStatsMap(statsMap) {
-  try {
-    localStorage.setItem(STATS_KEY, JSON.stringify(statsMap));
-  } catch {
-    // Ignore storage write errors
-  }
-}
-
-export function getSingleGameStats(statsMap, gameId) {
-  const entry = statsMap && statsMap[gameId];
-  return {
-    plays: Number(entry?.plays || 0),
-    likes: Number(entry?.likes || 0),
-    dislikes: Number(entry?.dislikes || 0),
-    userVote: entry?.userVote === 'like' || entry?.userVote === 'dislike' ? entry.userVote : null,
-  };
-}
-
-export function incrementGamePlays(gameId) {
-  const map = getGameStatsMap();
-  const current = getSingleGameStats(map, gameId);
-  const next = {
-    ...map,
-    [gameId]: {
-      ...current,
-      plays: current.plays + 1,
-    },
-  };
-  saveGameStatsMap(next);
-  return next;
-}
-
-export function toggleGameVote(gameId, voteType) {
-  const map = getGameStatsMap();
-  const localVotes = getLocalVotesMap();
-  const current = getSingleGameStats(map, gameId);
-  let { likes, dislikes, userVote } = current;
-
-  if (userVote === voteType) {
-    if (voteType === 'like') likes = Math.max(0, likes - 1);
-    if (voteType === 'dislike') dislikes = Math.max(0, dislikes - 1);
-    userVote = null;
-  } else {
-    if (userVote === 'like') likes = Math.max(0, likes - 1);
-    if (userVote === 'dislike') dislikes = Math.max(0, dislikes - 1);
-    if (voteType === 'like') likes += 1;
-    if (voteType === 'dislike') dislikes += 1;
-    userVote = voteType;
-  }
-
-  const nextVotes = { ...localVotes };
-  if (userVote) {
-    nextVotes[gameId] = userVote;
-  } else {
-    delete nextVotes[gameId];
-  }
-  saveLocalVotesMap(nextVotes);
-
-  const next = {
-    ...map,
-    [gameId]: {
-      ...current,
-      likes,
-      dislikes,
-      userVote,
-    },
-  };
-  saveGameStatsMap(next);
-  return next;
-}
-
-export async function fetchServerStats() {
-  const res = await fetch('/api/stats', { cache: 'no-store' });
-  if (!res.ok) {
-    throw new Error(`Failed to fetch stats (${res.status})`);
-  }
-  const data = await res.json();
-  const merged = mergeStatsWithLocalVotes(data?.stats || {}, getLocalVotesMap());
-  saveGameStatsMap(merged);
-  return merged;
-}
-
-export async function postServerPlay(gameId) {
-  const res = await fetch(`/api/stats/${encodeURIComponent(gameId)}/play`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    keepalive: true,
-  });
-  if (!res.ok) {
-    throw new Error(`Failed to record play (${res.status})`);
-  }
-  const data = await res.json();
-  const merged = mergeStatsWithLocalVotes(data?.allStats || {}, getLocalVotesMap());
-  saveGameStatsMap(merged);
-  return merged;
-}
-
-export async function postServerVote(gameId, prevVote, nextVote) {
-  const res = await fetch(`/api/stats/${encodeURIComponent(gameId)}/vote`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ prevVote: prevVote || null, nextVote: nextVote || null }),
-    keepalive: true,
-  });
-  if (!res.ok) {
-    throw new Error(`Failed to record vote (${res.status})`);
-  }
-  const data = await res.json();
-  const merged = mergeStatsWithLocalVotes(data?.allStats || {}, getLocalVotesMap());
-  saveGameStatsMap(merged);
-  return merged;
-}
-
 export function getSiteDataSummary() {
   let favoritesCount = 0;
   let recentCount = 0;
-  let trackedGamesCount = 0;
   let totalBytes = 0;
 
   try {
     favoritesCount = getFavorites().length;
     recentCount = getRecentGames().length;
-    trackedGamesCount = Object.keys(getGameStatsMap()).length;
 
     for (let i = 0; i < localStorage.length; i++) {
       const key = localStorage.key(i);
@@ -425,7 +240,6 @@ export function getSiteDataSummary() {
   return {
     favoritesCount,
     recentCount,
-    trackedGamesCount,
     totalBytes,
   };
 }
@@ -445,7 +259,6 @@ export function exportAllSiteData() {
     prefs: getUserPrefs(),
     favorites: getFavorites(),
     recent: getRecentGames(),
-    statsMap: getGameStatsMap(),
   };
 }
 
@@ -470,28 +283,10 @@ export function importAllSiteData(rawInput) {
         .slice(0, 12)
     : [];
 
-  const nextStats = {};
-  const nextVotes = {};
-  if (parsed.statsMap && typeof parsed.statsMap === 'object' && !Array.isArray(parsed.statsMap)) {
-    for (const [id, entry] of Object.entries(parsed.statsMap)) {
-      if (typeof id !== 'string' || !entry || typeof entry !== 'object') continue;
-      const vote = entry.userVote === 'like' || entry.userVote === 'dislike' ? entry.userVote : null;
-      if (vote) nextVotes[id] = vote;
-      nextStats[id] = {
-        plays: Math.max(0, Number(entry.plays || 0) || 0),
-        likes: Math.max(0, Number(entry.likes || 0) || 0),
-        dislikes: Math.max(0, Number(entry.dislikes || 0) || 0),
-        userVote: vote,
-      };
-    }
-  }
-
   applyTheme(nextTheme);
   applyTabCloak(nextCloak);
   saveUserPrefs(nextPrefs);
   saveFavorites(nextFavorites);
-  saveLocalVotesMap(nextVotes);
-  saveGameStatsMap(nextStats);
   try {
     localStorage.setItem(RECENT_KEY, JSON.stringify(nextRecent));
   } catch {
@@ -504,7 +299,6 @@ export function importAllSiteData(rawInput) {
     prefs: nextPrefs,
     favorites: nextFavorites,
     recent: nextRecent,
-    statsMap: nextStats,
   };
 }
 

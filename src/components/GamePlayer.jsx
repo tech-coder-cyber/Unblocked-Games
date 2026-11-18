@@ -5,9 +5,6 @@ import {
   RotateCcw,
   Star,
   Columns2,
-  Play,
-  ThumbsUp,
-  ThumbsDown,
   ExternalLink,
   Gamepad2,
 } from 'lucide-react';
@@ -43,13 +40,11 @@ export default function GamePlayer({
   game,
   allGames,
   theme,
-  stats,
   isFavorite,
   reloadSignal,
   onBack,
   onSelectGame,
   onToggleFavorite,
-  onVote,
 }) {
   const stageRef = useRef(null);
   const iframeRef = useRef(null);
@@ -124,49 +119,17 @@ export default function GamePlayer({
                 game.title
               )}
             </h1>
-            <div className="mt-1 flex flex-wrap items-center gap-2 text-xs text-slate-500 dark:text-slate-400 tabular-nums">
+            <div className="mt-1 flex flex-wrap items-center gap-2 text-xs text-slate-500 dark:text-slate-400">
               <span>{game.category}</span>
               <span aria-hidden="true">·</span>
               <span>{game.players}</span>
               <span aria-hidden="true">·</span>
-              <span className="inline-flex items-center gap-1 text-emerald-600 dark:text-emerald-400 font-semibold">
-                <Play className="w-3 h-3" aria-hidden="true" />
-                {stats.plays.toLocaleString()} {stats.plays === 1 ? 'play' : 'plays'}
-              </span>
+              <span>{game.difficulty}</span>
             </div>
           </div>
         </div>
 
         <div className="flex flex-wrap items-center gap-2">
-          <button
-            type="button"
-            onClick={() => onVote(game.id, 'like')}
-            aria-label={`Like ${game.title}`}
-            aria-pressed={stats.userVote === 'like'}
-            className={`inline-flex items-center gap-1.5 px-3 py-2 min-h-[40px] rounded-xl border text-xs font-semibold tabular-nums transition-colors whitespace-nowrap shrink-0 cursor-pointer ${
-              stats.userVote === 'like'
-                ? 'bg-emerald-50 dark:bg-emerald-950/60 border-emerald-400 dark:border-emerald-500/60 text-emerald-700 dark:text-emerald-300'
-                : 'bg-white dark:bg-slate-900 border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800'
-            }`}
-          >
-            <ThumbsUp className="w-3.5 h-3.5" aria-hidden="true" />
-            <span>{stats.likes.toLocaleString()}</span>
-          </button>
-
-          <button
-            type="button"
-            onClick={() => onVote(game.id, 'dislike')}
-            aria-label={`Dislike ${game.title}`}
-            aria-pressed={stats.userVote === 'dislike'}
-            className={`inline-flex items-center gap-1.5 px-3 py-2 min-h-[40px] rounded-xl border text-xs font-semibold tabular-nums transition-colors whitespace-nowrap shrink-0 cursor-pointer ${
-              stats.userVote === 'dislike'
-                ? 'bg-rose-50 dark:bg-rose-950/60 border-rose-400 dark:border-rose-500/60 text-rose-700 dark:text-rose-300'
-                : 'bg-white dark:bg-slate-900 border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800'
-            }`}
-          >
-            <ThumbsDown className="w-3.5 h-3.5" aria-hidden="true" />
-            <span>{stats.dislikes.toLocaleString()}</span>
-          </button>
 
           <button
             type="button"

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
-import { Play, Gamepad2, ThumbsUp, ThumbsDown } from 'lucide-react';
+import { Play, Gamepad2 } from 'lucide-react';
 
-export default function HeroSpotlight({ featuredGame, stats, onPlayGame, onBrowseAll }) {
+export default function HeroSpotlight({ featuredGame, onPlayGame, onBrowseAll }) {
   const [imgError, setImgError] = useState(false);
 
   useEffect(() => {
@@ -39,22 +39,10 @@ export default function HeroSpotlight({ featuredGame, stats, onPlayGame, onBrows
               {featuredGame.description}
             </p>
 
-            {/* Unboxed telemetry counters */}
-            <div className="mt-5 flex flex-wrap items-center gap-4 text-xs text-slate-600 dark:text-slate-300 tabular-nums">
-              <span className="inline-flex items-center gap-1.5 font-medium">
-                <Play className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" aria-hidden="true" />
-                {stats.plays.toLocaleString()} {stats.plays === 1 ? 'Play' : 'Plays'}
-              </span>
+            <div className="mt-4 flex flex-wrap items-center gap-2 text-xs font-medium text-slate-500 dark:text-slate-400">
+              <span>{featuredGame.players}</span>
               <span aria-hidden="true">·</span>
-              <span className="inline-flex items-center gap-1.5 font-medium">
-                <ThumbsUp className="w-3.5 h-3.5 text-cyan-600 dark:text-cyan-400" aria-hidden="true" />
-                {stats.likes.toLocaleString()} Likes
-              </span>
-              <span aria-hidden="true">·</span>
-              <span className="inline-flex items-center gap-1.5 font-medium">
-                <ThumbsDown className="w-3.5 h-3.5 text-slate-400" aria-hidden="true" />
-                {stats.dislikes.toLocaleString()} Dislikes
-              </span>
+              <span>{featuredGame.difficulty}</span>
             </div>
 
             <div className="mt-6 flex flex-wrap items-center gap-3">

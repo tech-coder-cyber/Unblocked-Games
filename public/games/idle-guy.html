@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Idle Guy</title>
+    <link rel="stylesheet" href="./launcher.css" />
+  </head>
+  <body>
+    <div id="gameContainer">
+      <div class="bg-layer" aria-hidden="true">
+        <img
+          class="bg-img"
+          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTdhU0binv7gdX1pUpyp9OFo1lA0UZnd806jo0R3C9Obw&s=10"
+          referrerpolicy="no-referrer"
+          alt=""
+        />
+      </div>
+
+      <div class="wrap">
+        <section class="panel" aria-label="Idle Guy launcher">
+          <div class="top">
+            <div class="icon">
+              <img
+                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTdhU0binv7gdX1pUpyp9OFo1lA0UZnd806jo0R3C9Obw&s=10"
+                referrerpolicy="no-referrer"
+                alt="Idle Guy cover"
+              />
+            </div>
+            <div class="title-block">
+              <div class="title-kicker">Strategy · 1 Player · Life Simulator</div>
+              <h1>Idle Guy</h1>
+              <p class="desc">
+                Select a launch option below to climb the career ladder, manage health and happiness, trade crypto or stocks, and build a billionaire empire in this 9:16 portrait simulator.
+              </p>
+            </div>
+          </div>
+
+          <div class="actions-grid">
+            <button id="playPrimaryInline" class="btn btn-primary" type="button">▶ Play Here</button>
+            <button id="playPrimaryFullscreen" class="btn btn-secondary" type="button">Fullscreen</button>
+          </div>
+
+          <div class="info-row">
+            <div class="card-mini">
+              <div class="card-hd"><span class="chip">TIP</span> Quick controls</div>
+              <p>Use Left Click to tap for cash, pick jobs, buy housing, and trade investments. Scroll down or drag inside the 9:16 frame to reach menus and lower panels.</p>
+            </div>
+            <div class="card-mini">
+              <div class="card-hd"><span class="chip">NOTE</span> Portrait fit &amp; scroll</div>
+              <p>Automatically centered in a crisp 9:16 frame without horizontal stretching. Vertical scrolling stays enabled inside the stage on smaller screens.</p>
+            </div>
+          </div>
+
+          <div id="statusNote" class="status-line">Preparing Idle Guy bundle...</div>
+        </section>
+      </div>
+    </div>
+
+    <script src="./launcher.js"></script>
+    <script>
+      window.initGameLauncher({
+        title: 'Idle Guy',
+        pageTitle: 'classroom.google.com',
+        faviconUrl: 'https://ssl.gstatic.com/classroom/favicon.png',
+        allow: 'fullscreen; autoplay; encrypted-media; gamepad',
+        portraitFit: true,
+        allowScroll: true,
+        gameXmlUrl: 'https://cdn.jsdelivr.net/gh/ftbaldana/yo8e7@main/3.xml',
+      });
+    </script>
+  </body>
+</html>

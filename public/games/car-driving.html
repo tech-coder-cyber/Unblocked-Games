@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Car Driving</title>
+    <link rel="stylesheet" href="./launcher.css" />
+  </head>
+  <body>
+    <div id="gameContainer">
+      <div class="bg-layer" aria-hidden="true">
+        <img
+          class="bg-img"
+          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR9YoBEPkncPfR8aGT5Ut8UkALF1M-jvENgr7JUp3sHkM-z020b5mFv4ylP&s=10"
+          referrerpolicy="no-referrer"
+          alt=""
+        />
+      </div>
+
+      <div class="wrap">
+        <section class="panel" aria-label="Car Driving launcher">
+          <div class="top">
+            <div class="icon">
+              <img
+                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR9YoBEPkncPfR8aGT5Ut8UkALF1M-jvENgr7JUp3sHkM-z020b5mFv4ylP&s=10"
+                referrerpolicy="no-referrer"
+                alt="Car Driving cover"
+              />
+            </div>
+            <div class="title-block">
+              <div class="title-kicker">Racing · 1 Player · 3D Driving</div>
+              <h1>Car Driving</h1>
+              <p class="desc">
+                Cruise through open 3D streets, pull off high-speed drifts, hit stunt ramps, and test multiple rides right in your browser.
+              </p>
+            </div>
+          </div>
+
+          <div class="actions-grid">
+            <button id="playPrimaryInline" class="btn btn-primary" type="button">▶ Play Here</button>
+            <button id="playPrimaryFullscreen" class="btn btn-secondary" type="button">Fullscreen</button>
+            <button id="playAltInline" class="btn btn-secondary" type="button">Play Here (Alt)</button>
+            <button id="playAltFullscreen" class="btn btn-secondary" type="button">Fullscreen (Alt)</button>
+            <a
+              id="openNewTabLink"
+              class="btn btn-secondary btn-full"
+              href="https://script.google.com/macros/s/AKfycbzQlpr1tIkhRPz587329iVg2MEKG1JuFGIsqoiaxezladgDxbYHMpwNiIUTn_5T16w6/exec"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Open in New Tab
+            </a>
+          </div>
+
+          <div class="info-row">
+            <div class="card-mini">
+              <div class="card-hd"><span class="chip">TIP</span> Quick controls</div>
+              <p>Drive and steer with W A S D or Arrow Keys, pull the handbrake with Space, switch camera angles with C, and click inside to focus controls.</p>
+            </div>
+            <div class="card-mini">
+              <div class="card-hd"><span class="chip">NOTE</span> Load time</div>
+              <p>Initial Unity WebGL build can take a few seconds. Switch to Play Here (Alt) if the primary source is blocked or slow.</p>
+            </div>
+          </div>
+
+          <div id="statusNote" class="status-line">Preparing game mirrors...</div>
+        </section>
+      </div>
+    </div>
+
+    <script src="./launcher.js"></script>
+    <script>
+      window.initGameLauncher({
+        title: 'Car Driving',
+        pageTitle: 'classroom.google.com',
+        faviconUrl: 'https://ssl.gstatic.com/classroom/favicon.png',
+        allow: 'fullscreen; autoplay; encrypted-media; pointer-lock; gamepad',
+        googleScriptUrl:
+          'https://script.google.com/macros/s/AKfycbzQlpr1tIkhRPz587329iVg2MEKG1JuFGIsqoiaxezladgDxbYHMpwNiIUTn_5T16w6/exec',
+        gameXmlUrl: './car-driving-alt.xml',
+      });
+    </script>
+  </body>
+</html>

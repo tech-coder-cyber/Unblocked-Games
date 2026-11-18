@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Eggy Car</title>
+    <link rel="stylesheet" href="./launcher.css" />
+  </head>
+  <body>
+    <div id="gameContainer">
+      <div class="bg-layer" aria-hidden="true">
+        <img
+          class="bg-img"
+          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRce1eU9qzkF33VlQJkMUTRp4HClGA_OzdbU8CC7geAHg&s"
+          referrerpolicy="no-referrer"
+          alt=""
+        />
+      </div>
+
+      <div class="wrap">
+        <section class="panel" aria-label="Eggy Car launcher">
+          <div class="top">
+            <div class="icon">
+              <img
+                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRce1eU9qzkF33VlQJkMUTRp4HClGA_OzdbU8CC7geAHg&s"
+                referrerpolicy="no-referrer"
+                alt="Eggy Car cover"
+              />
+            </div>
+            <div class="title-block">
+              <div class="title-kicker">Racing · 1 Player · Balance Arcade</div>
+              <h1>Eggy Car</h1>
+              <p class="desc">
+                Accelerate carefully over steep rolling hills, collect coins and freeze power-ups, and keep your fragile egg from tumbling out of the car.
+              </p>
+            </div>
+          </div>
+
+          <div class="actions-grid">
+            <button id="playPrimaryInline" class="btn btn-primary" type="button">▶ Play Here</button>
+            <button id="playPrimaryFullscreen" class="btn btn-secondary" type="button">Fullscreen</button>
+            <button id="playAltInline" class="btn btn-secondary" type="button">Play Here (Alt)</button>
+            <button id="playAltFullscreen" class="btn btn-secondary" type="button">Fullscreen (Alt)</button>
+            <a
+              id="openNewTabLink"
+              class="btn btn-secondary btn-full"
+              href="https://script.google.com/macros/s/AKfycbxO2Ld-ToSSwEMhOfbfBMjTwsLGHqWx8XKS3FCKl0F8GmzH4h3EFYhDGI-RXVdY5uhe/exec"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Open in New Tab
+            </a>
+          </div>
+
+          <div class="info-row">
+            <div class="card-mini">
+              <div class="card-hd"><span class="chip">TIP</span> Quick controls</div>
+              <p>Hold D or Right Arrow to accelerate forward and A or Left Arrow to brake or reverse smoothly so the egg stays balanced in your seat.</p>
+            </div>
+            <div class="card-mini">
+              <div class="card-hd"><span class="chip">NOTE</span> Load time</div>
+              <p>If the primary source is blocked or slow, switch to Play Here (Alt) to load the standalone Construct 2 mirror.</p>
+            </div>
+          </div>
+
+          <div id="statusNote" class="status-line">Preparing game mirrors...</div>
+        </section>
+      </div>
+    </div>
+
+    <script src="./launcher.js"></script>
+    <script>
+      window.initGameLauncher({
+        title: 'Eggy Car',
+        pageTitle: 'classroom.google.com',
+        faviconUrl: 'https://ssl.gstatic.com/classroom/favicon.png',
+        allow: 'fullscreen; autoplay; encrypted-media; gamepad',
+        googleScriptUrl:
+          'https://script.google.com/macros/s/AKfycbxO2Ld-ToSSwEMhOfbfBMjTwsLGHqWx8XKS3FCKl0F8GmzH4h3EFYhDGI-RXVdY5uhe/exec',
+        gameXmlUrl:
+          'https://61881703-700750173521264462.preview.editmysite.com/uploads/b/139890129-626741285986065158/files/ec.xml',
+      });
+    </script>
+  </body>
+</html>

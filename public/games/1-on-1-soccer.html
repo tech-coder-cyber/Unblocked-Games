@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>1 on 1 Soccer</title>
+    <link rel="stylesheet" href="./launcher.css" />
+  </head>
+  <body>
+    <div id="gameContainer">
+      <div class="bg-layer" aria-hidden="true">
+        <img
+          class="bg-img"
+          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSMLPZpapEJpGBNlMN1YY54Wh2QFoUFghMll3cqWq5ij1aNcdGGJBnQ-SJs&s=10"
+          referrerpolicy="no-referrer"
+          alt=""
+        />
+      </div>
+
+      <div class="wrap">
+        <section class="panel" aria-label="1 on 1 Soccer launcher">
+          <div class="top">
+            <div class="icon">
+              <img
+                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSMLPZpapEJpGBNlMN1YY54Wh2QFoUFghMll3cqWq5ij1aNcdGGJBnQ-SJs&s=10"
+                referrerpolicy="no-referrer"
+                alt="1 on 1 Soccer cover"
+              />
+            </div>
+            <div class="title-block">
+              <div class="title-kicker">Sports · 1-2 Players · Flash Classic</div>
+              <h1>1 on 1 Soccer</h1>
+              <p class="desc">
+                Pick a national squad, time your jumps and headers, and outscore your opponent in classic 1v1 Flash soccer matches right in your browser.
+              </p>
+            </div>
+          </div>
+
+          <div class="actions-grid">
+            <button id="playPrimaryInline" class="btn btn-primary" type="button">▶ Play Here</button>
+            <button id="playPrimaryFullscreen" class="btn btn-secondary" type="button">Fullscreen</button>
+            <button id="playAltInline" class="btn btn-secondary" type="button">Play Here (Alt)</button>
+            <button id="playAltFullscreen" class="btn btn-secondary" type="button">Fullscreen (Alt)</button>
+            <a
+              id="openNewTabLink"
+              class="btn btn-secondary btn-full"
+              href="https://script.google.com/macros/s/AKfycbxJ3oet4bnNqQK_nqPo6KSwPlvIMR448__kEYKx_WN-QbncNc98PEc-qaFme7l2tbKH/exec"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Open in New Tab
+            </a>
+          </div>
+
+          <div class="info-row">
+            <div class="card-mini">
+              <div class="card-hd"><span class="chip">TIP</span> Quick controls</div>
+              <p>Player 1 moves and jumps with the Arrow Keys (Left / Right / Up). In 2-player matches, Player 2 uses A / D to move and W to jump.</p>
+            </div>
+            <div class="card-mini">
+              <div class="card-hd"><span class="chip">NOTE</span> Ruffle Flash</div>
+              <p>Powered by Ruffle Flash emulation. Switch to Play Here (Alt) if the primary source is blocked on your network.</p>
+            </div>
+          </div>
+
+          <div id="statusNote" class="status-line">Preparing game mirrors...</div>
+        </section>
+      </div>
+    </div>
+
+    <script src="./launcher.js"></script>
+    <script>
+      window.initGameLauncher({
+        title: '1 on 1 Soccer',
+        pageTitle: 'classroom.google.com',
+        faviconUrl: 'https://ssl.gstatic.com/classroom/favicon.png',
+        allow: 'fullscreen; autoplay; encrypted-media; gamepad',
+        googleScriptUrl:
+          'https://script.google.com/macros/s/AKfycbxJ3oet4bnNqQK_nqPo6KSwPlvIMR448__kEYKx_WN-QbncNc98PEc-qaFme7l2tbKH/exec',
+        gameXmlUrl:
+          'data:@file/xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiID8+PE1vZHVsZT48TW9kdWxlUHJlZnMgdGl0bGU9IjEgT24gMSBTb2NjZXIiIC8+PENvbnRlbnQgdHlwZT0iaHRtbCI+PCFbQ0RBVEFbPHN0eWxlPgogIGh0bWwsIGJvZHkgewogICAgbWFyZ2luOiAwOwogICAgcGFkZGluZzogMDsKICAgIG92ZXJmbG93OiBoaWRkZW47CiAgICB3aWR0aDogMTAwJTsKICAgIGhlaWdodDogMTAwJTsKICAgIGJhY2tncm91bmQ6ICMwMDA7CiAgfQogICNjb250YWluZXIgewogICAgbWFyZ2luOiAwOwogICAgcGFkZGluZzogMDsKICAgIHdpZHRoOiAxMDB2dzsKICAgIGhlaWdodDogMTAwdmg7CiAgICBkaXNwbGF5OiBmbGV4OwogICAganVzdGlmeS1jb250ZW50OiBjZW50ZXI7CiAgICBhbGlnbi1pdGVtczogY2VudGVyOwogIH0KICBjYW52YXMgewogICAgZGlzcGxheTogYmxvY2s7CiAgfQo8L3N0eWxlPgo8c2NyaXB0IHNyYz0iaHR0cHM6Ly91bnBrZy5jb20vQHJ1ZmZsZS1ycy9ydWZmbGUiPjwvc2NyaXB0Pgo8c2NyaXB0PgogIHdpbmRvdy5SdWZmbGVQbGF5ZXIgPSB3aW5kb3cuUnVmZmxlUGxheWVyIHx8IHt9OwogIHdpbmRvdy5SdWZmbGVQbGF5ZXIuY29uZmlnID0gewogICAgImF1dG9wbGF5IjogIm9mZiIsCiAgICAicG9seWZpbGxzIjogdHJ1ZSwKICAgICJsZXR0ZXJib3giOiAib24iLAogICAgImJhY2tncm91bmRDb2xvciI6IG51bGwsCiAgICAic2NhbGUiOiAic2hvd0FsbCIsCiAgICAiYWxsb3dGdWxsc2NyZWVuIjogdHJ1ZSwKICAgICJmb3JjZVNjYWxlIjogdHJ1ZSwKICAgICJmb3JjZUFsaWduIjogdHJ1ZSwKICAgICJzcGxhc2hTY3JlZW4iOiB0cnVlLAogICAgIndtb2RlIjogIldpbmRvdyIsCiAgICAidW5tdXRlT3ZlcmxheSI6ICJoaWRkZW4iLAogICAgInF1YWxpdHkiOiAiaGlnaCIKICB9OwogIHdpbmRvdy5hZGRFdmVudExpc3RlbmVyKCJsb2FkIiwgZnVuY3Rpb24gKCkgewogICAgY29uc3QgcnVmZmxlID0gd2luZG93LlJ1ZmZsZVBsYXllci5uZXdlc3QoKTsKICAgIGNvbnN0IHBsYXllciA9IHJ1ZmZsZS5jcmVhdGVQbGF5ZXIoKTsKICAgIGNvbnN0IGNvbnRhaW5lciA9IGRvY3VtZW50LmdldEVsZW1lbnRCeUlkKCJjb250YWluZXIiKTsKICAgIGNvbnRhaW5lci5hcHBlbmRDaGlsZChwbGF5ZXIpOwogICAgcGxheWVyLmxvYWQoImh0dHBzOi8vY2RuLmpzZGVsaXZyLm5ldC9naC94b2p3L3dhdmVzQGM3M2JjZGZmY2M4YWYwZTRjYzQzYjVjZmJlZDdiMDk5NDQ5NjgzY2QvcHVibGljL2Fzc2V0cy9nLzFvbjFzb2NjZXIvMW9uMXNvY2Nlci5zd2YiKTsKICAgIHBsYXllci5zdHlsZS53aWR0aCA9ICIxMDAlIjsKICAgIHBsYXllci5zdHlsZS5oZWlnaHQgPSAiMTAwJSI7CiAgfSk7Cjwvc2NyaXB0Pgo8ZGl2IGlkPSJjb250YWluZXIiPjwvZGl2Pl1dPjwvQ29udGVudD48L01vZHVsZT4=',
+      });
+    </script>
+  </body>
+</html>

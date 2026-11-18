@@ -3,7 +3,6 @@ import {
   Calendar,
   ChevronDown,
   Clock,
-  Flame,
   Gamepad2,
   Globe,
   Layers,
@@ -23,7 +22,6 @@ export default function Header({
   totalGames = 0,
   totalCategories = 0,
   favoritesCount = 0,
-  totalPlays = 0,
   onSearchChange,
   onSelectLanding,
   onSelectAllGames,
@@ -177,11 +175,6 @@ export default function Header({
                 <Star className="w-3.5 h-3.5 text-amber-500 shrink-0" aria-hidden="true" />
                 <span>{favoritesCount} Saved</span>
               </button>
-
-              <span className="hidden md:inline-flex items-center gap-1.5 text-slate-500 dark:text-slate-400 whitespace-nowrap">
-                <Flame className="w-3.5 h-3.5 text-orange-500 shrink-0" aria-hidden="true" />
-                <span>{totalPlays} Plays</span>
-              </span>
             </div>
           </div>
         </div>
@@ -334,7 +327,7 @@ export default function Header({
                   <div>
                     <div>Arcade Utilities</div>
                     <div className="text-[11px] font-normal text-slate-500 dark:text-slate-400">
-                      Tab Cloak & Stats
+                      Tab Cloak & Quick Launch
                     </div>
                   </div>
                 </button>

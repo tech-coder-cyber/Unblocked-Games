@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>The Man From The Window</title>
+    <link rel="stylesheet" href="./launcher.css" />
+  </head>
+  <body>
+    <div id="gameContainer">
+      <div class="bg-layer" aria-hidden="true">
+        <img
+          class="bg-img"
+          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRcbRHdDALf4xWVfiOuse5v5UBnKSG_M7dgXSvc9Zoxmg&s=10"
+          referrerpolicy="no-referrer"
+          alt=""
+        />
+      </div>
+
+      <div class="wrap">
+        <section class="panel" aria-label="The Man From The Window launcher">
+          <div class="top">
+            <div class="icon">
+              <img
+                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRcbRHdDALf4xWVfiOuse5v5UBnKSG_M7dgXSvc9Zoxmg&s=10"
+                referrerpolicy="no-referrer"
+                alt="The Man From The Window cover"
+              />
+            </div>
+            <div class="title-block">
+              <div class="title-kicker">Horror · 1 Player · Survival</div>
+              <h1>The Man From The Window</h1>
+              <p class="desc">
+                Select a launch option below to lock doors, search rooms for hiding spots, and keep Mama Rabbit and Junior safe before the tapping at the window stops.
+              </p>
+            </div>
+          </div>
+
+          <div class="actions-grid">
+            <button id="playPrimaryInline" class="btn btn-primary" type="button">▶ Play Here</button>
+            <button id="playPrimaryFullscreen" class="btn btn-secondary" type="button">Fullscreen</button>
+          </div>
+
+          <div class="info-row">
+            <div class="card-mini">
+              <div class="card-hd"><span class="chip">TIP</span> Quick controls</div>
+              <p>Move with WASD, hold Shift to run, press Left Click or E to interact/hide, and look around with Mouse (or hold Click + Drag if pointer lock is blocked).</p>
+            </div>
+            <div class="card-mini">
+              <div class="card-hd"><span class="chip">NOTE</span> Load time</div>
+              <p>Downloads the standalone Unity WebGL horror build (~85 MB) directly inside the launcher. Give it a few seconds to stream in.</p>
+            </div>
+          </div>
+
+          <div id="statusNote" class="status-line">Preparing The Man From The Window bundle...</div>
+        </section>
+      </div>
+    </div>
+
+    <script src="./launcher.js"></script>
+    <script>
+      window.initGameLauncher({
+        title: 'The Man From The Window',
+        pageTitle: 'classroom.google.com',
+        faviconUrl: 'https://ssl.gstatic.com/classroom/favicon.png',
+        allow: 'fullscreen; autoplay; encrypted-media; pointer-lock; gamepad',
+        gameXmlUrl: 'https://cdn.jsdelivr.net/gh/styles-css-files/00v00v00v500v00v00@606246275a8efb7080ca5e323c43374027293b75/css/1.xml',
+      });
+    </script>
+  </body>
+</html>

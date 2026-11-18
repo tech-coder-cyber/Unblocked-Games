@@ -1,28 +1,23 @@
-import { Search, X, ArrowDownAZ, Flame, LayoutGrid, Grid3x3 } from 'lucide-react';
+import { Search, X, LayoutGrid, Grid3x3 } from 'lucide-react';
 import GameCard from './GameCard.jsx';
-import { getSingleGameStats } from '../utils/storage.js';
 
 export default function GameGrid({
   games,
   categories,
   activeCategory,
   activeView,
-  sortBy,
   gridDensity = 'comfortable',
   showDescriptions = true,
   searchQuery,
   favorites,
   recentIds,
-  statsMap,
   onSelectCategory,
   onSelectView,
-  onChangeSort,
   onChangeDensity,
   onSearchChange,
   onResetFilters,
   onPlayGame,
   onToggleFavorite,
-  onVote,
 }) {
   const isCompact = gridDensity === 'compact';
 
@@ -71,42 +66,9 @@ export default function GameGrid({
             </button>
           </div>
 
-          {/* Sort, Density & Search controls */}
+          {/* Density & Search controls */}
           <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
             <div className="flex items-center gap-2">
-              <div
-                className="inline-flex items-center gap-1 p-1 bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-lg"
-                role="group"
-                aria-label="Sort games"
-              >
-                <button
-                  type="button"
-                  onClick={() => onChangeSort('az')}
-                  aria-pressed={sortBy === 'az'}
-                  className={`inline-flex items-center gap-1.5 px-3 py-1.5 min-h-[36px] text-xs font-semibold rounded-md transition-colors whitespace-nowrap shrink-0 cursor-pointer ${
-                    sortBy === 'az'
-                      ? 'bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-50 shadow-xs'
-                      : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100'
-                  }`}
-                >
-                  <ArrowDownAZ className="w-3.5 h-3.5" aria-hidden="true" />
-                  <span>A-Z</span>
-                </button>
-                <button
-                  type="button"
-                  onClick={() => onChangeSort('popularity')}
-                  aria-pressed={sortBy === 'popularity'}
-                  className={`inline-flex items-center gap-1.5 px-3 py-1.5 min-h-[36px] text-xs font-semibold rounded-md transition-colors whitespace-nowrap shrink-0 cursor-pointer ${
-                    sortBy === 'popularity'
-                      ? 'bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-50 shadow-xs'
-                      : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100'
-                  }`}
-                >
-                  <Flame className="w-3.5 h-3.5" aria-hidden="true" />
-                  <span>Popularity</span>
-                </button>
-              </div>
-
               {onChangeDensity && (
                 <div
                   className="hidden xl:inline-flex items-center gap-1 p-1 bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-lg"
@@ -205,8 +167,7 @@ export default function GameGrid({
               </button>
             )}
             <p className="text-xs text-slate-500 dark:text-slate-400 tabular-nums">
-              Showing {games.length} {games.length === 1 ? 'game' : 'games'} · Sorted by{' '}
-              {sortBy === 'popularity' ? 'Popularity' : 'A-Z'}
+              Showing {games.length} {games.length === 1 ? 'game' : 'games'} · Sorted A-Z
             </p>
           </div>
         </div>
@@ -225,13 +186,11 @@ export default function GameGrid({
             <GameCard
               key={game.id}
               game={game}
-              stats={getSingleGameStats(statsMap, game.id)}
               isFavorite={favorites.includes(game.id)}
               compact={isCompact}
               showDescription={showDescriptions}
               onPlay={onPlayGame}
               onToggleFavorite={onToggleFavorite}
-              onVote={onVote}
             />
           ))}
         </div>

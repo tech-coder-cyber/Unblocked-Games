@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Soccer Legends</title>
+    <link rel="stylesheet" href="./launcher.css" />
+  </head>
+  <body>
+    <div id="gameContainer">
+      <div class="bg-layer" aria-hidden="true">
+        <img
+          class="bg-img"
+          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTnQlspPI1DC6ss5ltcGMeC858FwWDZTbjnzgaH4u_ZfA9AN4vJbQPf8oE&s=10"
+          referrerpolicy="no-referrer"
+          alt=""
+        />
+      </div>
+
+      <div class="wrap">
+        <section class="panel" aria-label="Soccer Legends launcher">
+          <div class="top">
+            <div class="icon">
+              <img
+                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTnQlspPI1DC6ss5ltcGMeC858FwWDZTbjnzgaH4u_ZfA9AN4vJbQPf8oE&s=10"
+                referrerpolicy="no-referrer"
+                alt="Soccer Legends cover"
+              />
+            </div>
+            <div class="title-block">
+              <div class="title-kicker">Sports · 1-2 Players · Tournament Soccer</div>
+              <h1>Soccer Legends</h1>
+              <p class="desc">
+                Take on 1v1 or 2v2 arcade tournament matches with iconic soccer stars, dash tackles, and game-changing flaming supershots.
+              </p>
+            </div>
+          </div>
+
+          <div class="actions-grid">
+            <button id="playPrimaryInline" class="btn btn-primary" type="button">▶ Play Here</button>
+            <button id="playPrimaryFullscreen" class="btn btn-secondary" type="button">Fullscreen</button>
+            <button id="playAltInline" class="btn btn-secondary" type="button">Play Here (Alt)</button>
+            <button id="playAltFullscreen" class="btn btn-secondary" type="button">Fullscreen (Alt)</button>
+            <a
+              id="openNewTabLink"
+              class="btn btn-secondary btn-full"
+              href="https://script.google.com/macros/s/AKfycbxbVxOE-C5PZqXlTXI9Ydg5iR67Rq0MbbKCb_QqmmvVc3xoKWN54tFBGzD8ew-nnMqH/exec"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Open in New Tab
+            </a>
+          </div>
+
+          <div class="info-row">
+            <div class="card-mini">
+              <div class="card-hd"><span class="chip">TIP</span> Quick controls</div>
+              <p>In 1P mode, move with W A S D or Arrows, kick with X / L, and unleash Supershot with Z / K. In 2P mode, P1 uses W A S D + B / V and P2 uses Arrows + L / K.</p>
+            </div>
+            <div class="card-mini">
+              <div class="card-hd"><span class="chip">NOTE</span> Load time</div>
+              <p>If the primary source is blocked or slow, switch to Play Here (Alt) to load the standalone HTML5 mirror.</p>
+            </div>
+          </div>
+
+          <div id="statusNote" class="status-line">Preparing game mirrors...</div>
+        </section>
+      </div>
+    </div>
+
+    <script src="./launcher.js"></script>
+    <script>
+      window.initGameLauncher({
+        title: 'Soccer Legends',
+        pageTitle: 'classroom.google.com',
+        faviconUrl: 'https://ssl.gstatic.com/classroom/favicon.png',
+        allow: 'fullscreen; autoplay; encrypted-media; gamepad',
+        googleScriptUrl:
+          'https://script.google.com/macros/s/AKfycbxbVxOE-C5PZqXlTXI9Ydg5iR67Rq0MbbKCb_QqmmvVc3xoKWN54tFBGzD8ew-nnMqH/exec',
+        gameXmlUrl:
+          'https://63843949-704700692484768179.preview.editmysite.com/uploads/b/139890129-521690841412870419/files/sl.xml',
+      });
+    </script>
+  </body>
+</html>

@@ -1,14 +1,10 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { Play, ThumbsUp, ThumbsDown, ArrowRight, ArrowDownAZ, Flame, Search, X } from 'lucide-react';
-import { getSingleGameStats } from '../utils/storage.js';
+import { Play, ArrowRight, Search, X } from 'lucide-react';
 
 export default function HomeLanding({
   games,
-  statsMap,
-  sortBy,
   showTopStrip = true,
   reducedMotion = false,
-  onChangeSort,
   onEnterCatalog,
   onPlayGame,
 }) {
@@ -25,21 +21,9 @@ export default function HomeLanding({
             g.category.toLowerCase().includes(q)
         )
       : [...games];
-    if (sortBy === 'popularity') {
-      list.sort((a, b) => {
-        const sa = getSingleGameStats(statsMap, a.id);
-        const sb = getSingleGameStats(statsMap, b.id);
-        if (sb.plays !== sa.plays) return sb.plays - sa.plays;
-        const netB = sb.likes - sb.dislikes;
-        const netA = sa.likes - sa.dislikes;
-        if (netB !== netA) return netB - netA;
-        return a.title.localeCompare(b.title);
-      });
-    } else {
-      list.sort((a, b) => a.title.localeCompare(b.title));
-    }
+    list.sort((a, b) => a.title.localeCompare(b.title));
     return list;
-  }, [games, statsMap, sortBy, homeSearch]);
+  }, [games, homeSearch]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -257,7 +241,7 @@ export default function HomeLanding({
       aria-label="Home landing"
       className={`relative ${
         showTopStrip ? 'min-h-[calc(100vh-6rem)]' : 'min-h-[calc(100vh-4rem)]'
-      } flex items-center justify-center overflow-hidden bg-slate-900 dark:bg-slate-950 text-slate-100`}
+      } flex items-center justify-center overflow-x-hidden bg-slate-900 dark:bg-slate-950 text-slate-100`}
     >
       {/* Interactive floating white dots + connecting lines canvas */}
       <canvas
@@ -305,39 +289,7 @@ export default function HomeLanding({
                       Games ({sortedGames.length})
                     </h2>
                   </div>
-
-                  <div
-                    className="inline-flex items-center gap-1 p-0.5 bg-slate-950/70 border border-white/10 rounded-lg"
-                    role="group"
-                    aria-label="Sort games on home list"
-                  >
-                    <button
-                      type="button"
-                      onClick={() => onChangeSort('az')}
-                      aria-pressed={sortBy === 'az'}
-                      className={`inline-flex items-center gap-1 px-2.5 py-1 min-h-[30px] text-xs font-semibold rounded-md transition-colors cursor-pointer ${
-                        sortBy === 'az'
-                          ? 'bg-sky-400/20 text-sky-300'
-                          : 'text-slate-400 hover:text-white'
-                      }`}
-                    >
-                      <ArrowDownAZ className="w-3.5 h-3.5" aria-hidden="true" />
-                      <span>A-Z</span>
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => onChangeSort('popularity')}
-                      aria-pressed={sortBy === 'popularity'}
-                      className={`inline-flex items-center gap-1 px-2.5 py-1 min-h-[30px] text-xs font-semibold rounded-md transition-colors cursor-pointer ${
-                        sortBy === 'popularity'
-                          ? 'bg-sky-400/20 text-sky-300'
-                          : 'text-slate-400 hover:text-white'
-                      }`}
-                    >
-                      <Flame className="w-3.5 h-3.5" aria-hidden="true" />
-                      <span>Popularity</span>
-                    </button>
-                  </div>
+                  <span className="text-[11px] font-medium text-slate-400">A-Z Directory</span>
                 </div>
 
                 <div className="relative">
@@ -375,48 +327,39 @@ export default function HomeLanding({
                     No games matched &ldquo;{homeSearch}&rdquo;.
                   </li>
                 ) : (
-                  sortedGames.map((game) => {
-                    const stats = getSingleGameStats(statsMap, game.id);
-                    return (
-                      <li key={game.id}>
-                        <button
-                          type="button"
-                          onClick={() => onPlayGame(game)}
-                          className="w-full px-5 py-3.5 text-left flex items-center justify-between gap-4 hover:bg-white/6 transition-colors duration-150 group cursor-pointer focus-visible:outline-2 focus-visible:outline-inset focus-visible:outline-sky-300"
-                        >
-                          <div className="min-w-0">
-                            <div className="font-display text-base font-semibold text-white group-hover:text-sky-300 transition-colors truncate">
-                              {game.title}
-                            </div>
-                            <div className="mt-1 flex flex-wrap items-center gap-x-2.5 gap-y-1 text-xs text-slate-300 tabular-nums">
-                              <span>{game.category}</span>
-                              <span aria-hidden="true">·</span>
-                              <span>{game.players}</span>
-                              <span aria-hidden="true">·</span>
-                              <span className="inline-flex items-center gap-1 text-emerald-300">
-                                <Play className="w-3 h-3" aria-hidden="true" />
-                                {stats.plays.toLocaleString()} {stats.plays === 1 ? 'play' : 'plays'}
+                  sortedGames.map((game) => (
+                    <li key={game.id}>
+                      <button
+                        type="button"
+                        onClick={() => onPlayGame(game)}
+                        className="w-full px-5 py-3.5 text-left flex items-center justify-between gap-4 hover:bg-white/6 transition-colors duration-150 group cursor-pointer focus-visible:outline-2 focus-visible:outline-inset focus-visible:outline-sky-300"
+                      >
+                        <div className="min-w-0">
+                          <div className="font-display text-base font-semibold text-white group-hover:text-sky-300 transition-colors truncate">
+                            {game.titleStyle === 'glitch-red' ? (
+                              <span className="glitch-title-red" aria-label={game.title}>
+                                {game.displayTitle || game.title}
                               </span>
-                              <span aria-hidden="true">·</span>
-                              <span className="inline-flex items-center gap-1 text-sky-300">
-                                <ThumbsUp className="w-3 h-3" aria-hidden="true" />
-                                {stats.likes.toLocaleString()}
-                              </span>
-                              <span className="inline-flex items-center gap-1 text-slate-400">
-                                <ThumbsDown className="w-3 h-3" aria-hidden="true" />
-                                {stats.dislikes.toLocaleString()}
-                              </span>
-                            </div>
+                            ) : (
+                              game.title
+                            )}
                           </div>
+                          <div className="mt-1 flex flex-wrap items-center gap-x-2.5 gap-y-1 text-xs text-slate-300">
+                            <span>{game.category}</span>
+                            <span aria-hidden="true">·</span>
+                            <span>{game.players}</span>
+                            <span aria-hidden="true">·</span>
+                            <span>{game.difficulty}</span>
+                          </div>
+                        </div>
 
-                          <span className="inline-flex items-center gap-1.5 px-3 py-1.5 min-h-[34px] rounded-lg bg-white/10 group-hover:bg-sky-400 group-hover:text-slate-950 text-xs font-semibold text-white transition-colors shrink-0">
-                            <Play className="w-3 h-3 fill-current" aria-hidden="true" />
-                            <span>Play</span>
-                          </span>
-                        </button>
-                      </li>
-                    );
-                  })
+                        <span className="inline-flex items-center gap-1.5 px-3 py-1.5 min-h-[34px] rounded-lg bg-white/10 group-hover:bg-sky-400 group-hover:text-slate-950 text-xs font-semibold text-white transition-colors shrink-0">
+                          <Play className="w-3 h-3 fill-current" aria-hidden="true" />
+                          <span>Play</span>
+                        </span>
+                      </button>
+                    </li>
+                  ))
                 )}
               </ul>
             </div>

@@ -95,6 +95,9 @@
       frame.title = config.title || 'Game Frame';
       frame.allow = allowAttrs;
       frame.allowFullscreen = true;
+      if (config.allowScroll) {
+        frame.setAttribute('scrolling', 'yes');
+      }
       if (config.sandbox) {
         frame.setAttribute('sandbox', config.sandbox);
       }
@@ -212,10 +215,34 @@
         doc.head.appendChild(iconLink);
 
         var styleReset = doc.createElement('style');
-        styleReset.textContent =
-          'html,body,#container{margin:0;padding:0;width:100%!important;height:100%!important;overflow:hidden!important}' +
-          '#unity-container{width:100%!important;height:100%!important;display:flex;align-items:center;justify-content:center}' +
-          '#unity-canvas{max-width:100%!important;max-height:100%!important}';
+        if (config.portraitFit) {
+          styleReset.textContent =
+            'html,body{margin:0!important;padding:0!important;width:100%!important;' +
+            (config.allowScroll
+              ? 'height:auto!important;min-height:100%!important;overflow-x:hidden!important;overflow-y:auto!important;'
+              : 'height:100%!important;overflow:hidden!important;') +
+            'background:#090d16!important;display:flex!important;justify-content:center!important;align-items:' +
+            (config.allowScroll ? 'flex-start' : 'center') +
+            '!important}' +
+            '#container{margin:0;padding:0;width:100%!important;min-height:100%!important;display:flex!important;justify-content:center!important;align-items:flex-start!important}' +
+            '#unity-container{position:relative!important;width:min(100%, max(340px, calc(100vh * 9 / 16)))!important;aspect-ratio:9 / 16!important;height:auto!important;min-height:min(100vh, 604px)!important;margin:0 auto!important;flex:0 0 auto!important;background:#000;box-shadow:0 0 36px rgba(0,0,0,.65)}' +
+            '#unity-canvas{width:100%!important;height:100%!important;max-width:100%!important;max-height:none!important;display:block!important}' +
+            '#loading-cover{width:100%!important;height:100%!important}' +
+            '#ad-container{display:none!important}';
+        } else if (config.allowScroll) {
+          styleReset.textContent =
+            'html,body{margin:0;padding:0;width:100%!important;height:auto!important;min-height:100%!important;overflow-x:hidden!important;overflow-y:auto!important}' +
+            '#container{margin:0;padding:0;width:100%!important;min-height:100%!important}' +
+            '#unity-container{width:100%!important;min-height:100vh!important;display:flex;align-items:center;justify-content:center}' +
+            '#unity-canvas{max-width:100%!important}' +
+            '#ad-container{display:none!important}';
+        } else {
+          styleReset.textContent =
+            'html,body,#container{margin:0;padding:0;width:100%!important;height:100%!important;overflow:hidden!important}' +
+            '#unity-container{width:100%!important;height:100%!important;display:flex;align-items:center;justify-content:center}' +
+            '#unity-canvas{max-width:100%!important;max-height:100%!important}' +
+            '#ad-container{display:none!important}';
+        }
         doc.head.appendChild(styleReset);
 
         var isDataXml = gameXmlUrl.substring(0, 5) === 'data:';

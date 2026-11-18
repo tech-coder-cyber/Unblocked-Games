@@ -1,31 +1,14 @@
-import { ArrowLeft, EyeOff, Play, ThumbsUp, ThumbsDown, Check } from 'lucide-react';
-import { getSingleGameStats, TAB_CLOAK_PRESETS } from '../utils/storage.js';
+import { ArrowLeft, EyeOff, Check } from 'lucide-react';
+import { TAB_CLOAK_PRESETS } from '../utils/storage.js';
 
 export default function MiscToolsView({
   games,
-  statsMap,
   tabCloak,
   onChangeCloak,
   onPlayGame,
   onBackToCatalog,
 }) {
-  const rankedGames = [...games].sort((a, b) => {
-    const sa = getSingleGameStats(statsMap, a.id);
-    const sb = getSingleGameStats(statsMap, b.id);
-    if (sb.plays !== sa.plays) return sb.plays - sa.plays;
-    return a.title.localeCompare(b.title);
-  });
-
-  const totals = rankedGames.reduce(
-    (acc, game) => {
-      const s = getSingleGameStats(statsMap, game.id);
-      acc.plays += s.plays;
-      acc.likes += s.likes;
-      acc.dislikes += s.dislikes;
-      return acc;
-    },
-    { plays: 0, likes: 0, dislikes: 0 }
-  );
+  const sortedGames = [...games].sort((a, b) => a.title.localeCompare(b.title));
 
   return (
     <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 space-y-8">
@@ -36,7 +19,7 @@ export default function MiscToolsView({
             Arcade Utilities
           </h1>
           <p className="mt-1 text-sm text-slate-600 dark:text-slate-400">
-            Customize your browser tab disguise and inspect play, like, and dislike stats across the library.
+            Customize your browser tab disguise and jump directly to any title in the library.
           </p>
         </div>
 
@@ -89,74 +72,46 @@ export default function MiscToolsView({
         </div>
       </div>
 
-      {/* Library Stats Overview */}
+      {/* Quick Launch Directory */}
       <div className="p-6 rounded-2xl bg-white dark:bg-slate-900/85 border border-slate-200 dark:border-slate-800 space-y-5">
         <div className="flex flex-wrap items-center justify-between gap-4">
           <h2 className="font-display text-lg font-bold text-slate-900 dark:text-slate-50">
-            Game Stats Leaderboard
+            Quick Game Directory
           </h2>
-          <div className="flex flex-wrap items-center gap-4 text-xs text-slate-600 dark:text-slate-300 tabular-nums">
-            <span className="font-semibold">{totals.plays.toLocaleString()} Total Plays</span>
-            <span aria-hidden="true">·</span>
-            <span className="font-semibold text-emerald-600 dark:text-emerald-400">
-              {totals.likes.toLocaleString()} Likes
-            </span>
-            <span aria-hidden="true">·</span>
-            <span className="font-semibold text-slate-500 dark:text-slate-400">
-              {totals.dislikes.toLocaleString()} Dislikes
-            </span>
-          </div>
+          <span className="text-xs font-medium text-slate-500 dark:text-slate-400 tabular-nums">
+            {sortedGames.length} {sortedGames.length === 1 ? 'Title' : 'Titles'}
+          </span>
         </div>
 
         <div className="divide-y divide-slate-200 dark:divide-slate-800 border border-slate-200 dark:border-slate-800 rounded-xl overflow-hidden">
-          {rankedGames.map((game, idx) => {
-            const stats = getSingleGameStats(statsMap, game.id);
-            return (
-              <div
-                key={game.id}
-                className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 px-4 py-3.5 bg-white dark:bg-slate-950/60"
-              >
-                <div className="flex items-center gap-3 min-w-0">
-                  <span className="w-6 text-xs font-mono font-bold text-slate-400 tabular-nums shrink-0">
-                    #{idx + 1}
-                  </span>
-                  <div className="min-w-0">
-                    <div className="font-display text-sm font-semibold text-slate-900 dark:text-slate-50 truncate">
-                      {game.title}
-                    </div>
-                    <div className="text-xs text-slate-500 dark:text-slate-400">
-                      {game.category} · {game.players}
-                    </div>
+          {sortedGames.map((game, idx) => (
+            <div
+              key={game.id}
+              className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 px-4 py-3.5 bg-white dark:bg-slate-950/60"
+            >
+              <div className="flex items-center gap-3 min-w-0">
+                <span className="w-6 text-xs font-mono font-bold text-slate-400 tabular-nums shrink-0">
+                  #{idx + 1}
+                </span>
+                <div className="min-w-0">
+                  <div className="font-display text-sm font-semibold text-slate-900 dark:text-slate-50 truncate">
+                    {game.title}
                   </div>
-                </div>
-
-                <div className="flex items-center justify-between sm:justify-end gap-4 tabular-nums">
-                  <div className="flex items-center gap-3 text-xs text-slate-600 dark:text-slate-300">
-                    <span className="inline-flex items-center gap-1">
-                      <Play className="w-3.5 h-3.5 text-emerald-500" aria-hidden="true" />
-                      {stats.plays.toLocaleString()}
-                    </span>
-                    <span className="inline-flex items-center gap-1">
-                      <ThumbsUp className="w-3.5 h-3.5 text-cyan-500" aria-hidden="true" />
-                      {stats.likes.toLocaleString()}
-                    </span>
-                    <span className="inline-flex items-center gap-1">
-                      <ThumbsDown className="w-3.5 h-3.5 text-slate-400" aria-hidden="true" />
-                      {stats.dislikes.toLocaleString()}
-                    </span>
+                  <div className="text-xs text-slate-500 dark:text-slate-400">
+                    {game.category} · {game.players} · {game.difficulty}
                   </div>
-
-                  <button
-                    type="button"
-                    onClick={() => onPlayGame(game)}
-                    className="px-3.5 py-1.5 min-h-[34px] rounded-lg bg-emerald-500 hover:bg-emerald-400 text-slate-950 text-xs font-bold transition-colors cursor-pointer shrink-0"
-                  >
-                    Play
-                  </button>
                 </div>
               </div>
-            );
-          })}
+
+              <button
+                type="button"
+                onClick={() => onPlayGame(game)}
+                className="px-3.5 py-1.5 min-h-[34px] rounded-lg bg-emerald-500 hover:bg-emerald-400 text-slate-950 text-xs font-bold transition-colors cursor-pointer shrink-0 self-start sm:self-auto"
+              >
+                Play
+              </button>
+            </div>
+          ))}
         </div>
       </div>
     </section>

@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Basket Bros</title>
+    <link rel="stylesheet" href="./launcher.css" />
+  </head>
+  <body>
+    <div id="gameContainer">
+      <div class="bg-layer" aria-hidden="true">
+        <img
+          class="bg-img"
+          src="https://imgs.crazygames.com/basketbros_1x1/20251107022434/basketbros_1x1-cover?format=auto&quality=70&metadata=none"
+          referrerpolicy="no-referrer"
+          alt=""
+        />
+      </div>
+
+      <div class="wrap">
+        <section class="panel" aria-label="Basket Bros launcher">
+          <div class="top">
+            <div class="icon">
+              <img
+                src="https://imgs.crazygames.com/basketbros_1x1/20251107022434/basketbros_1x1-cover?format=auto&quality=70&metadata=none"
+                referrerpolicy="no-referrer"
+                alt="Basket Bros cover"
+              />
+            </div>
+            <div class="title-block">
+              <div class="title-kicker">Sports · 1-2 Players · Arcade</div>
+              <h1>Basket Bros</h1>
+              <p class="desc">
+                Fast-paced arcade 1v1 basketball with high-flying dunks, unlockable ballers, and chaotic local 2-player or tournament matchups.
+              </p>
+            </div>
+          </div>
+
+          <div class="actions-grid">
+            <button id="playPrimaryInline" class="btn btn-primary" type="button">▶ Play Here</button>
+            <button id="playPrimaryFullscreen" class="btn btn-secondary" type="button">Fullscreen</button>
+            <button id="playAltInline" class="btn btn-secondary" type="button">Play Here (Alt)</button>
+            <button id="playAltFullscreen" class="btn btn-secondary" type="button">Fullscreen (Alt)</button>
+            <a
+              id="openNewTabLink"
+              class="btn btn-secondary btn-full"
+              href="https://script.google.com/macros/s/AKfycbxUfaDSpH-0SJL0WPKt38JY7OOOGMmtpY9JTSbL8pvtjxS7jSpNHHu6MdZgWUshIU00Kw/exec"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Open in New Tab
+            </a>
+          </div>
+
+          <div class="info-row">
+            <div class="card-mini">
+              <div class="card-hd"><span class="chip">TIP</span> Quick controls</div>
+              <p>Solo: Move & jump with W A S D or Arrows and shoot/steal with Space, G, X, or L. 2P: P1 uses W A S D + G, P2 uses Arrows + L.</p>
+            </div>
+            <div class="card-mini">
+              <div class="card-hd"><span class="chip">NOTE</span> Host fallback</div>
+              <p>Click inside the court once loaded to focus keyboard input. Switch to Play Here (Alt) if the primary source is blocked.</p>
+            </div>
+          </div>
+
+          <div id="statusNote" class="status-line">Preparing game mirrors...</div>
+        </section>
+      </div>
+    </div>
+
+    <script src="./launcher.js"></script>
+    <script>
+      window.initGameLauncher({
+        title: 'Basket Bros',
+        pageTitle: 'classroom.google.com',
+        faviconUrl: 'https://ssl.gstatic.com/classroom/favicon.png',
+        allow: 'fullscreen; autoplay; encrypted-media; gamepad',
+        googleScriptUrl:
+          'https://script.google.com/macros/s/AKfycbxUfaDSpH-0SJL0WPKt38JY7OOOGMmtpY9JTSbL8pvtjxS7jSpNHHu6MdZgWUshIU00Kw/exec',
+        gameXmlUrl: './basket-bros-alt.xml',
+      });
+    </script>
+  </body>
+</html>

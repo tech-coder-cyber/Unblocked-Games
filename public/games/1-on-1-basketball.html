@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>1 on 1 Basketball</title>
+    <link rel="stylesheet" href="./launcher.css" />
+  </head>
+  <body>
+    <div id="gameContainer">
+      <div class="bg-layer" aria-hidden="true">
+        <img
+          class="bg-img"
+          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQgGi9FTwja5x1zm6R1aGCRFzygW5c15PeYmDtHZ5eJvjF6yEd8wi2bres&s=10"
+          referrerpolicy="no-referrer"
+          alt=""
+        />
+      </div>
+
+      <div class="wrap">
+        <section class="panel" aria-label="1 on 1 Basketball launcher">
+          <div class="top">
+            <div class="icon">
+              <img
+                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQgGi9FTwja5x1zm6R1aGCRFzygW5c15PeYmDtHZ5eJvjF6yEd8wi2bres&s=10"
+                referrerpolicy="no-referrer"
+                alt="1 on 1 Basketball cover"
+              />
+            </div>
+            <div class="title-block">
+              <div class="title-kicker">Sports · 1-2 Players · Flash Classic</div>
+              <h1>1 on 1 Basketball</h1>
+              <p class="desc">
+                Hit the blacktop in classic 1v1 Flash streetball. Time your jump shots, swat opponents at the rim, and rack up dunks solo or with a friend.
+              </p>
+            </div>
+          </div>
+
+          <div class="actions-grid">
+            <button id="playPrimaryInline" class="btn btn-primary" type="button">▶ Play Here</button>
+            <button id="playPrimaryFullscreen" class="btn btn-secondary" type="button">Fullscreen</button>
+            <button id="playAltInline" class="btn btn-secondary" type="button">Play Here (Alt)</button>
+            <button id="playAltFullscreen" class="btn btn-secondary" type="button">Fullscreen (Alt)</button>
+            <a
+              id="openNewTabLink"
+              class="btn btn-secondary btn-full"
+              href="https://script.google.com/macros/s/AKfycbwDVKSBVuNK4axJUnLuqHJHWh7EubO4icUJldVaUPoVqjsalm2SB9mCKg7x6f0rU7O6OA/exec"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Open in New Tab
+            </a>
+          </div>
+
+          <div class="info-row">
+            <div class="card-mini">
+              <div class="card-hd"><span class="chip">TIP</span> Quick controls</div>
+              <p>Player 1 moves and jumps with the Arrow Keys and shoots or blocks with Space. Player 2 uses ; / ' / [ / ] + Shift (editable in Options).</p>
+            </div>
+            <div class="card-mini">
+              <div class="card-hd"><span class="chip">NOTE</span> Ruffle Flash</div>
+              <p>Powered by Ruffle Flash emulation. Switch to Play Here (Alt) if the primary source is blocked on your network.</p>
+            </div>
+          </div>
+
+          <div id="statusNote" class="status-line">Preparing game mirrors...</div>
+        </section>
+      </div>
+    </div>
+
+    <script src="./launcher.js"></script>
+    <script>
+      window.initGameLauncher({
+        title: '1 on 1 Basketball',
+        pageTitle: 'classroom.google.com',
+        faviconUrl: 'https://ssl.gstatic.com/classroom/favicon.png',
+        allow: 'fullscreen; autoplay; encrypted-media; gamepad',
+        googleScriptUrl:
+          'https://script.google.com/macros/s/AKfycbwDVKSBVuNK4axJUnLuqHJHWh7EubO4icUJldVaUPoVqjsalm2SB9mCKg7x6f0rU7O6OA/exec',
+        gameXmlUrl: './1-on-1-basketball-alt.xml',
+      });
+    </script>
+  </body>
+</html>

@@ -192,9 +192,17 @@
         }
 
         var parser = new DOMParser();
-        var xmlDoc = parser.parseFromString(t, 'application/xml');
-        var contentEl = xmlDoc.querySelector('Content');
-        var rawHtml = contentEl ? contentEl.textContent : t;
+        var rawHtml = t;
+        for (var xmlDepth = 0; xmlDepth < 4; xmlDepth++) {
+          var trimmedXml = String(rawHtml || '').trim();
+          if (trimmedXml.indexOf('<?xml') !== 0 && trimmedXml.indexOf('<Module') !== 0) {
+            break;
+          }
+          var xmlDoc = parser.parseFromString(trimmedXml, 'application/xml');
+          var contentEl = xmlDoc.querySelector('Content');
+          if (!contentEl) break;
+          rawHtml = contentEl.textContent || '';
+        }
 
         var doc = parser.parseFromString(rawHtml, 'text/html');
         if (!doc.head) {
@@ -238,12 +246,19 @@
             '#ad-container{display:none!important}';
         } else {
           styleReset.textContent =
-            'html,body,#container{margin:0;padding:0;width:100%!important;height:100%!important;overflow:hidden!important}' +
+            'html,body,#container,#game2,#openfl-content{margin:0!important;padding:0!important;width:100%!important;height:100%!important;float:none!important;overflow:hidden!important}' +
             '#unity-container{width:100%!important;height:100%!important;display:flex;align-items:center;justify-content:center}' +
             '#unity-canvas{max-width:100%!important;max-height:100%!important}' +
-            '#ad-container{display:none!important}';
+            '#ad-container,#preroll,#more,footer,[id^="soccerbros-gg_"],[id^="basketbros-io_"]{display:none!important}';
         }
         doc.head.appendChild(styleReset);
+
+        var existingBaseEl = doc.querySelector('base[href]');
+        var existingBaseHref = existingBaseEl ? existingBaseEl.getAttribute('href') : null;
+        var existingBases = doc.querySelectorAll('base');
+        for (var bi = 0; bi < existingBases.length; bi++) {
+          existingBases[bi].parentNode.removeChild(existingBases[bi]);
+        }
 
         var isDataXml = gameXmlUrl.substring(0, 5) === 'data:';
         var xmlBase = isDataXml
@@ -267,7 +282,7 @@
           } catch (e) {}
         }
 
-        var baseHref = discoveredBuildUrl || xmlBase;
+        var baseHref = existingBaseHref || discoveredBuildUrl || xmlBase;
         var hostJson = JSON.stringify(window.location.hostname);
         var refJson = JSON.stringify('https://sites.google.com');
         var patchScript = doc.createElement('script');

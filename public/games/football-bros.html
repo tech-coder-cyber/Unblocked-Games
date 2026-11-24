@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Football Bros</title>
+    <link rel="stylesheet" href="./launcher.css" />
+  </head>
+  <body>
+    <div id="gameContainer">
+      <div class="bg-layer" aria-hidden="true">
+        <img
+          class="bg-img"
+          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQtKY1LJDKXm1POm94vtC-36d60xdIRoExXU6DraW1nVw&s"
+          referrerpolicy="no-referrer"
+          alt=""
+        />
+      </div>
+
+      <div class="wrap">
+        <section class="panel" aria-label="Football Bros launcher">
+          <div class="top">
+            <div class="icon">
+              <img
+                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQtKY1LJDKXm1POm94vtC-36d60xdIRoExXU6DraW1nVw&s"
+                referrerpolicy="no-referrer"
+                alt="Football Bros cover"
+              />
+            </div>
+            <div class="title-block">
+              <div class="title-kicker">Sports · 1-2 Players · Gridiron Arcade</div>
+              <h1>Football Bros</h1>
+              <p class="desc">
+                Call big plays, launch deep passes, stiff-arm defenders, and score touchdowns in fast-paced arcade football matches.
+              </p>
+            </div>
+          </div>
+
+          <div class="actions-grid">
+            <button id="playPrimaryInline" class="btn btn-primary" type="button">▶ Play Here</button>
+            <button id="playPrimaryFullscreen" class="btn btn-secondary" type="button">Fullscreen</button>
+          </div>
+
+          <div class="info-row">
+            <div class="card-mini">
+              <div class="card-hd"><span class="chip">TIP</span> Quick controls</div>
+              <p>Solo: Move with W A S D or Arrows and use Space, G, or X to snap, pass, dive, and tackle. 2P: P1 uses W A S D + G, P2 uses Arrows + L.</p>
+            </div>
+            <div class="card-mini">
+              <div class="card-hd"><span class="chip">NOTE</span> Focus input</div>
+              <p>Click inside the field once the game boots so keyboard controls respond cleanly during kickoffs and snaps.</p>
+            </div>
+          </div>
+
+          <div id="statusNote" class="status-line">Preparing Football Bros bundle...</div>
+        </section>
+      </div>
+    </div>
+
+    <script src="./launcher.js"></script>
+    <script>
+      window.initGameLauncher({
+        title: 'Football Bros',
+        pageTitle: 'classroom.google.com',
+        faviconUrl: 'https://ssl.gstatic.com/classroom/favicon.png',
+        allow: 'fullscreen; autoplay; encrypted-media; gamepad',
+        gameXmlUrl: 'https://cdn.jsdelivr.net/gh/z799gs/helo@972982ce769a8b9b411abfc0aaed025d9ef51f6f/br.xml',
+      });
+    </script>
+  </body>
+</html>

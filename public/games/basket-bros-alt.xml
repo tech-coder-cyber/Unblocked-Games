@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Module>
+<ModulePrefs title="Basket Bros" />
+<Content type="html"><![CDATA[<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Basket Bros</title>
+  <meta id="viewport" name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <script>
+    (function(){
+      window.dataLayer = window.dataLayer || [];
+      window.gtag = window.gtag || function(){};
+      window.SendEvent = window.SendEvent || function(){};
+      window.RecordSession = window.RecordSession || function(){};
+      function safe(fn){ try{ fn && fn(); }catch(e){} }
+      function doneInterstitial(){ if (window.Main && typeof Main.DoneInterstitialAd === 'function') Main.DoneInterstitialAd(false); }
+      function doneRewarded(){ if (window.Main && typeof Main.DoneVideoAd === 'function') Main.DoneVideoAd(); }
+      window.ShowAdBreak = function(){ safe(doneInterstitial); };
+      window.ShowVideo = function(){ safe(doneRewarded); };
+      window.ShowAd = function(){ safe(doneInterstitial); };
+      window.ShowInterstitial = function(){ safe(doneInterstitial); };
+      window.ShowRewarded = function(){ safe(doneRewarded); };
+      for (var i=1;i<=10;i++){
+        window['ShowAd'+i] = function(){ safe(doneInterstitial); };
+        window['ShowVideo'+i] = function(){ safe(doneRewarded); };
+      }
+      window.adBreak = function(opts){ safe(opts && opts.before); safe(opts && opts.after); return Promise.resolve(); };
+      window.rewardedBreak = function(opts){ safe(opts && opts.before); safe(opts && opts.after); return Promise.resolve({completed:false}); };
+      window.PauseGame = window.PauseGame || function(){};
+      window.ResumeGame = window.ResumeGame || function(){};
+      window.GamePlayStart = window.GamePlayStart || function(){};
+      window.GamePlayStop = window.GamePlayStop || function(){};
+      window.GameplayStart = window.GameplayStart || function(){};
+      window.GameplayStop = window.GameplayStop || function(){};
+      window.gameplayStart = window.gameplayStart || function(){};
+      window.gameplayStop = window.gameplayStop || function(){};
+      window.GameStart = window.GameStart || function(){};
+      window.GameStop = window.GameStop || function(){};
+      var userData = "";
+      window.triggerSignIn = function(){};
+      window.saveGameData = function(v){ userData = v; };
+      window.loadGameData = function(){ return userData; };
+      window.loadGameDataAsync = function(){ if (typeof Main !== 'undefined' && Main.LoadDataComplete) Main.LoadDataComplete(); };
+      window.signOut = function(){ if (typeof Main !== 'undefined' && Main.SignOutComplete) Main.SignOutComplete(); };
+      window.isUserLoggedIn = function(){ return false; };
+    })();
+  </script>
+  <script src="https://cdn.jsdelivr.net/gh/brodeliver/bb@12/BasketBros.js?th=644"></script>
+  <script>
+    window.addEventListener("touchmove", function (event) { event.preventDefault(); }, { capture: false, passive: false });
+    if (typeof window.devicePixelRatio !== "undefined" && window.devicePixelRatio > 2) {
+      var meta = document.getElementById("viewport");
+      meta.setAttribute("content", "width=device-width, initial-scale=" + (2 / window.devicePixelRatio) + ", user-scalable=no");
+    }
+    window.addEventListener("keydown", function (e) {
+      if ((e.keyCode === 32 || e.keyCode === 38 || e.keyCode === 40) && e.target === document.body) e.preventDefault();
+    });
+  </script>
+  <style>
+    html, body { margin: 0; padding: 0; height: 100%; width: 100%; background: #000; color: #ffa500; overflow: hidden; }
+    #openfl-content { background: #000; width: 100%; height: 100%; }
+    #loading { position: absolute; z-index: 15; top: 60%; left: 50%; transform: translate(-50%, 0); background: #000; }
+    #loading img { display: inline-block; }
+  </style>
+</head>
+<body style="overflow:hidden;">
+  <noscript>Enable JavaScript bro!</noscript>
+  <div id="loading">
+    <center>
+      <img src="https://cdn.jsdelivr.net/gh/brodeliver/bb@13/assets/loading4.png" alt="Loading" /><br />
+      <img src="https://cdn.jsdelivr.net/gh/brodeliver/bb@3/assets/fbro.png" alt="" />
+      <img src="https://cdn.jsdelivr.net/gh/brodeliver/bb@3/assets/sbro.png" alt="" />
+      <img src="https://cdn.jsdelivr.net/gh/brodeliver/bb@3/assets/wbro.png" alt="" />
+      <img src="https://cdn.jsdelivr.net/gh/brodeliver/fb@1/assets/kbro.png" alt="" />
+      <img src="https://cdn.jsdelivr.net/gh/brodeliver/bb@3/assets/bbro.png" alt="" />
+    </center>
+  </div>
+  <div id="openfl-content" onblur="window.focus();"></div>
+  <div id="preroll" style="display:none;width:0;height:0;overflow:hidden"></div>
+  <div id="more" style="display:none;width:0;height:0;overflow:hidden"></div>
+  <div id="signup" style="display:none;width:0;height:0;overflow:hidden"></div>
+  <div id="deleteme" style="display:none;width:0;height:0;overflow:hidden"></div>
+  <div id="basketbros-io_728x90" style="display:none"></div>
+  <div id="basketbros-io_728x90_m" style="display:none"></div>
+  <div id="basketbros-io_300x250" style="display:none"></div>
+  <div id="basketbros-io_300x250_2" style="display:none"></div>
+  <div id="basketbros-io_320x100" style="display:none"></div>
+  <div id="basketbros-io_970x250" style="display:none"></div>
+  <div id="basketbros-io_160x600" style="display:none"></div>
+  <div id="basketbros-io_160x600_2" style="display:none"></div>
+  <div id="basketbros-io_300x600_m" style="display:none"></div>
+  <div id="basketbros-io_player_300x600" style="display:none"></div>
+  <script>
+    try { lime.embed("BasketBros", "openfl-content", 0, 0, { parameters: {} }); } catch (e) {}
+  </script>
+</body>
+</html>]]></Content>
+</Module>

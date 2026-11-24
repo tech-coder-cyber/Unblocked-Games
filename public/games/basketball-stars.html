@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Basketball Stars</title>
+    <link rel="stylesheet" href="./launcher.css" />
+  </head>
+  <body>
+    <div id="gameContainer">
+      <div class="bg-layer" aria-hidden="true">
+        <img
+          class="bg-img"
+          src="https://imgs.crazygames.com/games/basketball-stars-2019/cover-1583231506155.png?metadata=none&quality=100&width=1200&height=630&fit=crop"
+          referrerpolicy="no-referrer"
+          alt=""
+        />
+      </div>
+
+      <div class="wrap">
+        <section class="panel" aria-label="Basketball Stars launcher">
+          <div class="top">
+            <div class="icon">
+              <img
+                src="https://imgs.crazygames.com/games/basketball-stars-2019/cover-1583231506155.png?metadata=none&quality=100&width=1200&height=630&fit=crop"
+                referrerpolicy="no-referrer"
+                alt="Basketball Stars cover"
+              />
+            </div>
+            <div class="title-block">
+              <div class="title-kicker">Sports · 1-2 Players · Arcade</div>
+              <h1>Basketball Stars</h1>
+              <p class="desc">
+                Head onto the hardwood for 1v1 and 2v2 arcade basketball action! Pull off alley-oops, blocks, dashes, and unstoppable supershots.
+              </p>
+            </div>
+          </div>
+
+          <div class="actions-grid">
+            <button id="playPrimaryInline" class="btn btn-primary" type="button">▶ Play Here</button>
+            <button id="playPrimaryFullscreen" class="btn btn-secondary" type="button">Fullscreen</button>
+          </div>
+
+          <div class="info-row">
+            <div class="card-mini">
+              <div class="card-hd"><span class="chip">TIP</span> Quick controls</div>
+              <p>Solo: W A S D or Arrows to move (double-tap left/right to dash), X / L to shoot or steal, Z / K for supershot. 2P: P1 uses W A S D + B / V, P2 uses Arrows + L / K.</p>
+            </div>
+            <div class="card-mini">
+              <div class="card-hd"><span class="chip">NOTE</span> Load time</div>
+              <p>HTML5 assets load directly in your browser. Click inside the court once loaded to capture keyboard input.</p>
+            </div>
+          </div>
+
+          <div id="statusNote" class="status-line">Preparing Basketball Stars bundle...</div>
+        </section>
+      </div>
+    </div>
+
+    <script src="./launcher.js"></script>
+    <script>
+      window.initGameLauncher({
+        title: 'Basketball Stars',
+        pageTitle: 'classroom.google.com',
+        faviconUrl: 'https://ssl.gstatic.com/classroom/favicon.png',
+        allow: 'fullscreen; autoplay; encrypted-media; gamepad',
+        gameXmlUrl: 'https://cdn.jsdelivr.net/gh/schoolflashx/bilbilu@main/bs.xml',
+      });
+    </script>
+  </body>
+</html>

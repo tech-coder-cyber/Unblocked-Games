@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Basketball Legends</title>
+    <link rel="stylesheet" href="./launcher.css" />
+  </head>
+  <body>
+    <div id="gameContainer">
+      <div class="bg-layer" aria-hidden="true">
+        <img
+          class="bg-img"
+          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ1DLCVqiqovgRFDBL7kf1mNHG4B4gq5_00Vvmu2tkPhr3njFCpPBemDDl2&s=10"
+          referrerpolicy="no-referrer"
+          alt=""
+        />
+      </div>
+
+      <div class="wrap">
+        <section class="panel" aria-label="Basketball Legends launcher">
+          <div class="top">
+            <div class="icon">
+              <img
+                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ1DLCVqiqovgRFDBL7kf1mNHG4B4gq5_00Vvmu2tkPhr3njFCpPBemDDl2&s=10"
+                referrerpolicy="no-referrer"
+                alt="Basketball Legends cover"
+              />
+            </div>
+            <div class="title-block">
+              <div class="title-kicker">Sports · 1-2 Players · Flash Classic</div>
+              <h1>Basketball Legends</h1>
+              <p class="desc">
+                Hit the court in the classic Flash edition of Basketball Legends. Throw down mega dunks, unleash supershots, and battle solo or in 2-player matches.
+              </p>
+            </div>
+          </div>
+
+          <div class="actions-grid">
+            <button id="playPrimaryInline" class="btn btn-primary" type="button">▶ Play Here</button>
+            <button id="playPrimaryFullscreen" class="btn btn-secondary" type="button">Fullscreen</button>
+          </div>
+
+          <div class="info-row">
+            <div class="card-mini">
+              <div class="card-hd"><span class="chip">TIP</span> Quick controls</div>
+              <p>Solo: W A S D or Arrows to move/jump/block, X or L to shoot/steal, Z or K for supershot. 2P: P1 uses W A S D + B / V, P2 uses Arrows + L / K.</p>
+            </div>
+            <div class="card-mini">
+              <div class="card-hd"><span class="chip">NOTE</span> Classic Flash</div>
+              <p>This is the classic Flash edition of Basketball Legends powered by Ruffle (rather than the HTML5 2020 edition).</p>
+            </div>
+          </div>
+
+          <div id="statusNote" class="status-line">Preparing Basketball Legends bundle...</div>
+        </section>
+      </div>
+    </div>
+
+    <script src="./launcher.js"></script>
+    <script>
+      window.initGameLauncher({
+        title: 'Basketball Legends',
+        pageTitle: 'classroom.google.com',
+        faviconUrl: 'https://ssl.gstatic.com/classroom/favicon.png',
+        allow: 'fullscreen; autoplay; encrypted-media; gamepad',
+        gameXmlUrl: 'https://cdn.jsdelivr.net/gh/testamalame/sef@main/lgdns.xml',
+      });
+    </script>
+  </body>
+</html>

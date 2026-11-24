@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Retro Bowl</title>
+    <link rel="stylesheet" href="./launcher.css" />
+  </head>
+  <body>
+    <div id="gameContainer">
+      <div class="bg-layer" aria-hidden="true">
+        <img
+          class="bg-img"
+          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSvejbURvdMZJl6ohKB_FThA0jIVpxsbIhNUM7OnEJplw&s=10"
+          referrerpolicy="no-referrer"
+          alt=""
+        />
+      </div>
+
+      <div class="wrap">
+        <section class="panel" aria-label="Retro Bowl launcher">
+          <div class="top">
+            <div class="icon">
+              <img
+                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSvejbURvdMZJl6ohKB_FThA0jIVpxsbIhNUM7OnEJplw&s=10"
+                referrerpolicy="no-referrer"
+                alt="Retro Bowl cover"
+              />
+            </div>
+            <div class="title-block">
+              <div class="title-kicker">Sports · 1 Player · Football Dynasty</div>
+              <h1>Retro Bowl</h1>
+              <p class="desc">
+                Draft star players, manage your franchise roster, and call the shots on the field in the beloved 8-bit American football classic.
+              </p>
+            </div>
+          </div>
+
+          <div class="actions-grid actions-grid--3">
+            <button id="playPrimaryInline" class="btn btn-primary" type="button">▶ Play Here</button>
+            <button id="playPrimaryFullscreen" class="btn btn-secondary" type="button">Fullscreen</button>
+            <a
+              id="openNewTabLink"
+              class="btn btn-secondary"
+              href="https://iliill1.github.io/retro/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Open in New Tab
+            </a>
+          </div>
+
+          <div class="info-row">
+            <div class="card-mini">
+              <div class="card-hd"><span class="chip">TIP</span> Quick controls</div>
+              <p>Click and drag backwards with your mouse to aim and throw passes. Use W / S or Up / Down Arrow to juke and A / D or Left / Right to dive.</p>
+            </div>
+            <div class="card-mini">
+              <div class="card-hd"><span class="chip">NOTE</span> Save progress</div>
+              <p>Your franchise season saves locally in browser storage. Use Open in New Tab if your network restricts embedded pages.</p>
+            </div>
+          </div>
+
+          <div id="statusNote" class="status-line">Source ready. Click Play Here to start Retro Bowl.</div>
+        </section>
+      </div>
+    </div>
+
+    <script src="./launcher.js"></script>
+    <script>
+      window.initGameLauncher({
+        title: 'Retro Bowl',
+        pageTitle: 'classroom.google.com',
+        faviconUrl: 'https://ssl.gstatic.com/classroom/favicon.png',
+        allow: 'fullscreen; autoplay; encrypted-media; gamepad',
+        googleScriptUrl: 'https://iliill1.github.io/retro/',
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Shotgun vs Zombies</title>
+    <link rel="stylesheet" href="./launcher.css" />
+  </head>
+  <body>
+    <div id="gameContainer">
+      <div class="bg-layer" aria-hidden="true">
+        <img
+          class="bg-img"
+          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQMMy5NaNWf_H6A7uFYvgNJWozsI8IrVy3gGOdc1tuRsYuyVS3ePGFcM2w&s=10"
+          referrerpolicy="no-referrer"
+          alt=""
+        />
+      </div>
+
+      <div class="wrap">
+        <section class="panel" aria-label="Shotgun vs Zombies launcher">
+          <div class="top">
+            <div class="icon">
+              <img
+                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQMMy5NaNWf_H6A7uFYvgNJWozsI8IrVy3gGOdc1tuRsYuyVS3ePGFcM2w&s=10"
+                referrerpolicy="no-referrer"
+                alt="Shotgun vs Zombies cover"
+              />
+            </div>
+            <div class="title-block">
+              <div class="title-kicker">Action · 1 Player · Zombie Shooter</div>
+              <h1>Shotgun vs Zombies</h1>
+              <p class="desc">
+                Blast relentless waves of falling undead and gun-toting zombies, collect coins, and upgrade your shotgun to maximum firepower.
+              </p>
+            </div>
+          </div>
+
+          <div class="actions-grid actions-grid--3">
+            <button id="playPrimaryInline" class="btn btn-primary" type="button">▶ Play Here</button>
+            <button id="playPrimaryFullscreen" class="btn btn-secondary" type="button">Fullscreen</button>
+            <a
+              id="openNewTabLink"
+              class="btn btn-secondary"
+              href="https://script.google.com/macros/s/AKfycbyavYB2y3KweGe6JcV_EuHH4fU_MDigfEkIFrrWoZcS8rgqb2VJEY6kcB9T1IwCLJ3z/exec"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Open in New Tab
+            </a>
+          </div>
+
+          <div class="info-row">
+            <div class="card-mini">
+              <div class="card-hd"><span class="chip">TIP</span> Quick controls</div>
+              <p>Move with W A S D or Arrow Keys, jump with Space, and fire your shotgun with X or L. Press P to pause, M to mute, and Q for quality.</p>
+            </div>
+            <div class="card-mini">
+              <div class="card-hd"><span class="chip">NOTE</span> Ruffle Flash</div>
+              <p>Runs via Ruffle Flash emulation inside your browser. Click inside the stage once loaded to focus keyboard input.</p>
+            </div>
+          </div>
+
+          <div id="statusNote" class="status-line">Source ready. Click Play Here to start Shotgun vs Zombies.</div>
+        </section>
+      </div>
+    </div>
+
+    <script src="./launcher.js"></script>
+    <script>
+      window.initGameLauncher({
+        title: 'Shotgun vs Zombies',
+        pageTitle: 'classroom.google.com',
+        faviconUrl: 'https://ssl.gstatic.com/classroom/favicon.png',
+        allow: 'fullscreen; autoplay; encrypted-media; gamepad',
+        googleScriptUrl:
+          'https://script.google.com/macros/s/AKfycbyavYB2y3KweGe6JcV_EuHH4fU_MDigfEkIFrrWoZcS8rgqb2VJEY6kcB9T1IwCLJ3z/exec',
+      });
+    </script>
+  </body>
+</html>
